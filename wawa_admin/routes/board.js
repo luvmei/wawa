@@ -117,7 +117,7 @@ async function writeNotice(req, res, params) {
 
   if (req.file) {
     const sourcePath = path.join(__dirname, '../public/assets/upload', req.file.filename);
-    const destPath = path.join(__dirname, '../../user/client/public/upload', req.file.filename);
+    const destPath = path.join(__dirname, '../../wawa_user/client/public/upload', req.file.filename);
 
     fs.copyFile(sourcePath, destPath, (err) => {
       if (err) {
@@ -601,7 +601,7 @@ async function writeEventBanner(req, res, params) {
     if (req.files[fileKey] && req.files[fileKey][0]) {
       const file = req.files[fileKey][0];
       const sourcePath = path.join(__dirname, '../public/assets/upload', req.file.filename);
-      const destPath = path.join(__dirname, '../../user/client/public/upload', req.file.filename);
+      const destPath = path.join(__dirname, '../../wawa_user/client/public/upload', req.file.filename);
 
       fs.copyFile(sourcePath, destPath, (err) => {
         if (err) {

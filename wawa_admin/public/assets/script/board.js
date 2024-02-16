@@ -775,14 +775,14 @@ $('table').on('click', 'tbody tr .bannerCheckBtn', function () {
   document.getElementById('bannerImgPreviewBtn').addEventListener('click', () => {
     document.querySelector(
       '#imageCheckModal .modal-body'
-    ).innerHTML = `<img src="../public/uploads/banner/${bannerContent.배너이미지}" alt="이미지" class="img-fluid">`;
+    ).innerHTML = `<img src="../public/upload/banner/${bannerContent.배너이미지}" alt="이미지" class="img-fluid">`;
     $('#imageCheckModal').modal('show');
   });
 
   document.getElementById('bannerContentImgPreviewBtn').addEventListener('click', () => {
     document.querySelector(
       '#imageCheckModal .modal-body'
-    ).innerHTML = `<img src="../public/uploads/banner/${bannerContent.내용이미지}" alt="이미지" class="img-fluid">`;
+    ).innerHTML = `<img src="../public/upload/banner/${bannerContent.내용이미지}" alt="이미지" class="img-fluid">`;
     $('#imageCheckModal').modal('show');
   });
 
