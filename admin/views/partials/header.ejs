@@ -1,0 +1,245 @@
+<div class="page-header">
+  <div class="header-wrapper row m-0">
+    <form class="form-inline search-full col" action="#" method="get">
+      <div class="form-group w-100">
+        <div class="Typeahead Typeahead--twitterUsers">
+          <div class="u-posRelative">
+            <input class="demo-input Typeahead-input form-control-plaintext w-100" type="text"
+              placeholder="Search Cuba .." name="q" title="" autofocus>
+            <div class="spinner-border Typeahead-spinner" role="status"><span class="sr-only">Loading...</span></div><i
+              class="close-search" data-feather="x"></i>
+          </div>
+          <div class="Typeahead-menu"></div>
+        </div>
+      </div>
+    </form>
+    <div class="header-logo-wrapper col-auto p-0">
+      <div class="logo-wrapper"><a href="#"><img class="img-fluid" src="/assets/images/logo/logo.png" alt=""></a>
+      </div>
+      <div class="toggle-sidebar"><i class="status_toggle middle sidebar-toggle" data-feather="align-center"></i></div>
+    </div>
+    <% if (user.type == 9) { %>
+    <div class="left-header col-xxl-8 col-xl-8 col-lg-5 col-md-4 col-sm-3 p-0">
+      <ul class="list-group ms-2" id="admin-list-group">
+        <ul class="list-group list-group-horizontal">
+          <li class="list-group-item title">
+            어드민
+          </li>
+          <li class="list-group-item title">슬롯 보유금</li>
+          <li class="list-group-item title">카지노 보유금</li>
+          <li class="list-group-item title">파트너 보유금</li>
+          <li class="list-group-item title">파트너 롤링금</li>
+          <li class="list-group-item title">회원 보유금</li>
+          <li class="list-group-item title">회원 롤링금</li>
+          <li class="list-group-item title d-none">DG 보유금
+          <li class="list-group-item title laptop">회원수</li>
+          <li class="list-group-item title laptop">당일 가입</li>
+          <li class="list-group-item title laptop">접속 유저</li>
+        </ul>
+        <ul class="list-group list-group-horizontal">
+          <li class="list-group-item contents" id="navAdminNick"></li>
+          <li class="list-group-item contents" id="navAdminSlotBalance">원</li>
+          <li class="list-group-item contents" id="navAdminCasinoBalance">원</li>
+          <li class="list-group-item contents" id="navAdminAgentBalance">원</li>
+          <li class="list-group-item contents" id="navAdminAgentPoint">원</li>
+          <li class="list-group-item contents" id="navAdminUserBalance">원</li>
+          <li class="list-group-item contents" id="navAdminUserPoint">원</li>
+          <li class="list-group-item contents d-none" id="navAdminDgBalance">원</li>
+          <li class="list-group-item contents laptop" id="navAdminTotalUserNum"></li>
+          <li class="list-group-item contents laptop" id="navAdminNewJoin"></li>
+          <li class="list-group-item contents laptop" id="navAdminOnlineUser"></li>
+        </ul>
+      </ul>
+      <div class="d-none" id="apiSelector">
+        <div class="btn-group ms-5">
+          <button type="button" class="btn asset-dark " style="font-size:0.9rem">에볼 알 선택</button>
+          <button type="button" class="btn btn-light dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            <span class="dropdown-label pe-2" id="pType"></span>
+          </button>
+          <ul class="dropdown-menu" id="dgSelector">
+            <li><a class="dropdown-item" data-ptype="0" href="#">유저별 설정</a></li>
+            <li><a class="dropdown-item" data-ptype="1" href="#">일괄 정품설정 (SD)</a></li>
+            <li><a class="dropdown-item" data-ptype="2" href="#">일괄 파싱설정 (DG)</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="nav-right col-xxl-4 col-xl-4 col-md-7 col-8 pull-right right-header p-0 ms-auto">
+      <ul class="nav-menus" id="notiIconGroup">
+        <li class="nav-item">
+          <a class="nav-link text-secondary" id="alramIcon" href="#">
+            <i class="fa fa-bell fa-2x"></i>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a type="button" class="btn btn-light position-relative fw-bold" id="depositIcon" href="bank-deposit">
+            입금
+            <span
+              class="position-absolute top-0 start-100 translate-middle bg-danger border border-light rounded-circle">
+              <span class="visually-hidden">New alerts</span>
+            </span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a type="button" class="btn btn-light position-relative fw-bold" id="withdrawIcon" href="bank-withdraw">
+            출금
+            <span
+              class="position-absolute top-0 start-100 translate-middle bg-danger border border-light rounded-circle">
+              <span class="visually-hidden">New alerts</span>
+            </span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a type="button" class="btn btn-light position-relative fw-bold" id="messageIcon" href="board">
+            문의
+            <span
+              class="position-absolute top-0 start-100 translate-middle bg-danger border border-light rounded-circle">
+              <span class="visually-hidden">New alerts</span>
+            </span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a type="button" class="btn btn-light position-relative fw-bold" id="approvalIcon" href="user-confirm">
+            승인
+            <span
+              class="position-absolute top-0 start-100 translate-middle bg-danger border border-light rounded-circle">
+              <span class="visually-hidden">New alerts</span>
+            </span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link dropdown-toggle fs-6" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            <i class="fa fa-user fa-2x text-secondary"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end text-center" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item changePasswordBtn" href="#!">비밀번호 변경</a></li>
+            <li>
+              <hr class="dropdown-divider" />
+            </li>
+            <li><a class="dropdown-item" id="logout-btn">로그아웃</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <% } else { %>
+    <div class="left-header col-xxl-8 col-xl-8 col-lg-5 col-md-4 col-sm-3 p-0">
+      <ul class="list-group ms-2" id="agent-list-group">
+        <ul class="list-group list-group-horizontal">
+          <li class="list-group-item title" id="navAgentType"></li>
+          <li class="list-group-item title">보유금</li>
+          <li class="list-group-item title">포인트</li>
+          <li class="list-group-item title">회원수</li>
+          <li class="list-group-item title">당일 가입</li>
+          <li class="list-group-item title">카지노 롤링요율</li>
+          <li class="list-group-item title">슬롯 롤링요율</li>
+          <li class="list-group-item title">루징 요율</li>
+        </ul>
+        <ul class="list-group list-group-horizontal">
+          <li class="list-group-item contents" id="navAgentNick"></li>
+          <li class="list-group-item contents" id="navAgentBalance"></li>
+          <li class="list-group-item contents" id="navAgentPoint"></li>
+          <li class="list-group-item contents" id="navAgentTotalUserNum"></li>
+          <li class="list-group-item contents" id="navAgentNewJoin"></li>
+          <li class="list-group-item contents" id="navAgentCasinoRoll"></li>
+          <li class="list-group-item contents" id="navAgentSlotRoll"></li>
+          <li class="list-group-item contents" id="navAgentLosing"></li>
+        </ul>
+      </ul>
+    </div>
+    <div class="nav-right col-xxl-4 col-xl-4 col-md-7 col-8 pull-right right-header p-0 ms-auto">
+      <ul class="nav-menus agentNav mt-1 justify-content-between justify-content-lg-end">
+        <li class="nav-item d-none d-lg-block">
+          <a class="nav-link" id="qnaIcon" href="#" role="button" data-bs-toggle="modal"
+            data-bs-target="#agentQuestionModal">
+            <i class="fa fa-question-circle fa-2x text-secondary"></i>
+            <span
+              class="d-none position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+              <span class="visually-hidden">New alerts</span>
+            </span></a>
+        </li>
+        <li class="nav-item d-none d-lg-block me-3">
+          <a class="nav-link" id="messageIcon" href="#" role="button" data-bs-toggle="modal"
+            data-bs-target="#agentMessageModal">
+            <i class="fa fa-envelope fa-2x text-secondary"></i>
+            <span
+              class="d-none position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+              <span class="visually-hidden">New alerts</span>
+            </span></a>
+        </li>
+        <% if (user.type === 3) { %>
+        <li class="nav-item d-none d-lg-block me-2">
+          <button type="button" class="btn asset-dark" id="addBatchUser">회원 생성</button>
+        </li>
+        <% } %>
+        <li class="nav-item d-none d-lg-block">
+          <button type="button" id="agentExchangBtn" class="btn asset-success" data-bs-toggle="modal"
+            data-bs-target="#agentExchangeModal">롤링금전환</button>
+        </li>
+        <li class="nav-item mx-2 d-none d-lg-block">
+          <button type="button" id="agentDepositBtn" class="btn asset-primary" data-bs-toggle="modal"
+            data-bs-target="#agentDepositModal">입금신청</button>
+        </li>
+        <li class="nav-item d-none d-lg-block">
+          <button type="button" id="agentWithdrawBtn" class="btn asset-danger" data-bs-toggle="modal"
+            data-bs-target="#agentWithdrawModal">출금신청</button>
+        </li>
+        <li class="nav-itme d-lg-none li-divider">
+          <div class="mobileAgentBalanceInfo">
+            <span class="me-2">보유금</span>
+            <span class="float-end f-w-600" id="mobileAgentNavBalance"></span>
+          </div>
+          <div class="mobileAgentPointInfo">
+            <span class="me-2">롤링금</span>
+            <span class="float-end f-w-600" id="mobileAgentNavPoint"></span>
+          </div>
+        </li>
+        <li class="nav-itme d-lg-none li-divider">
+          <div class="mobileAgentSlotInfo">
+            <span class="me-2">당일 술롯롤링</span>
+            <span class="float-end f-w-600" id="mobileAgentNavSlotRoll"></span>
+          </div>
+          <div class="mobileAgentCasinoInfo">
+            <span class="me-2">당일 카지노롤링</span>
+            <span class="float-end f-w-600" id="mobileAgentNavCasinoRoll"></span>
+          </div>
+        </li>
+        <!-- <li class="nav-itme d-lg-none text-center li-divider">
+          <div>슬롯</div>
+          <div class="f-w-600" id="mobileAgentNavSlot">1.2%</div>
+        </li>
+        <li class="nav-itme d-lg-none text-center li-divider">
+          <div>카지노</div>
+          <div class="f-w-600" id="mobileAgentNavCasino">0.4%</div>
+        </li>
+        <li class="nav-itme d-lg-none text-center li-divider">
+          <div>루징</div>
+          <div class="f-w-600" id="mobileAgentNavLose">20%</div>
+        </li> -->
+        <li class="nav-item">
+          <a class="nav-link dropdown-toggle px-1 px-lg-3 py-1" id="navbarDropdown" href="#" role="button"
+            data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user fa-3x text-secondary"></i></a>
+          <ul class="dropdown-menu dropdown-menu-end text-center" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item changePasswordBtn d-none" href="#!">비밀번호 변경</a></li>
+            <li>
+              <hr class="dropdown-divider" />
+            </li>
+            <li><a class="dropdown-item" id="logout-btn">로그아웃</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <% } %>
+    <script class="result-template" type="text/x-handlebars-template">
+            <div class="ProfileCard u-cf">                        
+            <div class="ProfileCard-avatar"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-airplay m-0"><path d="M5 17H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1"></path><polygon points="12 15 17 21 7 21 12 15"></polygon></svg></div>
+            <div class="ProfileCard-details">
+            <div class="ProfileCard-realName">{{name}}</div>
+            </div>
+            </div>
+          </script>
+    <script class="empty-template"
+      type="text/x-handlebars-template"><div class="EmptyMessage">Your search turned up 0 results. This most likely means the backend is down, yikes!</div></script>
+  </div>
+</div>

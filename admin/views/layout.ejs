@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/assets/images/favicon.png" type="image/x-icon">
+  <link rel="shortcut icon" href="/assets/images/favicon.png" type="image/x-icon">
+  <title>Wawa - Premium Admin</title>
+
+  <!-- Google font-->
+  <link href="https://fonts.googleapis.com/css?family=Rubik:400,400i,500,500i,700,700i&amp;display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i,900&amp;display=swap"
+    rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;200;300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="/assets/css/font-awesome.css">
+  <!-- ico-font-->
+  <link rel="stylesheet" type="text/css" href="/assets/css/vendors/icofont.css">
+  <!-- Themify icon-->
+  <link rel="stylesheet" type="text/css" href="/assets/css/vendors/themify.css">
+  <!-- Flag icon-->
+  <link rel="stylesheet" type="text/css" href="/assets/css/vendors/flag-icon.css">
+  <!-- Feather icon-->
+  <link rel="stylesheet" type="text/css" href="/assets/css/vendors/feather-icon.css">
+  <!-- Plugins css start-->
+  <link rel="stylesheet" type="text/css" href="/assets/css/vendors/simple-tree-table.css" />
+  <link rel="stylesheet" type="text/css" href="/assets/css/vendors/datatables.css">
+  <%-defineContent('css')%>
+  <!-- Plugins css Ends-->
+  <!-- Bootstrap css-->
+  <link rel="stylesheet" type="text/css" href="/assets/css/vendors/bootstrap.css">
+  <!-- App css-->
+  <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+  <link id="color" rel="stylesheet" href="/assets/css/color-1.css" media="screen">
+
+  <!-- Responsive css-->
+  <link rel="stylesheet" type="text/css" href="/assets/css/responsive.css">
+  <link rel="stylesheet" type="text/css" href="/assets/css/custom.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+  <link href="https://cdn.datatables.net/v/dt/jszip-3.10.1/dt-1.13.10/b-2.4.2/b-html5-2.4.2/r-2.5.0/sl-1.7.0/datatables.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+  <div class="spinner-container d-none">
+    <div class="loader-box">
+      <div class="loader-3"></div>
+    </div>
+  </div>
+  <!-- modal starts -->
+  <%- include ./partials/modals %>
+  <!-- modal ends -->
+  <!-- loader starts-->
+  <%- include ./partials/loader %>
+  <!-- loader ends-->
+  <!-- tap on top starts-->
+  <%- include ./partials/tap-top %>
+  <!-- tap on tap ends-->
+  <!-- page-wrapper Start-->
+  <div class="page-wrapper compact-wrapper " id="pageWrapper">
+    <!-- Page Header Start-->
+    <%- include ./partials/header %>
+    <!-- Page Header Ends -->
+    <!-- Page Body Start-->
+    <div class="page-body-wrapper">
+      <!-- Page Sidebar Start-->
+      <%- include ./partials/sidebar %>
+      <!-- Page Sidebar Ends-->
+      <div class="page-body">
+        <%- include ./partials/page-title %>
+        <!-- Container-fluid starts-->
+        <%- body %>
+        <!-- Container-fluid Ends-->
+      </div>
+    </div>
+  </div>
+
+  <!-- latest jquery-->
+  <script src="/assets/js/jquery-3.7.1.min.js"></script>
+  <!-- moment -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.33/moment-timezone-with-data-10-year-range.min.js"></script>
+  <!-- Bootstrap js-->
+  <script src="/assets/js/bootstrap/bootstrap.bundle.min.js"></script>
+  <!-- feather icon js-->
+  <script src="/assets/js/icons/feather-icon/feather.min.js"></script>
+  <script src="/assets/js/icons/feather-icon/feather-icon.js"></script>
+  <!-- scrollbar js-->
+  <script src="/assets/js/scrollbar/simplebar.js"></script>
+  <script src="/assets/js/scrollbar/custom.js"></script>
+  <!-- Sidebar jquery-->
+  <script src="/assets/js/config.js"></script>
+  <script src="/assets/js/sidebar-menu.js"></script>
+  <!-- daterangepicker -->
+  <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+  <!-- datatables js -->
+  <!-- <script src="/assets/js/datatable/datatables/jquery.dataTables.min.js"></script>
+  <script src="/assets/js/datatable/datatables/datatable.custom.js"></script> -->
+  <!-- <script
+    src="https://cdn.datatables.net/v/dt/jszip-3.10.1/dt-1.13.6/b-2.4.2/b-colvis-2.4.2/b-html5-2.4.2/r-2.5.0/sl-1.7.0/datatables.min.js"></script> -->
+    <script src="https://cdn.datatables.net/v/dt/jszip-3.10.1/dt-1.13.10/b-2.4.2/b-html5-2.4.2/r-2.5.0/sl-1.7.0/datatables.min.js"></script>
+  <!-- Theme js-->
+  <script src="/assets/js/script.js"></script>
+  <!-- <script src="/assets/js/theme-customizer/customizer.js"></script> -->
+  <!-- login js-->
+  <!-- <script>new WOW().init();</script> -->
+  <script src="/assets/script/common.js"></script>
+  <script src="/assets/js/socket_IO_460.js"></script>
+  <script src="/assets/script/func.js"></script>
+  <script src="/assets/script/socket.js"></script>
+  <script src="/assets/script/daterangepicker.js"></script>
+  <script src="/assets/script/detail.js"></script>
+
+  <!-- Plugins JS start-->
+  <%-defineContent('script')%>
+  <!-- Plugins JS Ends-->
+</body>
+
+</html>

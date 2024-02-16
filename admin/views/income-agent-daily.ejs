@@ -1,0 +1,343 @@
+<%- contentFor('css') %>
+
+<%- contentFor('body') %>
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-body">
+
+
+      <form class="row g-3 row-cols-4 needs-validation custom-input" id="agentSelector" novalidate="">
+        <div class="col platinumSelector d-none">
+          <label class="form-label" for="selectPlatinum">영본사</label>
+          <select class="form-select" id="selectPlatinum" required="">
+            <option selected="" disabled="" value="">영본사 선택</option>
+          </select>
+        </div>
+        <div class="col goldSelector d-none">
+          <label class="form-label" for="selectGold">부본사</label>
+          <select class="form-select" id="selectGold" required="">
+            <option selected="" disabled="" value="">부본사 선택</option>
+          </select>
+        </div>
+        <div class="col silverSelector d-none">
+          <label class="form-label" for="selectSilver">총판</label>
+          <select class="form-select" id="selectSilver" required="">
+            <option selected="" disabled="" value="">총판 선택</option>
+          </select>
+        </div>
+        <div class="col bronzeSelector d-none">
+          <label class="form-label" for="selectBronze">매장</label>
+          <select class="form-select" id="selectBronze" required="">
+            <option selected="" disabled="" value="">매장 선택</option>
+          </select>
+        </div>
+        <!-- <div class="col-6 text-end">
+          <button class="btn btn-primary" id="agentSelectorBtn">검색</button>
+        </div> -->
+      </form>
+      <div class="mt-3 text-start w-50">
+        <input type="text" class="text-center" style="padding: 3px 0" id="dateSelector" name="date" value="" />
+      </div>
+
+
+      <ul class="nav nav-pills nav-primary mt-3" id="agentDailyIncomeTab" role="tablist">
+        <li class="nav-item" role="presentation"><a class="nav-link active" id="platinumDailtyTab" data-bs-toggle="tab"
+            href="#platinumContents" role="tab" aria-controls="home" aria-selected="true">영본사</a>
+        </li>
+        <li class="nav-item" role="presentation"><a class="nav-link" id="goldDailtyTab" data-bs-toggle="tab"
+            href="#goldContents" role="tab" aria-controls="profile" aria-selected="false" tabindex="-1">부본사</a></li>
+        <li class="nav-item" role="presentation"><a class="nav-link" id="silverDailyTab" data-bs-toggle="tab"
+            href="#silverContents" role="tab" aria-controls="contact" aria-selected="false" tabindex="-1">총판</a></li>
+        <li class="nav-item" role="presentation"><a class="nav-link" id="bronzeDailyTab" data-bs-toggle="tab"
+            href="#bronzeContents" role="tab" aria-controls="contact" aria-selected="false" tabindex="-1">매장</a></li>
+      </ul>
+
+      <div class="tab-content" id="agentDailyContents">
+        <div class="tab-pane fade active show" id="platinumContents" role="tabpanel"
+          aria-labelledby="platinumDailtyTab">
+
+          <div class="container-fluid">
+            <div class="card">
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table id="incomePlatinumDaily" class="cell-border hover" style="width: 100%">
+                    <thead>
+                      <tr>
+                        <th>IDX</th>
+                        <th>정산일자</th>
+                        <th>nodeId</th>
+                        <th>nodePid</th>
+                        <th>타입</th>
+                        <th>아이디</th>
+                        <th>닉네임</th>
+                        <th>입금</th>
+                        <th>출금</th>
+                        <th>지급</th>
+                        <th>회수</th>
+                        <th>입출금</th>
+                        <th>슬롯<br>롤링</th>
+                        <th>카지노<br>롤링</th>
+                        <th>롤링<br>수익</th>
+                        <th>롤링<br>전환</th>
+                        <th>슬롯<br>베팅</th>
+                        <th>슬롯<br>당첨</th>
+                        <th>카지노<br>베팅</th>
+                        <th>카지노<br>당첨</th>
+                        <th>카지노<br>취소</th>
+                        <th>베팅금</th>
+                        <th>당첨금</th>
+                        <th>베팅-당첨-취소</th>
+                      </tr>
+                    </thead>
+                    <tfoot>
+                      <tr>
+                        <th></th>
+                        <th class="text-center">합계</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="tab-pane fade" id="goldContents" role="tabpanel" aria-labelledby="goldDailtyTab">
+
+          <div class="container-fluid">
+            <div class="card">
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table id="incomeGoldDaily" class="cell-border hover" style="width: 100%">
+                    <thead>
+                      <tr>
+                        <th>IDX</th>
+                        <th>정산일자</th>
+                        <th>nodeId</th>
+                        <th>nodePid</th>
+                        <th>타입</th>
+                        <th>아이디</th>
+                        <th>닉네임</th>
+                        <th>입금</th>
+                        <th>출금</th>
+                        <th>지급</th>
+                        <th>회수</th>
+                        <th>입출금</th>
+                        <th>슬롯<br>롤링</th>
+                        <th>카지노<br>롤링</th>
+                        <th>롤링<br>수익</th>
+                        <th>롤링<br>전환</th>
+                        <th>슬롯<br>베팅</th>
+                        <th>슬롯<br>당첨</th>
+                        <th>카지노<br>베팅</th>
+                        <th>카지노<br>당첨</th>
+                        <th>카지노<br>취소</th>
+                        <th>베팅금</th>
+                        <th>당첨금</th>
+                        <th>베팅-당첨-취소</th>
+                      </tr>
+                    </thead>
+                    <tfoot>
+                      <tr>
+                        <th></th>
+                        <th class="text-center">합계</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="tab-pane fade" id="silverContents" role="tabpanel" aria-labelledby="silverDailyTab">
+
+          <div class="container-fluid">
+            <div class="card">
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table id="incomeSilverDaily" class="cell-border hover" style="width: 100%">
+                    <thead>
+                      <tr>
+                        <th>IDX</th>
+                        <th>정산일자</th>
+                        <th>nodeId</th>
+                        <th>nodePid</th>
+                        <th>타입</th>
+                        <th>아이디</th>
+                        <th>닉네임</th>
+                        <th>입금</th>
+                        <th>출금</th>
+                        <th>지급</th>
+                        <th>회수</th>
+                        <th>입출금</th>
+                        <th>슬롯<br>롤링</th>
+                        <th>카지노<br>롤링</th>
+                        <th>롤링<br>수익</th>
+                        <th>롤링<br>전환</th>
+                        <th>슬롯<br>베팅</th>
+                        <th>슬롯<br>당첨</th>
+                        <th>카지노<br>베팅</th>
+                        <th>카지노<br>당첨</th>
+                        <th>카지노<br>취소</th>
+                        <th>베팅금</th>
+                        <th>당첨금</th>
+                        <th>베팅-당첨-취소</th>
+                      </tr>
+                    </thead>
+                    <tfoot>
+                      <tr>
+                        <th></th>
+                        <th class="text-center">합계</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="tab-pane fade" id="bronzeContents" role="tabpanel" aria-labelledby="bronzeDailyTab">
+
+          <div class="container-fluid">
+            <div class="card">
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table id="incomeBronzeDaily" class="cell-border hover" style="width: 100%">
+                    <thead>
+                      <tr>
+                        <th>IDX</th>
+                        <th>정산일자</th>
+                        <th>nodeId</th>
+                        <th>nodePid</th>
+                        <th>타입</th>
+                        <th>아이디</th>
+                        <th>닉네임</th>
+                        <th>입금</th>
+                        <th>출금</th>
+                        <th>지급</th>
+                        <th>회수</th>
+                        <th>입출금</th>
+                        <th>슬롯<br>롤링</th>
+                        <th>카지노<br>롤링</th>
+                        <th>롤링<br>수익</th>
+                        <th>롤링<br>전환</th>
+                        <th>슬롯<br>베팅</th>
+                        <th>슬롯<br>당첨</th>
+                        <th>카지노<br>베팅</th>
+                        <th>카지노<br>당첨</th>
+                        <th>카지노<br>취소</th>
+                        <th>베팅금</th>
+                        <th>당첨금</th>
+                        <th>베팅-당첨-취소</th>
+                      </tr>
+                    </thead>
+                    <tfoot>
+                      <tr>
+                        <th></th>
+                        <th class="text-center">합계</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- contentFor('script') %>
+<script src="/assets/script/income.js"></script>

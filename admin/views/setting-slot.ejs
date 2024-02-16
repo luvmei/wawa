@@ -1,0 +1,37 @@
+<%- contentFor('css') %>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+
+<%- contentFor('body') %>
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table id="gameSlot" class="cell-border hover" style="width: 100%">
+          <thead>
+            <tr>
+              <th rowspan="2">IDX</th>
+              <th rowspan="2">공급사</th>
+              <th rowspan="2">코드</th>
+              <th rowspan="2">게임명</th>
+              <th rowspan="2">영문 게임명</th>
+              <th rowspan="2">등록일</th>
+              <th rowspan="2">플레이 횟수</th>
+              <th rowspan="2">노출</th>
+              <th colspan="2" class="text-center">점검예약(예정)</th>
+            </tr>
+            <tr>
+              <th>시작시간</th>
+              <th>종료시간</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- contentFor('script') %>
+<script src="/assets/js/select2/select2.full.min.js"></script>
+<script src="/assets/js/select2/select2-custom.js"></script>
+<script src="/assets/script/game.js"></script>

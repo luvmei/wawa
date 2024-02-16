@@ -1,0 +1,426 @@
+<%- contentFor('css') %>
+
+<%- contentFor('body') %>
+<div class="row row-cols-5 d-none d-md-flex todayInfo mx-1">
+  <div class="col giveTake">
+    <div class="card">
+      <div class="card-body">
+        <div class="align-items-end">
+          <span class="f-light">지급</span>
+          <sapn class="text-end float-end" id="totalGive">
+            </ㄴ>
+        </div>
+        <div class="align-items-end my-3">
+          <span class="f-light">회수</span>
+          <span class="text-end float-end" id="totalTake"></span>
+        </div>
+        <hr>
+        <div class="align-items-end">
+          <span class="f-light">지급 - 회수</span>
+          <span class="text-end float-end" id="totalGiveTake"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col depowith">
+    <div class="card">
+      <div class="card-body">
+        <div class="align-items-end">
+          <span class="f-light">입금</span>
+          <span class="text-end float-end" id="totalDeposit"></span>
+        </div>
+        <div class="align-items-end my-3">
+          <span class="f-light">출금</span>
+          <span class="text-end float-end" id="totalWithdraw"></h6>
+        </div>
+        <hr>
+        <div class="align-items-end">
+          <span class="f-light">입금 - 출금</span>
+          <span class="text-end float-end" id="totalDepoWith"></h6>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col slot">
+    <div class="card">
+      <div class="card-body">
+        <div class="align-items-end">
+          <span class="f-light">슬롯 베팅</span>
+          <span class="text-end float-end" id="totalSlotBetting"></h6>
+        </div>
+        <div class="align-items-end my-3">
+          <span class="f-light">슬롯 당첨</span>
+          <span class="text-end float-end" id="totalSlotWin"></h6>
+        </div>
+        <hr>
+        <div class="align-items-end">
+          <span class="f-light">슬롯 베팅 - 당첨</span>
+          <span class="text-end float-end" id="totalSlotBetWin"></h6>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col casino">
+    <div class="card">
+      <div class="card-body">
+        <div class="align-items-end">
+          <span class="f-light">카지노 베팅</span>
+          <span class="text-end float-end" id="totalCasinoBetting"></h6>
+        </div>
+        <div class="align-items-end my-3">
+          <span class="f-light">카지노 당첨</span>
+          <span class="text-end float-end" id="totalCasinoWin"></h6>
+        </div>
+        <hr>
+        <div class="align-items-end">
+          <span class="f-light">카지노 베팅 - 당첨</span>
+          <span class="text-end float-end" id="totalCasinoBetWin"></h6>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col rolling">
+    <div class="card">
+      <div class="card-body">
+        <div class="align-items-end">
+          <span class="f-light">슬롯 롤링</span>
+          <span class="text-end float-end" id="totalSlotRolling"></h6>
+        </div>
+        <div class="align-items-end my-3">
+          <span class="f-light">카지노 롤링</span>
+          <span class="text-end float-end" id="totalCasinoRolling"></h6>
+        </div>
+        <hr>
+        <div class="align-items-end">
+          <span class="f-light">합계</span>
+          <span class="text-end float-end" id="totalSumRolling"></h6>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col d-none">
+    <div class="card">
+      <div class="card-body">
+        <div class="align-items-end">
+          <span class="f-light">오늘 총 루징금</span>
+          <h6 class="text-end" id="totalSummary"></h6>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 현재 접속 및 입출금 -->
+<div class="row mx-1 mx-lg-0">
+  <% if (user.type === 9) { %>
+  <div class="mt-3 d-lg-none" id="mobileAdminSummary">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="mb-0">실시간 현황<span class="float-end f-14" id="mobileAdminNick"></span></h5>
+      </div>
+      <div class="card-body">
+        <div class="row text-center">
+          <div class="col-6 mb-3 col-divider">
+            <h5 class="mb-0" id="mobileAdminSlotBalance"></h5>
+            <span class="f-light">슬롯 보유금</span>
+          </div>
+          <div class="col-6 mb-3">
+            <h5 class="mb-0" id="mobileAdminCasinoBalance"></h5>
+            <span class="f-light">카지노 보유금</span>
+          </div>
+          <div class="col-6 mb-3 col-divider">
+            <h5 class="mb-0" id="mobileAdminAgentBalance"></h5>
+            <span class="f-light">파트너 보유금</span>
+          </div>
+          <div class="col-6 mb-3">
+            <h5 class="mb-0" id="mobileAdminAgentPoint"></h5>
+            <span class="f-light">파트너 롤링금</span>
+          </div>
+          <div class="col-6 mb-3 col-divider">
+            <h5 class="mb-0" id="mobileAdminUserBalance"></h5>
+            <span class="f-light">유저 보유금</span>
+          </div>
+          <div class="col-6 mb-3">
+            <h5 class="mb-0" id="mobileAdminUserPoint"></h5>
+            <span class="f-light">유저 롤링금</span>
+          </div>
+          <div class="col-4 col-divider">
+            <h5 class="mb-0" id="mobileAdminTotalUserNum"></h5>
+            <span class="f-light">총 회원수</span>
+          </div>
+          <div class="col-4 col-divider">
+            <h5 class="mb-0" id="mobileAdminNewJoin"></h5>
+            <span class="f-light">당일 가입</span>
+          </div>
+          <div class="col-4">
+            <h5 class="mb-0" id="mobileAdminOnlineUsers"></h5>
+            <span class="f-light">현재 접속중</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-4 d-none">
+    <div class="card mb-3">
+      <div class="card-header">
+        입금 및 출금 대기
+      </div>
+      <div class="card-body">
+        <table id="dashboardWait" class="cell-border hover" style="width: 100%">
+          <thead>
+            <tr>
+              <th>일시</th>
+              <th>종류</th>
+              <th>회원분류</th>
+              <th>아이디</th>
+              <th>닉네임</th>
+              <!-- <th>상위 에이전트</th> -->
+              <!-- <th>신청 시 보유금</th> -->
+              <th>금액</th>
+              <!-- <th>승인 후 보유금</th> -->
+              <!-- <th>신청IP</th> -->
+              <th>처리현황</th>
+              <th>메모</th>
+              <th>플래티넘</th>
+              <th>골드</th>
+              <th>실버</th>
+              <th>브론즈</th>
+              <th>node</th>
+              <th>IDX</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-12">
+    <div class="card">
+      <div class="card-header">
+        현재 접속 중 회원
+      </div>
+      <div class="card-body">
+        <table id="onlineUsers" class="cell-border hover nowrap">
+          <thead>
+            <tr>
+              <th>회원분류</th>
+              <th>상위 파트너</th>
+              <th>아이디</th>
+              <th>보유금</th>
+              <th>접속아이피</th>
+              <th>최종 접속게임</th>
+              <th>접속 도메인</th>
+              <th>다바이스</th>
+              <th>브라우저</th>
+              <th>기능</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="card">
+      <div class="card-header"><i class="bi bi-envelope-open me-1"></i> 문의</div>
+      <div class="card-body">
+        <table id="qna" class="cell-border hover" style="width: 100%">
+          <thead>
+            <tr>
+              <th>IDX</th>
+              <th>문의시간</th>
+              <th>종류</th>
+              <th>회원분류</th>
+              <th>문의유저</th>
+              <th>제목</th>
+              <th>내용</th>
+              <th>답변</th>
+              <th>상태</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-4">
+    <div class="card">
+      <div class="card-header">
+        입금 및 출금 신청
+      </div>
+      <div class="card-body">
+        <table id="dashboardBank" class="cell-border hover" style="width: 100%">
+          <thead>
+            <tr>
+              <th>신청시간</th>
+              <th>종류</th>
+              <th>회원분류</th>
+              <th>아이디</th>
+              <th>닉네임</th>
+              <!-- <th>상위 에이전트</th> -->
+              <!-- <th>신청 시 보유금</th> -->
+              <th>금액</th>
+              <!-- <th>승인 후 보유금</th> -->
+              <!-- <th>신청IP</th> -->
+              <th>처리현황</th>
+              <th>메모</th>
+              <th>플래티넘</th>
+              <th>골드</th>
+              <th>실버</th>
+              <th>브론즈</th>
+              <th>node</th>
+              <th>IDX</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="card">
+      <div class="card-header"><i class="bi bi-currency-dollar me-1"></i> 지급 및 회수 내역
+      </div>
+      <div class="card-body">
+        <table id="giveTake" class="cell-border hover" style="width: 100%">
+          <thead>
+            <tr>
+              <th>발생시간</th>
+              <th>종류</th>
+              <th>지급매장</th>
+              <th>회원분류</th>
+              <th>아이디</th>
+              <th>금액</th>
+              <th>플래티넘</th>
+              <th>골드</th>
+              <th>실버</th>
+              <th>브론즈</th>
+              <th>node</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="accordion mobile-info d-block d-lg-none" id="dashboardAccordion">
+  </div>
+  <% } else { %>
+  <div class="col-xl-12 order-xl-1 my-lg-0">
+    <div class="card">
+      <div class="card-header">
+        현재 접속 중 회원
+      </div>
+      <div class="card-body">
+        <table id="onlineUsersAgent" class="cell-border hover" style="width: 100%">
+          <thead>
+            <tr>
+              <th rowspan="2"></th>
+              <th rowspan="2">아이디</th>
+              <th rowspan="2">닉네임</th>
+              <th rowspan="2">상위 에이전트</th>
+              <th rowspan="2">보유금</th>
+              <th colspan="2" class="d-none d-lg-table-cell">카지노</th>
+              <th colspan="2" class="d-none d-lg-table-cell">슬롯</th>
+              <th colspan="2" class="d-none d-lg-table-cell">카지노 - 임시</th>
+              <th colspan="2" class="d-none d-lg-table-cell">슬롯 - 임시</th>
+              <th rowspan="2">
+                임시 정보<br />
+                초기화
+              </th>
+              <th rowspan="2">
+                강제<br />
+                접속종료
+              </th>
+            </tr>
+            <tr>
+              <th>베팅</th>
+              <th class="border-end">윈</th>
+              <th>베팅</th>
+              <th class="border-end">윈</th>
+              <th>베팅</th>
+              <th class="border-end">롤링</th>
+              <th>베팅</th>
+              <th>롤링</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4 order-xl-3">
+    <div class="card mb-3">
+      <div class="card-header">지급 및 회수 내역
+      </div>
+      <div class="card-body">
+        <table id="giveTake" class="cell-border hover">
+          <thead>
+            <tr>
+              <th>발생일시</th>
+              <th>종류</th>
+              <th>지급매장</th>
+              <th>종류</th>
+              <th>아이디</th>
+              <th>금액</th>
+              <th>플래티넘</th>
+              <th>골드</th>
+              <th>실버</th>
+              <th>브론즈</th>
+              <th>node</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-4 order-xl-4">
+    <div class="card mb-3">
+      <div class="card-header">
+        입금 및 출금 신청
+      </div>
+      <div class="card-body">
+        <table id="dashboardAgentBank" class="cell-border hover" style="width: 100%">
+          <thead>
+            <tr>
+              <th>신청일시</th>
+              <th>종류</th>
+              <th>회원분류</th>
+              <th>아이디</th>
+              <th>닉네임</th>
+              <!-- <th>상위 에이전트</th> -->
+              <!-- <th>신청 시 보유금</th> -->
+              <th>신청금액</th>
+              <!-- <th>승인 후 보유금</th> -->
+              <!-- <th>신청IP</th> -->
+              <th>처리현황</th>
+              <th>메모</th>
+              <th>플래티넘</th>
+              <th>골드</th>
+              <th>실버</th>
+              <th>브론즈</th>
+              <th>node</th>
+              <th>IDX</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4 order-xl-2">
+    <div class="card mb-3">
+      <div class="card-header"><i class="bi bi-clipboard me-1"></i> 공지사항</div>
+      <div class="card-body">
+        <table id="notice" class="cell-border hover" style="width: 100%">
+          <thead>
+            <tr>
+              <th>IDX</th>
+              <th>공지일자</th>
+              <th>종류</th>
+              <th>제목</th>
+              <th></th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+  </div>
+  <% } %>
+</div>
+
+<%- contentFor('script') %>
+<script src="/assets/script/dashboard.js"></script>

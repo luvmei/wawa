@@ -1,0 +1,326 @@
+<div class="sidebar-wrapper" sidebar-layout="stroke-svg">
+  <div class="position-relative">
+    <div class="logo-wrapper"><a href="/"><img class="img-fluid for-light" src="/assets/images/logo/logo.png"
+          alt=""><img class="img-fluid for-dark" src="/assets/images/logo/logo_dark.png" alt=""></a>
+      <div class="back-btn float-end"><i class="fa fa-angle-left"></i></div>
+      <div class="toggle-sidebar d-none"><i class="status_toggle middle sidebar-toggle" data-feather="grid"> </i></div>
+    </div>
+    <div class="logo-icon-wrapper"><a href="index"><img class="img-fluid" src="/assets/images/logo/logo-icon.png"
+          alt=""></a></div>
+    <nav class="sidebar-main">
+      <div class="left-arrow" id="left-arrow"><i data-feather="arrow-left"></i></div>
+      <div id="sidebar-menu">
+        <ul class="sidebar-links" id="simple-bar">
+          <% if (user.type !== 9) { %>
+          <div class="agentInfoBox">
+            <!-- <h6 class="text-left ms-3 text-black-50">안녕하세요,</h6>
+            <div class="text-center">
+              <h6 class="f-w-600 txt-primary" id="agentSidebarInfo"></h6>
+            </div> -->
+          </div>
+          <% } %>
+          <li class="sidebar-main-title ">
+            <div>
+              <h6 class="lan-1">관리 메뉴</h6>
+            </div>
+          </li>
+          <li class="sidebar-list">
+            <a class="sidebar-link sidebar-title" href="#">
+              <svg class="stroke-icon">
+                <use href="/assets/svg/icon-sprite.svg#stroke-home"></use>
+              </svg>
+              <svg class="fill-icon">
+                <use href="/assets/svg/icon-sprite.svg#fill-home"></use>
+              </svg>
+              <% if (user.type != 3) { %>
+              <span class="lan-3">회원 및 파트너</span>
+              <% } else{ %>
+              <span class="lan-3">회원</span>
+              <% } %>
+            </a>
+            <ul class="sidebar-submenu">
+              <li><a class="lan-4" href="user-info">회원관리</a></li>
+              <% if (user.type != 3) { %>
+              <li><a class="lan-5" href="agent-info">파트너관리</a></li>
+              <% } %>
+              <% if (user.type == 9) { %>
+              <li><a href="user-block">차단회원</a></li>
+              <% } %>
+              <li><a href="online">현재접속</a></li>
+            </ul>
+          </li>
+          <li class="sidebar-list">
+            <a class="sidebar-link sidebar-title" href="#">
+              <svg class="stroke-icon">
+                <use href="/assets/svg/icon-sprite.svg#stroke-widget"></use>
+              </svg>
+              <svg class="fill-icon">
+                <use href="/assets/svg/icon-sprite.svg#fill-widget"></use>
+              </svg><span class="lan-6">머니</span></a>
+            <ul class="sidebar-submenu">
+              <li><a href="bank-deposit">입금내역</a></li>
+              <li><a href="bank-withdraw">출금내역</a></li>
+              <li><a href="bank-give">지급내역</a></li>
+              <li><a href="bank-take">회수내역</a></li>
+            </ul>
+          </li>
+          <% if (user.type == 9) { %>
+          <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#">
+              <svg class="stroke-icon">
+                <use href="/assets/svg/icon-sprite.svg#stroke-layout"></use>
+              </svg>
+              <svg class="fill-icon">
+                <use href="/assets/svg/icon-sprite.svg#fill-layout"></use>
+              </svg><span class="lan-7">게시판</span></a>
+            <ul class="sidebar-submenu">
+              <li><a href="board">통합 게시판<br>(공지, 메세지, 문의)</a></li>
+            </ul>
+          </li>
+          <% } %>
+          <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#">
+              <svg class="stroke-icon">
+                <use href="/assets/svg/icon-sprite.svg#stroke-layout"></use>
+              </svg>
+              <svg class="fill-icon">
+                <use href="/assets/svg/icon-sprite.svg#fill-layout"></use>
+              </svg><span class="lan-7">각종 내역</span></a>
+            <ul class="sidebar-submenu">
+              <li><a href="log-balance">보유금변동<br>(입금, 출금, 베팅)</a></li>
+              <li><a href="log-point">포인트변동<br>(롤링, 루징, 콤프)</a></li>
+              <li><a href="betting-detail-casino">카지노 상세내역</a></li>
+              <li><a href="betting-detail-slot">슬롯 상세 베팅내역</a></li>
+              <li><a href="betting-summary-casino">카지노 요약내역</a></li>
+              <li><a href="betting-summary-slot">슬롯 상세 요약내역</a></li>
+            </ul>
+          </li>
+          <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#">
+              <svg class="stroke-icon">
+                <use href="/assets/svg/icon-sprite.svg#stroke-layout"></use>
+              </svg>
+              <svg class="fill-icon">
+                <use href="/assets/svg/icon-sprite.svg#fill-layout"></use>
+              </svg><span class="lan-7">정산</span></a>
+            <ul class="sidebar-submenu">
+              <% if (user.type == 9) { %>
+              <li><a href="income-hq">본사 정산</a></li>
+              <% } %>
+              <li><a href="income-agent-live">실시간 정산</a></li>
+              <li><a href="income-agent-daily">일별 정산</a></li>
+              <li><a href="income-agent-betwin">파트너 정산<br>(실시간 및 날짜별)</a></li>
+            </ul>
+          </li>
+          <% if (user.type == 9) { %>
+          <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="#">
+              <svg class="stroke-icon">
+                <use href="/assets/svg/icon-sprite.svg#stroke-layout"></use>
+              </svg>
+              <svg class="fill-icon">
+                <use href="/assets/svg/icon-sprite.svg#fill-layout"></use>
+              </svg><span class="lan-7">설정</span></a>
+            <ul class="sidebar-submenu">
+              <li><a href="setting-slot">게임설정</a></li>
+              <li><a href="setting-system">시스템설정</a></li>
+            </ul>
+          </li>
+          <div class="position-absolute bottom-0 agentInfoList">
+            <ul class="list-group">
+              <a href="agent-info?search=영본사">
+                <li class="list-group-item bg-light-secondary">
+                  <div class="row">
+                    <div class="agent-title col-6">
+                      영본사<i className="fa fa-mail-forward"></i>
+                    </div>
+                    <div class="col-6">
+                      <span class="badge badge-secondary float-end">
+                        <%= summary[0].total_count %>
+                      </span>
+                    </div>
+                    <div class="col-6 mt-2">보유금
+                    </div>
+                    <div class="col-6 mt-2 text-end">
+                      <%=parseFloat(summary[0].total_balance).toLocaleString('ko-KR')%> 원
+                    </div>
+                    <div class="col-6 mt-1">
+                      롤링금
+                    </div>
+                    <div class="col-6 mt-1 text-end"><%=parseFloat(summary[0].total_point).toLocaleString('ko-KR')%> 원
+                    </div>
+                  </div>
+                </li>
+              </a>
+              <a href="agent-info?search=부본사">
+                <li class="list-group-item bg-light-warning">
+                  <div class="row">
+                    <div class="agent-title col-6">
+                      부본사
+                    </div>
+                    <div class="col-6">
+                      <span class="badge badge-warning float-end">
+                        <%= summary[1].total_count %>
+                      </span>
+                    </div>
+                    <div class="col-6 mt-2">보유금
+                    </div>
+                    <div class="col-6 mt-2 text-end">
+                      <%=parseFloat(summary[1].total_balance).toLocaleString('ko-KR')%> 원
+                    </div>
+                    <div class="col-6 mt-1">
+                      롤링금
+                    </div>
+                    <div class="col-6 mt-1 text-end"><%=parseFloat(summary[1].total_point).toLocaleString('ko-KR')%> 원
+                    </div>
+                  </div>
+                </li>
+              </a>
+              <a href="agent-info?search=총판">
+                <li class="list-group-item bg-light-success">
+                  <div class="row">
+                    <div class="agent-title col-6">
+                      총판
+                    </div>
+                    <div class="col-6">
+                      <span class="badge badge-success float-end">
+                        <%= summary[2].total_count %>
+                      </span>
+                    </div>
+                    <div class="col-6 mt-2">보유금
+                    </div>
+                    <div class="col-6 mt-2 text-end">
+                      <%=parseFloat(summary[2].total_balance).toLocaleString('ko-KR')%> 원
+                    </div>
+                    <div class="col-6 mt-1">
+                      롤링금
+                    </div>
+                    <div class="col-6 mt-1 text-end"><%=parseFloat(summary[2].total_point).toLocaleString('ko-KR')%> 원
+                    </div>
+                  </div>
+                </li>
+              </a>
+              <a href="agent-info?search=매장">
+                <li class="list-group-item bg-light-primary">
+                  <div class="row">
+                    <div class="agent-title col-6">
+                      매장
+                    </div>
+                    <div class="col-6">
+                      <span class="badge badge-primary float-end">
+                        <%= summary[3].total_count %>
+                      </span>
+                    </div>
+                    <div class="col-6 mt-2">보유금
+                    </div>
+                    <div class="col-6 mt-2 text-end">
+                      <%=parseFloat(summary[3].total_balance).toLocaleString('ko-KR')%> 원
+                    </div>
+                    <div class="col-6 mt-1">
+                      롤링금
+                    </div>
+                    <div class="col-6 mt-1 text-end"><%=parseFloat(summary[3].total_point).toLocaleString('ko-KR')%> 원
+                    </div>
+                  </div>
+                </li>
+              </a>
+              <li class="list-group-item bg-light-dark">
+                <div class="row">
+                  <div class="agent-title col-6">
+                    회원
+                  </div>
+                  <div class="col-6">
+                    <span class="badge badge-dark float-end">
+                      <%= summary[4].total_count %>
+                    </span>
+                  </div>
+                  <div class="col-6 mt-2">보유금
+                  </div>
+                  <div class="col-6 mt-2 text-end">
+                    <%=parseFloat(summary[4].total_balance).toLocaleString('ko-KR')%> 원
+                  </div>
+                  <div class="col-6 mt-1">
+                    롤링금
+                  </div>
+                  <div class="col-6 mt-1 text-end"><%=parseFloat(summary[4].total_point).toLocaleString('ko-KR')%> 원
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <% } else { %>
+          <!-- <li class="sidebar-main-title ">
+            <div>
+              <h6 class="lan-1">요율 및 당일 현황</h6>
+            </div>
+          </li>
+          <div class="mt-2" id="mobileAgentSummary">
+            <div class="card m-2 border border-primary">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-4">슬롯</div>
+                  <div class="col-4">카지노</div>
+                  <div class="col-4">루징</div>
+                  <div class="col-4" id="mobileAgentNavSlot"></div>
+                  <div class="col-4" id="mobileAgentNavCasino"></div>
+                  <div class="col-4" id="mobileAgentNavLose"></div>
+                </div>
+              </div>
+            </div>
+            <div class="card m-2 sideGiveTake">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-6 lt">지급</div>
+                  <div class="col-6 rt" id="mobileAgentTodayGive"></div>
+                  <div class="col-6 lt">회수</div>
+                  <div class="col-6 rt" id="mobileAgentTodayTake"></div>
+                  <hr class="mx-auto">
+                  <div class="col-6 lt">합계</div>
+                  <div class="col-6 rt" id="mobileAgentTodayGiveTake"></div>
+                </div>
+              </div>
+            </div>
+            <div class="card m-2 sideSlotBetWin">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-6 lt">슬롯-베팅</div>
+                  <div class="col-6 rt" id="mobileAgentTodaySlotBetting"></div>
+                  <div class="col-6 lt">슬롯-윈</div>
+                  <div class="col-6 rt" id="mobileAgentTodaySlotWin"></div>
+                  <hr class="mx-auto">
+                  <div class="col-6 lt">합계</div>
+                  <div class="col-6 rt" id="mobileAgentTodaySlotBetWin"></div>
+                  <hr>
+                </div>
+              </div>
+            </div>
+            <div class="card m-2 sideCasinoBetWin">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-6 lt">카지노-베팅</div>
+                  <div class="col-6 rt" id="mobileAgentTodayCasinoBetting"></div>
+                  <div class="col-6 lt">카지노-윈</div>
+                  <div class="col-6 rt" id="mobileAgentTodayCasinoWin"></div>
+                  <hr class="mx-auto">
+                  <div class="col-6 lt">합계</div>
+                  <div class="col-6 rt" id="mobileAgentTodayCasinoBetWin"></div>
+                </div>
+              </div>
+            </div>
+            <div class="card m-2 sideTodayRoll">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-7 lt">당일 슬롯롤링</div>
+                  <div class="col-5 rt" id="mobileAgentTodaySlotRoll"></div>
+                  <div class="col-8 lt">당일 카지노롤링</div>
+                  <div class="col-4 rt" id="mobileAgentTodayCasinoRoll"></div>
+                  <hr class="mx-auto">
+                  <div class="col-8 lt">합계</div>
+                  <div class="col-4 rt" id="mobileAgentTodaySlotSumRoll"></div>
+                </div>
+              </div>
+            </div>
+          </div> -->
+          <% } %>
+        </ul>
+      </div>
+      <div class="right-arrow" id="right-arrow"><i data-feather="arrow-right"></i></div>
+    </nav>
+  </div>
+</div>

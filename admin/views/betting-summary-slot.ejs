@@ -1,0 +1,61 @@
+<%- contentFor('css') %>
+
+<%- contentFor('body') %>
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table id="summarySlotBettingLog" class="cell-border hover" style="width: 100%">
+          <thead>
+            <tr>
+              <th rowspan="2">IDX</th>
+              <th rowspan="2">결과 수신시간</th>
+              <th rowspan="2">아이디</th>
+              <th rowspan="2">닉네임</th>
+              <th rowspan="2">상위 에이전트</th>
+              <th rowspan="2">베팅타입</th>
+              <th rowspan="2">베팅</th>
+              <th rowspan="2">획득</th>
+              <th rowspan="2">결과</th>
+              <th colspan="3" class="text-center d-none" id="summaryMaginHeader"></th>
+              <th rowspan="2">플래티넘</th>
+              <th rowspan="2">골드</th>
+              <th rowspan="2">실버</th>
+              <th rowspan="2">브론즈</th>
+              <th rowspan="2">node</th>
+            </tr>
+            <tr>
+              <th>베팅</th>
+              <th>획득</th>
+              <th>결과</th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- contentFor('script') %>
+<script src="/assets/script/log.js"></script>

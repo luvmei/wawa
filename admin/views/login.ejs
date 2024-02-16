@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/assets/images/favicon.png" type="image/x-icon">
+  <link rel="shortcut icon" href="/assets/images/favicon.png" type="image/x-icon">
+  <title>Wawa - Premium Admin</title>
+  <!-- Google font-->
+  <link href="https://fonts.googleapis.com/css?family=Rubik:400,400i,500,500i,700,700i&amp;display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i,900&amp;display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="/assets/css/font-awesome.css">
+  <!-- ico-font-->
+  <link rel="stylesheet" type="text/css" href="/assets/css/vendors/icofont.css">
+  <!-- Themify icon-->
+  <link rel="stylesheet" type="text/css" href="/assets/css/vendors/themify.css">
+  <!-- Flag icon-->
+  <link rel="stylesheet" type="text/css" href="/assets/css/vendors/flag-icon.css">
+  <!-- Feather icon-->
+  <link rel="stylesheet" type="text/css" href="/assets/css/vendors/feather-icon.css">
+  <!-- Plugins css start-->
+  <!-- Plugins css Ends-->
+  <!-- Bootstrap css-->
+  <link rel="stylesheet" type="text/css" href="/assets/css/vendors/bootstrap.css">
+  <!-- App css-->
+  <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+  <link id="color" rel="stylesheet" href="/assets/css/color-1.css" media="screen">
+  <!-- Responsive css-->
+  <link rel="stylesheet" type="text/css" href="/assets/css/responsive.css">
+</head>
+
+<body>
+  <!-- login page start-->
+  <div class="container-fluid p-0">
+    <div class="row m-0">
+      <div class="col-12 p-0">
+        <div class="login-card">
+          <div>
+            <div><a class="logo" href="#"><img class="img-fluid for-light" src="/assets/images/logo/login.png"
+                  alt="looginpage"><img class="img-fluid for-dark" src="/assets/images/logo/logo_dark.png"
+                  alt="looginpage"></a></div>
+            <div class="login-main">
+              <form class="theme-form" id="login-data">
+                <h4>로그인</h4>
+                <div class="form-group mt-3">
+                  <input class="form-control" id="inputId" type="text" name="id" placeholder="아이디" maxlength="12"
+                    autocomplete="off" required>
+                </div>
+                <div class="form-group">
+                  <div class="form-input position-relative">
+                    <input class="form-control" id="inputPassword" type="password" name="pw" placeholder="비밀번호"
+                      maxlength="16" required>
+                    <div class="show-hide"><span class="show"> </span></div>
+                  </div>
+                </div>
+                <div class="input-group my-2 w-100">
+                  <img src="/auth/captcha" class="captcha-img bg-white border rounded-start" alt="CAPTCHA" onclick="loadCaptcha()">
+                  <input type="text" class="form-control captcha-input" placeholder="이미지 클릭 시 새로고침" name="captcha" maxlength="4" required="">
+                </div>
+                <div class="txt-secondary login-alert">
+                  <span class="ms-2 d-none" id="login-alert">비정상적인 접속입니다</span>
+                </div>
+                <div class="text-end mt-3">
+                  <button class="btn btn-primary btn-block w-100" type="submit" id="login-btn">로그인</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- latest jquery-->
+    <script src="/assets/js/jquery-3.7.1.min.js"></script>
+    <!-- Bootstrap js-->
+    <script src="/assets/js/bootstrap/bootstrap.bundle.min.js"></script>
+    <!-- feather icon js-->
+    <!-- <script src="/assets/js/icons/feather-icon/feather.min.js"></script> -->
+    <!-- <script src="/assets/js/icons/feather-icon/feather-icon.js"></script> -->
+    <!-- scrollbar js-->
+    <!-- Sidebar jquery-->
+    <script src="/assets/js/config.js"></script>
+    <!-- Plugins JS start-->
+    <!-- Plugins JS Ends-->
+    <!-- Theme js-->
+    <script src="/assets/js/script.js"></script>
+    <script src="/assets/script/auth.js"></script>
+    <!-- login js-->
+    <!-- Plugin used-->
+  </div>
+</body>
+
+</html>
