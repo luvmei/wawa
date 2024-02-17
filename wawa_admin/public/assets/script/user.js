@@ -1452,15 +1452,15 @@ $('#userJoinConfirm').DataTable({
       render: function (data) {
         switch (data) {
           case 0:
-            return '플래티넘';
+            return '영본사';
           case 1:
-            return '골드';
+            return '부본사';
           case 2:
-            return '실버';
+            return '총판';
           case 3:
-            return '브론즈';
+            return '매장';
           case 4:
-            return '일반';
+            return '회원';
         }
       },
     },

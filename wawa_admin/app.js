@@ -876,7 +876,7 @@ const updateUserBalances = async () => {
       onlineUsers.map(async (user) => {
         try {
           const [slotResult, casinoResult] = await Promise.all([api.updateUserBalance(user, slotKey), api.updateUserBalance(user, casinoKey)]);
-        
+
           let slotBalance = slotResult.balance;
           let casinoBalance = casinoResult.balance;
 
@@ -950,22 +950,24 @@ const updateUserBalances = async () => {
 
 const logOnlineUsersAndRequestDetails = async () => {
   const slotUsers = (await api.requestDetailLog(slotKey)) || [];
-  const casinoUsers = (await api.requestDetailLog(casinoKey)) || [];
-  let betUsers = slotUsers;
-  casinoUsers.forEach((casinoUser) => {
-    const isDuplicate = betUsers.some((slotUser) => slotUser.id === casinoUser.id);
-    if (!isDuplicate) {
-      betUsers.push(casinoUser);
+  setTimeout(async () => {
+    const casinoUsers = (await api.requestDetailLog(casinoKey)) || [];
+    let betUsers = slotUsers;
+    casinoUsers.forEach((casinoUser) => {
+      const isDuplicate = betUsers.some((slotUser) => slotUser.id === casinoUser.id);
+      if (!isDuplicate) {
+        betUsers.push(casinoUser);
+      }
+    });
+
+    await betHandler.requestSummaryLog();
+
+    if (onlineUsers.length != 0) {
+      console.log('접속 유저목록: ', onlineUsers);
+    } else {
+      console.log('[ 접속한 유저가 없습니다 ]');
     }
-  });
-
-  await betHandler.requestSummaryLog();
-
-  if (onlineUsers.length != 0) {
-    console.log('접속 유저목록: ', onlineUsers);
-  } else {
-    console.log('[ 접속한 유저가 없습니다 ]');
-  }
+  }, 1000 * 30);
 };
 
 http.listen(process.env.ADMIN_PORT, '0.0.0.0', () => {

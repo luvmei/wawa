@@ -198,7 +198,7 @@ input::-webkit-inner-spin-button {
 }
 
 .bronze-bg {
-  background: rgba(186, 225, 255, 0.3) !important;
+  background: rgba(208, 192, 240, 0.3) !important;
 }
 
 .block-bg {
@@ -948,6 +948,7 @@ table.dataTable tbody td {
 }
 
 .agentInfoList {
+  z-index: -1;
   margin-bottom: -10px;
 }
 
@@ -1136,4 +1137,8 @@ table tfoot th {
   font-weight: bold;
   text-align: right !important;
   font-style: italic !important;
+}
+
+.sidebar-list {
+  background-color: white !important;
 }/*# sourceMappingURL=custom.css.map */

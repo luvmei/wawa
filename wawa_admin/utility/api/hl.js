@@ -7,6 +7,10 @@ const slotKey = process.env.HL_API_KEY_SLOT;
 const casinoKey = process.env.HL_API_KEY_CASINO;
 
 // #region SD private functions
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 async function getUserInfo(user) {
   let conn = await pool.getConnection();
   let params = { id: user };
@@ -162,7 +166,7 @@ const isTie = (betting) => {
 
 // #endregion
 
-// #region SD export functions
+// #region export functions
 function createUser(params, apiKey) {
   let postData = {
     username: params.new_id || params.id || params.아이디,
@@ -292,12 +296,12 @@ async function allBalanceWithdrawFromCasino(id) {
 
   try {
     const result = await axios(config);
-    console.log('allBalanceWithdrawFromCasino', result.data);
-
-    await allBalanceDepositToSlot(result.data.username, Math.abs(result.data.amount)); // await 추가
+    setTimeout(async () => {
+      await allBalanceDepositToSlot(result.data.username, Math.abs(result.data.amount)); // await 추가
+    }, 1000);
   } catch (error) {
     console.log(error);
-    await swapUserApiType(id); // await 추가
+    await swapUserApiType(id); 
   }
 }
 
@@ -316,7 +320,7 @@ async function allBalanceDepositToSlot(id, balance) {
 
   await axios(config)
     .then((result) => {
-      console.log('allBalanceDepositToSlot', result.data);
+      // console.log(`[HL_SLOT_API] ${result.data.username}의 카지노 보유금 ${result.data.amount}원을 슬롯 보유금으로 입금완료`);
     })
     .catch((error) => {
       console.log(error.response.data);
@@ -360,6 +364,7 @@ async function updateUserBalance(user, apiKey) {
     const result = await axios(config);
     params.balance = result.data.balance;
     params.status = result.status;
+
     return params;
   } catch (error) {
     console.log(`[HL_SLOT_API] 유저 밸런스 업데이트 실패: [${params.id}]유저 없음`);

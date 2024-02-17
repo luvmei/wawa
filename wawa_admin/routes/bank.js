@@ -226,11 +226,6 @@ router.post('/agent/give', async function (req, res) {
   } else {
     if (req.user[0].type != 9) {
       let { slot_balance, casino_balance } = await beforeBalanceCheck(req.user[0].id);
-
-console.log('slot_balance: ', slot_balance);
-console.log('casino_balance: ', casino_balance);
-console.log('API타입', req.body.receiverApiType);
-
       let balance = slot_balance;
       // let balance = req.body.receiverApiType == 's' ? slot_balance : casino_balance;
       if (balance < req.body.reqMoney) {
@@ -294,13 +289,25 @@ router.post('/agent/take', async function (req, res) {
 });
 
 async function giveTakeBalance(res, params) {
+  const userTypeMapping = {
+    9: '관리자',
+    0: '영본사',
+    1: '부본사',
+    2: '총판',
+    3: '매장',
+    4: '회원',
+  };
+  
+  let senderType = userTypeMapping[params.senderType];
+  let receiverType = userTypeMapping[params.receiverType];
+  
   params.id = params.senderId;
-  console.log(`[${params.type}신청] 신청: ${params.senderId} / 대상: ${params.receiverId} / 금액: ${parseInt(params.reqMoney).toLocaleString('ko-KR')}`);
+  console.log(`[${params.type}신청] 신청: ${params.senderId}[${senderType}] / 대상: ${params.receiverId}[${receiverType}] / 금액: ${parseInt(params.reqMoney).toLocaleString('ko-KR')}`);
   let conn = await pool.getConnection();
   let apiResult = {};
   params.receiverType = Number(params.receiverType);
-  params.transactionId = moment().format('YYMMDDHHmmss');
-
+  params.transactionId = params.reqType == 'give' ? 'G' + makeTransactionId() : 'T' + makeTransactionId();
+  
   try {
     // 로또 당첨 지급 시
     if (params.giveType && params.giveType == 'lottery') {
@@ -312,9 +319,10 @@ async function giveTakeBalance(res, params) {
     if (params.senderType === 9) {
       if (params.receiverType === 4) {
         apiResult = await api.requestAsset(params);
-      } else {
-        console.log(`${params.receiverId} 에이전트에게 ${params.type}합니다.`);
-      }
+      } 
+      // else {
+      //   console.log(`[${params.type}진행] ${params.senderId}[${senderType}]가 ${params.receiverId}[${receiverType}] 에이전트에게 ${params.type}합니다.`);
+      // }
 
       await updateDatabase(conn, params);
       res.send(`${params.type}완료`);
@@ -325,15 +333,17 @@ async function giveTakeBalance(res, params) {
       if (bankState[0].bank_req_state == 'n') {
         if (params.receiverType === 4) {
           apiResult = await api.requestAsset(params);
-        } else {
-          console.log(`${params.receiverId} 에이전트에게 ${params.type}합니다.`);
-          params.transactionId = params.IDX;
-        }
+        } 
+        // else {
+        //   console.log(`[${params.type}진행] ${params.senderId}가 ${params.receiverId} 에이전트에게 ${params.type}합니다.`);
+        // }
 
         await updateDatabase(conn, params);
-        console.log(`[${params.type}완료] 신청: ${params.senderId} / 대상: ${params.receiverId} / 금액: ${parseInt(params.reqMoney).toLocaleString('ko-KR')}`);
+        
+        console.log(`[${params.type}완료] 신청: ${params.senderId}[${senderType}] / 대상: ${params.receiverId}[${receiverType}] / 금액: ${parseInt(params.reqMoney).toLocaleString('ko-KR')}`);
         res.send('지급완료');
       } else {
+        console.log(`[${params.type}취소] 신청: ${params.senderId}[${senderType}] / 대상: ${params.receiverId}[${receiverType}] / 금액: ${parseInt(params.reqMoney).toLocaleString('ko-KR')} / 입금 또는 출금신청이 처리 중`);
         res.send({
           request: 'fail',
           msg: '입금 또는 출금신청이 처리 중입니다',

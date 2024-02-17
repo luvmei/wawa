@@ -3421,12 +3421,19 @@ function getNavModalData() {
       summaryData['에이전트 보유금'] = parseInt(summaryData['에이전트 슬롯보유금']) + parseInt(summaryData['에이전트 카지노보유금']);
       summaryData['유저 보유금'] = parseInt(summaryData['유저 슬롯보유금']) + parseInt(summaryData['유저 카지노보유금']);
 
+      function safeParseFloat(value) {
+        if (value === null || value === undefined) {
+          return 0;
+        }
+        const parsed = parseFloat(value);
+        return isNaN(parsed) ? 0 : parsed;
+      }
       let slotBalance =
         navData.슬롯보유금 -
-        parseFloat(summaryData['에이전트 슬롯보유금']) -
-        parseFloat(summaryData['에이전트 카지노보유금']) -
-        parseFloat(summaryData['에이전트 포인트']) -
-        parseFloat(summaryData['유저 포인트']);
+        safeParseFloat(summaryData['에이전트 슬롯보유금']) -
+        safeParseFloat(summaryData['에이전트 카지노보유금']) -
+        safeParseFloat(summaryData['에이전트 포인트']) -
+        safeParseFloat(summaryData['유저 포인트']);
 
       if (navData.타입 === 9) {
         //? PC 어드민 네비바
