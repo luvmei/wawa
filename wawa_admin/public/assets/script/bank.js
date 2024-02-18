@@ -325,19 +325,20 @@ let depositTable = $('#deposit').DataTable({
       target: 2,
       render: function (data, type, row) {
         if (data == '0') {
-          return '플래티넘';
+          return '영본사';
         } else if (data == '1') {
-          return '골드';
+          return '부본사';
         } else if (data == '2') {
-          return '실버';
+          return '총판';
         } else if (data == '3') {
-          return '브론즈';
+          return '매장';
         } else if (data == '4') {
-          if (row.가입코드) {
-            return `일반(온라인)`;
-          } else if (row.가입코드 == '') {
-            return `일반(오프라인)`;
-          }
+          return '회원';
+          // if (row.가입코드) {
+          //   return `회원(온라인)`;
+          // } else if (row.가입코드 == '') {
+          //   return `회원(오프라인)`;
+          // }
         }
       },
     },

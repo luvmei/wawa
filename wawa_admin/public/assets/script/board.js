@@ -1,8 +1,8 @@
 let quill;
 
 window.addEventListener('DOMContentLoaded', (event) => {
-  document.querySelector('#writeNotice').innerHTML = '등록';
-  document.querySelector('#sendMessage').innerHTML = '메세지 전송';
+  document.querySelector('#writeNotice').innerHTML = '새 글 등록';
+  document.querySelector('#sendMessage').innerHTML = '메세지 보내기';
   document.querySelector('#writeBanner').innerHTML = '배너 등록';
 
   quill = new Quill('#quillEditor', {
@@ -23,7 +23,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
   });
 
   quill.on('text-change', function(delta, oldDelta, source) {
-    // '작성하기' 버튼을 활성화
     document.querySelector('#writeNoticeBtn').disabled = false;
   });
 });
@@ -386,7 +385,6 @@ document.querySelector('#writeNoticeForm').addEventListener('submit', (e) => {
 });
 
 //? 글쓰기 모달 닫힐 때 정보제거
-
 $('#writeNoticeModal').on('hidden.bs.modal', function () {
   noticeContent = undefined;
   document.querySelector('#noticeRange').value = '4';
@@ -775,14 +773,14 @@ $('table').on('click', 'tbody tr .bannerCheckBtn', function () {
   document.getElementById('bannerImgPreviewBtn').addEventListener('click', () => {
     document.querySelector(
       '#imageCheckModal .modal-body'
-    ).innerHTML = `<img src="../public/upload/banner/${bannerContent.배너이미지}" alt="이미지" class="img-fluid">`;
+    ).innerHTML = `<img src="../public/assets/upload/${bannerContent.배너이미지}" alt="이미지" class="img-fluid">`;
     $('#imageCheckModal').modal('show');
   });
 
   document.getElementById('bannerContentImgPreviewBtn').addEventListener('click', () => {
     document.querySelector(
       '#imageCheckModal .modal-body'
-    ).innerHTML = `<img src="../public/upload/banner/${bannerContent.내용이미지}" alt="이미지" class="img-fluid">`;
+    ).innerHTML = `<img src="../public/assets/upload/${bannerContent.내용이미지}" alt="이미지" class="img-fluid">`;
     $('#imageCheckModal').modal('show');
   });
 

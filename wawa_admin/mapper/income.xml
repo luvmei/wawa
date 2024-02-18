@@ -2,7 +2,48 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="income">    
 // 본사 정산
-  <select id='headquarters'>
+  <select id='headquarter'>
+   SELECT
+      IDX AS 'IDX',
+      DATE_FORMAT(date, '%Y-%m-%d') AS '정산일자',
+      node_id,
+      node_pid,
+      type AS '타입',
+      id AS '아이디',
+      nickname AS '닉네임',        
+      SUM(today_deposit) AS '입금',
+      SUM(today_withdraw) AS '출금',
+      SUM(today_give) AS '지급',
+      SUM(today_take) AS '회수',
+      SUM(c_today_betting) AS '카지노베팅',
+      SUM(c_today_win) AS '카지노획득',
+      SUM(c_today_winlose) AS '카지노윈루즈',
+      SUM(c_m_today_betting) AS '카지노마진베팅',
+      SUM(c_m_today_win) AS '카지노마진획득',
+      SUM(c_m_today_winlose) AS '카지노마진윈루즈',
+      SUM(s_today_betting) AS '슬롯베팅',
+      SUM(s_today_win) AS '슬롯획득',
+      SUM(s_today_winlose) AS '슬롯윈루즈',
+      SUM(s_m_today_betting) AS '슬롯마진베팅',
+      SUM(s_m_today_win) AS '슬롯마진획득',
+      SUM(s_m_today_winlose) AS '슬롯마진윈루즈',        
+      SUM(casino_rolling) AS '카지노롤링',
+      SUM(m_casino_rolling) AS '카지노마진롤링',
+      SUM(slot_rolling) AS '슬롯롤링',
+      SUM(m_slot_rolling) AS '슬롯마진롤링',
+      SUM(change_rolling) AS '롤링전환'
+    FROM 
+      (
+          SELECT * FROM income_agent_daily_view
+          UNION
+          SELECT * FROM income_agent_daily
+      ) AS ut
+    WHERE
+      ut.date BETWEEN #{startDate} AND #{endDate}
+    GROUP by date
+  </select>
+
+  <!-- <select id='headquarter'>
     SELECT 
       *
     FROM
@@ -17,7 +58,7 @@
         income_headquarters) AS ut
     WHERE 정산일자  
       BETWEEN #{startDate} AND #{endDate}
-  </select>
+  </select> -->
 
 // 에이전트 정산
   <select id='agentDepoWith'>
@@ -255,9 +296,6 @@
       </if>
     </where>
     GROUP BY ut.node_id;
-  </select>
-
-  <select id='summaryIncome'>
   </select>
 
   <select id='dailyIncome'>

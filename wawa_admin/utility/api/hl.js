@@ -476,12 +476,13 @@ async function updateGameList(type) {
   }
 }
 
-async function requestDetailLog(apiKey) {
+async function requestDetailLog(apiKey, type) {
   let newBetArr = [];
   let getBetArr = await getBetHistory(apiKey);
+  let apiType = type === 'slot' ? 'HL_SLOT_API' : 'HL_CASINO_API';
 
   if (getBetArr === undefined || getBetArr.length === 0) {
-    console.log('[HL API] 새로운 베팅내역 없음');
+    console.log(`${apiType} 새로운 베팅내역 없음`);
     return;
   }
 

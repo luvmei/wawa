@@ -317,7 +317,7 @@ async function cancelReserve(params, res) {
 // #region 게임리스트
 //? 게임리스트 업데이트
 router.post('/updategamelist', async (req, res) => {
-  await api.updateGameList('slot');
+  // await api.updateGameList('slot');
   await api.updateGameList('casino');
   res.send({ msg: '모든 프로바이더 게임리스트 업데이트 완료' });
 });

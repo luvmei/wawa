@@ -7,8 +7,9 @@ const moment = require('moment-timezone');
 const axios = require('axios');
 
 // #region 테이블 전송
-router.post('/headquarters', (req, res) => {
-  getData(res, 'headquarters', req.body);
+router.post('/headquarter', (req, res) => {
+  console.log(req.body);
+  getData(res, 'headquarter', req.body);
 });
 
 router.post('/agent', (req, res) => {

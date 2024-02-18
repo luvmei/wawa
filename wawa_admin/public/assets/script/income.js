@@ -253,41 +253,44 @@ window.addEventListener('DOMContentLoaded', (event) => {
   getAgentInfo();
 
   // #region 데이터테이블 컬럼 조정
-  document.getElementById('goldDailtyTab').addEventListener('click', function () {
-    spinnerToggle();
-    setTimeout(() => {
-      if (isDaily) {
-        incomeGoldDaily.columns.adjust().draw();
-      } else {
-        incomeGoldLive.columns.adjust().draw();
-      }
+  if (document.getElementById('agentDailyIncomeTab')) {
+    document.getElementById('goldDailtyTab').addEventListener('click', function () {
       spinnerToggle();
-    }, 300);
-  });
+      setTimeout(() => {
+        if (isDaily) {
+          incomeGoldDaily.columns.adjust().draw();
+        } else {
+          incomeGoldLive.columns.adjust().draw();
+        }
+        spinnerToggle();
+      }, 300);
+    });
 
-  document.getElementById('silverDailyTab').addEventListener('click', function () {
-    spinnerToggle();
-    setTimeout(() => {
-      if (isDaily) {
-        incomeSilverDaily.columns.adjust().draw();
-      } else {
-        incomeSilverLive.columns.adjust().draw();
-      }
+    document.getElementById('silverDailyTab').addEventListener('click', function () {
       spinnerToggle();
-    }, 300);
-  });
+      setTimeout(() => {
+        if (isDaily) {
+          incomeSilverDaily.columns.adjust().draw();
+        } else {
+          incomeSilverLive.columns.adjust().draw();
+        }
+        spinnerToggle();
+      }, 300);
+    });
 
-  document.getElementById('bronzeDailyTab').addEventListener('click', function () {
-    spinnerToggle();
-    setTimeout(() => {
-      if (isDaily) {
-        incomeBronzeDaily.columns.adjust().draw();
-      } else {
-        incomeBronzeLive.columns.adjust().draw();
-      }
+    document.getElementById('bronzeDailyTab').addEventListener('click', function () {
       spinnerToggle();
-    }, 300);
-  });
+      setTimeout(() => {
+        if (isDaily) {
+          incomeBronzeDaily.columns.adjust().draw();
+        } else {
+          incomeBronzeLive.columns.adjust().draw();
+        }
+        spinnerToggle();
+      }, 300);
+    });
+  }
+
   // #endregion
   // #endregion
 });
@@ -299,11 +302,12 @@ let goldId = '';
 let silverId = '';
 let bronzeId = '';
 
-$('#incomeHeadquarters').DataTable({
+// #region 본사 정산
+let headquarter = $('#headquarter').DataTable({
   language: korean,
-  responsive: true,
+  responsive: false,
   ajax: {
-    url: '/income/headquarters',
+    url: '/income/headquarter',
     method: 'POST',
     data: function (d) {
       d.startDate = startDate;
@@ -315,105 +319,468 @@ $('#incomeHeadquarters').DataTable({
   dom: '<"dateInput float-start dateWidth me-2">lfrtip',
   columns: [
     { data: 'IDX' },
-    { data: '정산일자', responsivePriority: 1 },
-    { data: '입금', className: 'desktop' },
-    { data: '출금', className: 'desktop' },
-    { data: '입금-출금', responsivePriority: 2 },
-    { data: '베팅', className: 'desktop' },
-    { data: '획득', className: 'desktop' },
-    { data: '베팅-획득', responsivePriority: 3 },
+    { data: '정산일자' },
+    { data: 'node_id' },
+    { data: 'node_pid' },
+    { data: '타입' },
+    { data: '아이디' },
+    { data: '닉네임' },
+    { data: '입금' },
+    { data: '출금' },
+    { data: '지급' },
+    { data: '회수' },
+
+    { data: null },
+    { data: '슬롯롤링' },
+    { data: '카지노롤링' },
+    { data: null },
+    { data: '롤링전환' },
+    { data: '슬롯베팅' },
+    { data: '슬롯획득' },
+    { data: '카지노베팅' },
+    { data: '카지노획득' },
+    { data: null, defaultContent: '0' },
+
+    { data: null },
+    { data: null },
+    { data: null },
   ],
   pageLength: 100,
   lengthMenu: [
     [100, 200, 300, -1],
     [100, 200, 300, 'ALL'],
   ],
-  order: [[1, 'desc']],
+  order: [[1, 'asc']],
   columnDefs: [
     {
-      target: 0,
+      target: [0, 2, 3, 4, 5, 6],
       visible: false,
       searchable: false,
     },
     {
-      target: [4, 7],
-      createdCell: function (td, cellData, rowData, row, col) {
-        if (cellData < 0) {
-          $(td).addClass('text-danger');
+      target: 1,
+      render: function (data) {
+        return moment(data).format('MM-DD');
+      },
+    },
+    {
+      target: 4,
+      render: function (data) {
+        if (data == '0') {
+          return '영본사';
+        } else if (data == '1') {
+          return '부본사';
+        } else if (data == '2') {
+          return '총판';
+        } else if (data == '3') {
+          return '매장';
         }
       },
-      className: 'fw-semibold',
     },
     {
-      target: [2, 3, 4, 5, 6, 7],
-      className: 'dt-body-right',
-      render: $.fn.dataTable.render.number(','),
+      target: 5,
+      render: function (data, type, row) {
+        return `<div class="id-btn">${data}<br>(${row.닉네임})</div>`;
+      },
     },
     {
-      target: [0, 1, 2, 3, 4, 5, 6, 7],
+      target: 11,
+      render: function (data, type, row) {
+        return String(row.입금 - row.출금).toLocaleString('ko-KR');
+      },
+    },
+    {
+      target: 12,
+      render: function (data, type, row) {
+        if (clientType == 9) {
+          return `
+          <div>${Number(data).toLocaleString('ko-KR')}</div>
+          <div class='txt-info f-w-600'>${String(row.슬롯마진롤링).toLocaleString('ko-KR')}</div>`;
+        } else {
+          return Number(data).toLocaleString('ko-KR');
+        }
+      },
+    },
+    {
+      target: 13,
+      render: function (data, type, row) {
+        if (clientType == 9) {
+          return `
+          <div>${Number(data).toLocaleString('ko-KR')}</div>
+          <div class='txt-info f-w-600'>${String(row.카지노마진롤링).toLocaleString('ko-KR')}</div>`;
+        } else {
+          return Number(data).toLocaleString('ko-KR');
+        }
+      },
+    },
+    {
+      target: 14,
+      render: function (data, type, row) {
+        if (clientType == 9) {
+          return `
+          <div>${(Number(row.슬롯롤링) + Number(row.카지노롤링)).toLocaleString('ko-KR')}</div>
+          <div class='txt-info f-w-600'>${String(Number(row.슬롯마진롤링) + Number(row.카지노마진롤링)).toLocaleString('ko-KR')}</div>`;
+        } else {
+          return String(row.슬롯롤링 + row.카지노롤링).toLocaleString('ko-KR');
+        }
+      },
+    },
+    {
+      target: 16,
+      render: function (data, type, row) {
+        if (clientType == 9) {
+          return `
+          <div>${Number(data).toLocaleString('ko-KR')}</div>
+          <div class='txt-info f-w-600'>${Number(row.슬롯마진베팅).toLocaleString('ko-KR')}</div>`;
+        } else {
+          return Number(data).toLocaleString('ko-KR');
+        }
+      },
+    },
+    {
+      target: 17,
+      render: function (data, type, row) {
+        if (clientType == 9) {
+          return `
+          <div>${Number(data).toLocaleString('ko-KR')}</div>
+          <div class='txt-info f-w-600'>${Number(row.슬롯마진획득).toLocaleString('ko-KR')}</div>`;
+        } else {
+          return Number(data).toLocaleString('ko-KR');
+        }
+      },
+    },
+    {
+      target: 18,
+      render: function (data, type, row) {
+        if (clientType == 9) {
+          return `
+          <div>${Number(data).toLocaleString('ko-KR')}</div>
+          <div class='txt-info f-w-600'>${Number(row.카지노마진베팅).toLocaleString('ko-KR')}</div>`;
+        } else {
+          return Number(data).toLocaleString('ko-KR');
+        }
+      },
+    },
+    {
+      target: 19,
+      render: function (data, type, row) {
+        if (clientType == 9) {
+          return `
+          <div>${Number(data).toLocaleString('ko-KR')}</div>
+          <div class='txt-info f-w-600'>${Number(row.카지노마진획득).toLocaleString('ko-KR')}</div>`;
+        } else {
+          return Number(data).toLocaleString('ko-KR');
+        }
+      },
+    },
+    {
+      target: 21,
+      render: function (data, type, row) {
+        let 슬롯베팅 = parseFloat(row.슬롯베팅);
+        let 카지노베팅 = parseFloat(row.카지노베팅);
+        let 슬롯마진베팅 = parseFloat(row.슬롯마진베팅);
+        let 카지노마진베팅 = parseFloat(row.카지노마진베팅);
+        let 베팅합계 = 슬롯베팅 + 카지노베팅;
+        let 마진베팅합계 = 슬롯마진베팅 + 카지노마진베팅;
+
+        if (clientType == 9) {
+          return `
+          <div>${베팅합계.toLocaleString('ko-KR')}</div>
+          <div class='txt-info f-w-600'>${마진베팅합계.toLocaleString('ko-KR')}</div>`;
+        } else {
+          return 베팅합계.toLocaleString('ko-KR');
+        }
+      },
+    },
+    {
+      target: 22,
+      render: function (data, type, row) {
+        let 슬롯획득 = parseFloat(row.슬롯획득);
+        let 카지노획득 = parseFloat(row.카지노획득);
+        let 슬롯마진획득 = parseFloat(row.슬롯마진획득);
+        let 카지노마진획득 = parseFloat(row.카지노마진획득);
+        let 획득합계 = 슬롯획득 + 카지노획득;
+        let 마진획득합계 = 슬롯마진획득 + 카지노마진획득;
+        if (clientType == 9) {
+          return `
+          <div>${획득합계.toLocaleString('ko-KR')}</div>
+          <div class='txt-info f-w-600'>${마진획득합계.toLocaleString('ko-KR')}</div>`;
+        } else {
+          return 획득합계.toLocaleString('ko-KR');
+        }
+      },
+    },
+    {
+      target: 23,
+      render: function (data, type, row) {
+        let 슬롯베팅 = parseFloat(row.슬롯베팅);
+        let 카지노베팅 = parseFloat(row.카지노베팅);
+        let 슬롯획득 = parseFloat(row.슬롯획득);
+        let 카지노획득 = parseFloat(row.카지노획득);
+        let 슬롯마진베팅 = parseFloat(row.슬롯마진베팅);
+        let 카지노마진베팅 = parseFloat(row.카지노마진베팅);
+        let 슬롯마진획득 = parseFloat(row.슬롯마진획득);
+        let 카지노마진획득 = parseFloat(row.카지노마진획득);
+
+        let 결과 = 슬롯베팅 + 카지노베팅 - 슬롯획득 - 카지노획득;
+        let 마진결과 = 슬롯마진베팅 + 카지노마진베팅 - 슬롯마진획득 - 카지노마진획득;
+
+        if (clientType == 9) {
+          return `
+          <div>${결과.toLocaleString('ko-KR')}</div>
+          <div class='txt-info f-w-600'>${마진결과.toLocaleString('ko-KR')}</div>`;
+        } else {
+          return 결과.toLocaleString('ko-KR');
+        }
+      },
+    },
+    {
+      target: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
+      orderable: false,
       className: 'dt-head-center dt-body-center',
     },
     {
-      target: [0, 1],
-      orderable: false,
+      target: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
+      className: 'dt-body-right',
+      render: $.fn.dataTable.render.number(','),
     },
   ],
   footerCallback: function (row, data, start, end, display) {
     var api = this.api();
 
-    // Remove the formatting to get integer data for summation
     let intVal = function (i) {
       return typeof i === 'string' ? i.replace(/[\$,]/g, '') * 1 : typeof i === 'number' ? i : 0;
     };
 
-    // Total over all pages
     let sumDeposit = api
-      .column(2)
+      .column(7)
       .data()
       .reduce(function (a, b) {
         return intVal(a) + intVal(b);
       }, 0);
 
     let sumWithdraw = api
-      .column(3)
+      .column(8)
       .data()
       .reduce(function (a, b) {
         return intVal(a) + intVal(b);
       }, 0);
 
-    let sumBetting = api
-      .column(5)
+    let sumGive = api
+      .column(9)
       .data()
       .reduce(function (a, b) {
         return intVal(a) + intVal(b);
       }, 0);
 
-    // Total over this page
-    let sumWin = api
-      .column(6)
+    let sumTake = api
+      .column(10)
       .data()
       .reduce(function (a, b) {
         return intVal(a) + intVal(b);
       }, 0);
+
+    let sumDepoWith = sumDeposit - sumWithdraw;
+
+    let sumSlotRolling = api
+      .column(12)
+      .data()
+      .reduce(function (a, b) {
+        return intVal(a) + intVal(b);
+      }, 0);
+
+    let sumCasinoRolling = api
+      .column(13)
+      .data()
+      .reduce(function (a, b) {
+        return intVal(a) + intVal(b);
+      }, 0);
+
+    let sumRolling = sumSlotRolling + sumCasinoRolling;
+
+    let sumRollingChange = api
+      .column(15)
+      .data()
+      .reduce(function (a, b) {
+        return intVal(a) + intVal(b);
+      }, 0);
+
+    let sumSlotBetting = api
+      .column(16)
+      .data()
+      .reduce(function (a, b) {
+        return intVal(a) + intVal(b);
+      }, 0);
+
+    let sumSlotWin = api
+      .column(17)
+      .data()
+      .reduce(function (a, b) {
+        return intVal(a) + intVal(b);
+      }, 0);
+
+    let sumCasinoBetting = api
+      .column(18)
+      .data()
+      .reduce(function (a, b) {
+        return intVal(a) + intVal(b);
+      }, 0);
+
+    let sumCasinoWin = api
+      .column(19)
+      .data()
+      .reduce(function (a, b) {
+        return intVal(a) + intVal(b);
+      }, 0);
+
+    let sumBetting = sumSlotBetting + sumCasinoBetting;
+
+    let sumWin = sumSlotWin + sumCasinoWin;
+
+    let sumBettingWin = sumBetting - sumWin;
 
     // Update footer
-    $(api.column(2).footer()).html(`${sumDeposit.toLocaleString('ko-KR')}`);
-    $(api.column(3).footer()).html(`${sumWithdraw.toLocaleString('ko-KR')}`);
-    $(api.column(4).footer()).html(`${(sumDeposit - sumWithdraw).toLocaleString('ko-KR')}`);
-    $(api.column(5).footer()).html(`${sumBetting.toLocaleString('ko-KR')}`);
-    $(api.column(6).footer()).html(`${sumWin.toLocaleString('ko-KR')}`);
-    $(api.column(7).footer()).html(`${(sumBetting - sumWin).toLocaleString('ko-KR')}`);
+    $(api.column(7).footer()).html(`${sumDeposit.toLocaleString('ko-KR')}`);
+    $(api.column(8).footer()).html(`${sumWithdraw.toLocaleString('ko-KR')}`);
+    $(api.column(9).footer()).html(`${sumGive.toLocaleString('ko-KR')}`);
+    $(api.column(10).footer()).html(`${sumTake.toLocaleString('ko-KR')}`);
+    $(api.column(11).footer()).html(`${sumDepoWith.toLocaleString('ko-KR')}`);
+    $(api.column(12).footer()).html(`${sumSlotRolling.toLocaleString('ko-KR')}`);
+    $(api.column(13).footer()).html(`${sumCasinoRolling.toLocaleString('ko-KR')}`);
+    $(api.column(14).footer()).html(`${sumRolling.toLocaleString('ko-KR')}`);
 
-    // negative value red color
-    if (sumDeposit - sumWithdraw < 0) {
-      $(api.column(4).footer()).addClass('text-danger');
-    }
+    $(api.column(15).footer()).html(`${sumRollingChange.toLocaleString('ko-KR')}`);
+    $(api.column(16).footer()).html(`${sumSlotBetting.toLocaleString('ko-KR')}`);
+    $(api.column(17).footer()).html(`${sumSlotWin.toLocaleString('ko-KR')}`);
+    $(api.column(18).footer()).html(`${sumCasinoBetting.toLocaleString('ko-KR')}`);
+    $(api.column(19).footer()).html(`${sumCasinoWin.toLocaleString('ko-KR')}`);
+
+    $(api.column(21).footer()).html(`${sumBetting.toLocaleString('ko-KR')}`);
+    $(api.column(22).footer()).html(`${sumWin.toLocaleString('ko-KR')}`);
+    $(api.column(23).footer()).html(`${(sumBetting - sumWin).toLocaleString('ko-KR')}`);
+
     if (sumBetting - sumWin < 0) {
-      $(api.column(7).footer()).addClass('text-danger');
+      $(api.column(23).footer()).addClass('text-danger');
     }
   },
-  drawCallback: function () {},
 });
+
+// let incomeHeadquarter = $('#incomeHeadquarter').DataTable({
+//   language: korean,
+//   responsive: true,
+//   ajax: {
+//     url: '/income/headquarters',
+//     method: 'POST',
+//     data: function (d) {
+//       d.startDate = startDate;
+//       d.endDate = endDate;
+//       return d;
+//     },
+//     dataSrc: '',
+//   },
+//   dom: '<"dateInput float-start dateWidth me-2">lfrtip',
+//   columns: [
+//     { data: 'IDX' },
+//     { data: '정산일자', responsivePriority: 1 },
+//     { data: '입금', className: 'desktop' },
+//     { data: '출금', className: 'desktop' },
+//     { data: '입금-출금', responsivePriority: 2 },
+//     { data: '베팅', className: 'desktop' },
+//     { data: '획득', className: 'desktop' },
+//     { data: '베팅-획득', responsivePriority: 3 },
+//   ],
+//   pageLength: 100,
+//   lengthMenu: [
+//     [100, 200, 300, -1],
+//     [100, 200, 300, 'ALL'],
+//   ],
+//   order: [[1, 'desc']],
+//   columnDefs: [
+//     {
+//       target: 0,
+//       visible: false,
+//       searchable: false,
+//     },
+//     {
+//       target: [4, 7],
+//       createdCell: function (td, cellData, rowData, row, col) {
+//         if (cellData < 0) {
+//           $(td).addClass('text-danger');
+//         }
+//       },
+//       className: 'fw-semibold',
+//     },
+//     {
+//       target: [2, 3, 4, 5, 6, 7],
+//       className: 'dt-body-right',
+//       render: $.fn.dataTable.render.number(','),
+//     },
+//     {
+//       target: [0, 1, 2, 3, 4, 5, 6, 7],
+//       className: 'dt-head-center dt-body-center',
+//     },
+//     {
+//       target: [0, 1],
+//       orderable: false,
+//     },
+//   ],
+//   footerCallback: function (row, data, start, end, display) {
+//     var api = this.api();
+
+//     // Remove the formatting to get integer data for summation
+//     let intVal = function (i) {
+//       return typeof i === 'string' ? i.replace(/[\$,]/g, '') * 1 : typeof i === 'number' ? i : 0;
+//     };
+
+//     // Total over all pages
+//     let sumDeposit = api
+//       .column(2)
+//       .data()
+//       .reduce(function (a, b) {
+//         return intVal(a) + intVal(b);
+//       }, 0);
+
+//     let sumWithdraw = api
+//       .column(3)
+//       .data()
+//       .reduce(function (a, b) {
+//         return intVal(a) + intVal(b);
+//       }, 0);
+
+//     let sumBetting = api
+//       .column(5)
+//       .data()
+//       .reduce(function (a, b) {
+//         return intVal(a) + intVal(b);
+//       }, 0);
+
+//     // Total over this page
+//     let sumWin = api
+//       .column(6)
+//       .data()
+//       .reduce(function (a, b) {
+//         return intVal(a) + intVal(b);
+//       }, 0);
+
+//     // Update footer
+//     $(api.column(2).footer()).html(`${sumDeposit.toLocaleString('ko-KR')}`);
+//     $(api.column(3).footer()).html(`${sumWithdraw.toLocaleString('ko-KR')}`);
+//     $(api.column(4).footer()).html(`${(sumDeposit - sumWithdraw).toLocaleString('ko-KR')}`);
+//     $(api.column(5).footer()).html(`${sumBetting.toLocaleString('ko-KR')}`);
+//     $(api.column(6).footer()).html(`${sumWin.toLocaleString('ko-KR')}`);
+//     $(api.column(7).footer()).html(`${(sumBetting - sumWin).toLocaleString('ko-KR')}`);
+
+//     // negative value red color
+//     if (sumDeposit - sumWithdraw < 0) {
+//       $(api.column(4).footer()).addClass('text-danger');
+//     }
+//     if (sumBetting - sumWin < 0) {
+//       $(api.column(7).footer()).addClass('text-danger');
+//     }
+//   },
+//   drawCallback: function () {},
+// });
+// #endregion
 
 // #region 에이전트 입금 - 출금 정산
 let incomeAgentDepoWith = $('#incomeAgentDepoWith').DataTable({
@@ -1801,7 +2168,7 @@ let incomePlatinumDaily = $('#incomePlatinumDaily').DataTable({
     [100, 200, 300, -1],
     [100, 200, 300, 'ALL'],
   ],
-  order: [[1, 'desc']],
+  order: [[1, 'asc']],
   columnDefs: [
     {
       target: [0, 2, 3, 4, 6],
@@ -2164,7 +2531,7 @@ let incomeGoldDaily = $('#incomeGoldDaily').DataTable({
     [100, 200, 300, -1],
     [100, 200, 300, 'ALL'],
   ],
-  order: [[1, 'desc']],
+  order: [[1, 'asc']],
   columnDefs: [
     {
       target: [0, 2, 3, 4, 6],
@@ -2527,7 +2894,7 @@ let incomeSilverDaily = $('#incomeSilverDaily').DataTable({
     [100, 200, 300, -1],
     [100, 200, 300, 'ALL'],
   ],
-  order: [[1, 'desc']],
+  order: [[1, 'asc']],
   columnDefs: [
     {
       target: [0, 2, 3, 4, 6],
@@ -2890,7 +3257,7 @@ let incomeBronzeDaily = $('#incomeBronzeDaily').DataTable({
     [100, 200, 300, -1],
     [100, 200, 300, 'ALL'],
   ],
-  order: [[1, 'desc']],
+  order: [[1, 'asc']],
   columnDefs: [
     {
       target: [0, 2, 3, 4, 6],
@@ -5076,18 +5443,57 @@ $(document).on('click', '.simple-tree-table-handler, #expander, #collapser', fun
 
 function viewSelector(clientType) {
   const selectors = {
-    9: ['.platinumSelector', '.goldSelector', '.silverSelector', '.bronzeSelector'],
-    0: ['.goldSelector', '.silverSelector', '.bronzeSelector'],
-    1: ['.silverSelector', '.bronzeSelector'],
-    2: ['.bronzeSelector'],
+    9: [
+      '.platinumSelector',
+      '.goldSelector',
+      '.silverSelector',
+      '.bronzeSelector',
+      '#platinumDailtyTab',
+      '#goldDailtyTab',
+      '#silverDailyTab',
+      '#bronzeDailyTab',
+    ],
+    0: ['.goldSelector', '.silverSelector', '.bronzeSelector', '#platinumDailtyTab', '#goldDailtyTab', '#silverDailyTab', '#bronzeDailyTab'],
+    1: ['.silverSelector', '.bronzeSelector', '#goldDailtyTab', '#silverDailyTab', '#bronzeDailyTab'],
+    2: ['.bronzeSelector', '#silverDailyTab', '#bronzeDailyTab'],
   };
 
   const selectedSelectors = selectors[clientType] || [];
 
   selectedSelectors.forEach((selector) => {
-    document.querySelector(selector).classList.remove('d-none');
+    const element = document.querySelector(selector);
+    if (element) {
+      // 요소가 존재하는지 확인
+      element.classList.remove('d-none');
+    }
   });
 }
+
 viewSelector(clientType);
+
+// function viewSelector(clientType) {
+//   const selectors = {
+//     9: [
+//       '.platinumSelector',
+//       '.goldSelector',
+//       '.silverSelector',
+//       '.bronzeSelector',
+//       '#platinumDailtyTab',
+//       '#goldDailtyTab',
+//       '#silverDailtyTab',
+//       '#bronzeDailtyTab',
+//     ],
+//     0: ['.goldSelector', '.silverSelector', '.bronzeSelector', '#goldDailtyTab', '#silverDailtyTab', '#bronzeDailtyTab'],
+//     1: ['.silverSelector', '.bronzeSelector', '#silverDailtyTab', '#bronzeDailtyTab'],
+//     2: ['.bronzeSelector', '#bronzeDailtyTab'],
+//   };
+
+//   const selectedSelectors = selectors[clientType] || [];
+
+//   selectedSelectors.forEach((selector) => {
+//     document.querySelector(selector).classList.remove('d-none');
+//   });
+// }
+// viewSelector(clientType);
 
 // #endregion

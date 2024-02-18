@@ -38,16 +38,17 @@ window.addEventListener('DOMContentLoaded', (event) => {
   document.querySelector('#updateGameList').innerHTML = '리스트 업데이트';
 
   document.querySelector('#updateGameList').addEventListener('click', () => {
+    spinnerToggle();
+    document.querySelector('#boardConfirm').innerHTML = `<h5>리스트 업데이트는 약 5분정도 소요됩니다</h5>
+        <h6>소요시간이 지난 후 확인해주세요</h6>`;
+        $('#boardConfirmModal').modal('show');
     $.ajax({
       method: 'POST',
       url: '/game/updategamelist',
     })
       .done(function (result) {
-        console.log(result);
-        // $('#gameSlot').DataTable().ajax.reload(null, false);
-        document.querySelector('#boardConfirm').innerHTML = `<h5>리스트 업데이트는 약 5분정도 소요됩니다</h5>
-        <h6>소요시간이 지난 후 확인해주세요</h6>`;
-        $('#boardConfirmModal').modal('show');
+        $('#gameSlot').DataTable().ajax.reload(null, false);
+        spinnerToggle();
       })
       .fail(function (err) {
         console.log('전송오류');
@@ -199,7 +200,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
 $('#gameSlot').DataTable({
   language: korean,
   responsive: true,
-  scrollY: '63vh',
+  scrollY: '55vh',
   scrollCollapse: true,
   ajax: {
     url: '/game/table',

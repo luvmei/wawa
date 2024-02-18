@@ -68,10 +68,10 @@ function openUserDetail(selectedUser) {
 
       if (loginUser.type == 9) {
         document.querySelector('#admin-rate').classList.remove('d-none');
+        document.querySelector('#agent-tree').classList.remove('d-none');
         // document.querySelector('#admin-betMarginRate').disabled = false;
         // document.querySelector('#detailTakeBtn').classList.remove('d-none');
       } else if (loginUser.type != 4 && loginUser.type != 9) {
-        console.log('선택된 유저', selectedUserInfo.type);
         if (selectedUserInfo.type != 4) {
           // document.querySelector('#agent-rate').classList.remove('d-none');
         }
@@ -2650,9 +2650,6 @@ function pushRequestBtn(params, type) {
     reqBtn = document.querySelector('#exchange-submit');
     data = { curPoint: params.reqPoint };
   }
-
-  console.log('url', reqUrl);
-  console.log('data', data);
 
   $.ajax({
     method: 'POST',

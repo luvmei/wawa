@@ -75,13 +75,13 @@ let balanceLog = $('#balanceLog').DataTable({
       target: 2,
       render: function (data) {
         if (data == '0') {
-          return `<button type='button' class='btn btn-sm asset-outline-secondary' style='pointer-events: none;'>플래티넘</button>`;
+          return `<button type='button' class='btn btn-sm asset-outline-secondary' style='pointer-events: none;'>영본사</button>`;
         } else if (data == '1') {
-          return `<button type='button' class='btn btn-sm asset-outline-warning' style='pointer-events: none;'>골드</button>`;
+          return `<button type='button' class='btn btn-sm asset-outline-warning' style='pointer-events: none;'>부본사</button>`;
         } else if (data == '2') {
-          return `<button type='button' class='btn btn-sm asset-outline-success' style='pointer-events: none;'>실버</button>`;
+          return `<button type='button' class='btn btn-sm asset-outline-success' style='pointer-events: none;'>총판</button>`;
         } else if (data == '3') {
-          return `<button type='button' class='btn btn-sm asset-outline-primary' style='pointer-events: none;'>브론즈</button>`;
+          return `<button type='button' class='btn btn-sm asset-outline-primary' style='pointer-events: none;'>매장</button>`;
         } else if (data == '4') {
           return `일반`;
         } else if (data == '9') {

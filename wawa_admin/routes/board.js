@@ -95,7 +95,6 @@ router.post(
   '/write',
   uploadNotice,
   (req, res, next) => {
-    console.log(req.body);
     if (req.file) {
       req.body.filename = req.file.originalname;
     }
@@ -669,7 +668,7 @@ async function deleteEventBannerImage(fileName) {
   // 삭제할 경로 두 개를 배열로 정의합니다.
   const basePaths = [
     path.join(__dirname, '..', 'public', 'assets', 'upload'), // admin 경로
-    path.join(__dirname, '..', '..', 'user', 'public', 'assets', 'upload'), // user 경로
+    path.join(__dirname, '..', '..', 'wawa_user', 'public', 'assets', 'upload'), // user 경로
   ];
 
   // 각 경로에 대해 파일 삭제 작업을 수행합니다.

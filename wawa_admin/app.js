@@ -312,7 +312,7 @@ let PageData = [
   { name: 'betting-detail-slot', breadcrumbData: { name: '슬롯베팅내역', subName: '각종 내역' } },
   { name: 'betting-summary-casino', breadcrumbData: { name: '카지노베팅요약', subName: '각종 내역' } },
   { name: 'betting-summary-slot', breadcrumbData: { name: '슬롯베팅요약', subName: '각종 내역' } },
-  { name: 'income-hq', breadcrumbData: { name: '본사', subName: '정산' } },
+  { name: 'income-hq', breadcrumbData: { name: '본사정산', subName: '정산' } },
   { name: 'income-agent-live', breadcrumbData: { name: '실시간정산', subName: '정산' } },
   { name: 'income-agent-daily', breadcrumbData: { name: '일별정산', subName: '정산' } },
   { name: 'income-agent-betwin', breadcrumbData: { name: '파트너정산 (실시간 및 날짜별)', subName: '정산' } },
@@ -578,13 +578,13 @@ io.on('connection', async (socket) => {
   });
 
   socket.on('disconnect', async () => {
+    const sessionOutInterval = 3;
     const client = clients[socket.id];
 
     if (client && client.clientType === '4') {
       updateUserBalances();
-
       if (disconnectTimeouts[client.clientId]) {
-        console.log('타이머있었음 5분후 세션아웃');
+        console.log('연결해제 타이머있었음', disconnectTimeouts[client.clientId]);
         clearTimeout(disconnectTimeouts[client.clientId]);
         delete disconnectTimeouts[client.clientId];
       }
@@ -603,7 +603,7 @@ io.on('connection', async (socket) => {
 
         delete clients[socket.id];
         delete disconnectTimeouts[client.clientId];
-      }, 1000 * 60 * 5);
+      }, 1000 * 60 * sessionOutInterval);
     }
   });
 });
@@ -888,70 +888,22 @@ const updateUserBalances = async () => {
         }
       })
     );
-    if (onlineUsers.length != 0) {
+        if (onlineUsers.length != 0) {
       updateCombineAssets();
     }
   }
-
-  // if (onlineUsers.length != 0) {
-  //   onlineUsers = await filterUsers(onlineUsers);
-  //   await Promise.all(
-  //     onlineUsers.map(async (el) => {
-  //       let apiInfo = await api.updateUserBalance(slotKey, el);
-  //       apiInfo = await api.updateUserBalance(casinoKey, el);
-  //       if (apiInfo == undefined) {
-  //         return;
-  //       } else if (apiInfo.status == 200 || apiInfo.status == 0) {
-  //         let params = { id: el, balance: apiInfo.balance };
-  //         updateUserBalanceInDB(params);
-  //       }
-  //     })
-  //   );
-
-  //   if (onlineUsers.length != 0) {
-  //     updateCombineAssets();
-  //   }
-  // }
-
   api.updateAdminBalance('slot', slotKey);
   api.updateAdminBalance('casino', casinoKey);
   socket.emit('to_admin', { id: '', type: 'updateOnlineUsers' });
 };
-
-// const updateUserBalances = async () => {
-//   let loggedIds = await getLoggedId();
-//   onlineUsers = [...new Set([...loggedIds])];
-//   // onlineUsers = [...new Set([...loggedIds, ...betUsers])];
-
-//   if (onlineUsers.length != 0) {
-//     onlineUsers = await filterUsers(onlineUsers);
-//     await Promise.all(
-//       onlineUsers.map(async (el) => {
-//         let apiInfo = await api.updateUserBalance(slotKey, el);
-//         apiInfo = await api.updateUserBalance(casinoKey, el);
-//         if (apiInfo == undefined) {
-//           return;
-//         } else if (apiInfo.status == 200 || apiInfo.status == 0) {
-//           let params = { id: el, balance: apiInfo.balance };
-//           updateUserBalanceInDB(params);
-//         }
-//       })
-//     );
-
-//     if (onlineUsers.length != 0) {
-//       updateCombineAssets();
-//     }
-//   }
-//   api.updateAdminBalance(slotKey, 'slot');
-//   api.updateAdminBalance(casinoKey, 'casino');
-//   socket.emit('to_admin', { id: '', type: 'updateOnlineUsers' });
-// };
 // #endregion
 
 const logOnlineUsersAndRequestDetails = async () => {
-  const slotUsers = (await api.requestDetailLog(slotKey)) || [];
+  const slotUsers = (await api.requestDetailLog(slotKey, 'slot')) || [];
+  await betHandler.requestSummaryLog();
+
   setTimeout(async () => {
-    const casinoUsers = (await api.requestDetailLog(casinoKey)) || [];
+    const casinoUsers = (await api.requestDetailLog(casinoKey, 'casino')) || [];
     let betUsers = slotUsers;
     casinoUsers.forEach((casinoUser) => {
       const isDuplicate = betUsers.some((slotUser) => slotUser.id === casinoUser.id);

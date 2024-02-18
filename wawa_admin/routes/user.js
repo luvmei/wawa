@@ -267,7 +267,9 @@ router.post('/doublecheck', (req, res) => {
 
 router.post('/add', async (req, res) => {
   let userParams = await redefineUser(req, req.body);
+  //단일 유저 생성
   await addUser(userParams);
+  //유저 매크로 생성
   // repeatInsertUser(userParams);
   res.send('유저생성이 완료되었습니다');
 });
@@ -687,8 +689,10 @@ function getUserHierarchy(data) {
   const casinoRollRate = ['p_c_roll', 'g_c_roll', 's_c_roll', 'b_c_roll', 'u_c_roll'];
   const slotRollRate = ['p_s_roll', 'g_s_roll', 's_s_roll', 'b_s_roll', 'u_s_roll'];
   const loseRate = ['p_lose', 'g_lose', 's_lose', 'b_lose', 'u_lose'];
-  const betMarginRate = ['p_bet_margin', 'g_bet_margin', 's_bet_margin', 'b_bet_margin', 'u_bet_margin'];
-  const rollMarginRate = ['p_roll_margin', 'g_roll_margin', 's_roll_margin', 'b_roll_margin', 'u_roll_margin'];
+  const casinoBetMarginRate = ['p_c_bet_margin', 'g_c_bet_margin', 's_c_bet_margin', 'b_c_bet_margin', 'u_c_bet_margin'];
+  const slotBetMarginRate = ['p_s_bet_margin', 'g_s_bet_margin', 's_s_bet_margin', 'b_s_bet_margin', 'u_s_bet_margin'];
+  const casinoRollMarginRate = ['p_c_roll_margin', 'g_c_roll_margin', 's_c_roll_margin', 'b_c_roll_margin', 'u_c_roll_margin'];
+  const slotRollMarginRate = ['p_s_roll_margin', 'g_s_roll_margin', 's_s_roll_margin', 'b_s_roll_margin', 'u_s_roll_margin'];
 
   // 각 type에 대한 기본 템플릿
   let template = Array.from({ length: 5 }, () => ({
@@ -697,8 +701,10 @@ function getUserHierarchy(data) {
     c_roll_rate: null,
     s_roll_rate: null,
     lose_rate: null,
-    bet_margin_rate: null,
-    roll_margin_rate: null,
+    c_bet_margin_rate: null,
+    s_bet_margin_rate: null,
+    c_roll_margin_rate: null,
+    s_roll_margin_rate: null,
   }));
 
   // 입력 데이터를 템플릿에 맞게 채워넣기
@@ -713,8 +719,10 @@ function getUserHierarchy(data) {
     hierarchy[casinoRollRate[i]] = template[i].c_roll_rate;
     hierarchy[slotRollRate[i]] = template[i].s_roll_rate;
     hierarchy[loseRate[i]] = template[i].lose_rate;
-    hierarchy[betMarginRate[i]] = template[i].bet_margin_rate;
-    hierarchy[rollMarginRate[i]] = template[i].roll_margin_rate;
+    hierarchy[casinoBetMarginRate[i]] = template[i].c_bet_margin_rate;
+    hierarchy[slotBetMarginRate[i]] = template[i].s_bet_margin_rate;
+    hierarchy[casinoRollMarginRate[i]] = template[i].c_roll_margin_rate;
+    hierarchy[slotRollMarginRate[i]] = template[i].s_roll_margin_rate;
   }
 
   return hierarchy;
