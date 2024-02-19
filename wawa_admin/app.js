@@ -300,6 +300,7 @@ let PageData = [
   { name: 'agent-info', breadcrumbData: { name: '파트너정보', subName: '회원관리' } },
   { name: 'user-block', breadcrumbData: { name: '차단회원', subName: '회원관리' } },
   { name: 'online', breadcrumbData: { name: '현재접속', subName: '회원관리' } },
+  { name: 'user-connect', breadcrumbData: { name: '접속내역', subName: '회원관리' } },
   { name: 'user-confirm', breadcrumbData: { name: '회원승인', subName: '회원관리' } },
   { name: 'bank-deposit', breadcrumbData: { name: '입금내역', subName: '머니' } },
   { name: 'bank-withdraw', breadcrumbData: { name: '출금내역', subName: '머니' } },
@@ -888,7 +889,7 @@ const updateUserBalances = async () => {
         }
       })
     );
-        if (onlineUsers.length != 0) {
+    if (onlineUsers.length != 0) {
       updateCombineAssets();
     }
   }

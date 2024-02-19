@@ -509,7 +509,11 @@ let depositTable = $('#deposit').DataTable({
     {
       target: 16,
       render: function (data, type, row) {
-        return `<span type='button' class='text-danger deposit-cancel'>` + `<i class="fa fa-times fa-lg"></i>` + `</span>`;
+        if (row.처리현황 !== '입금승인') {
+          return `<span type='button' class='text-danger deposit-cancel'>` + `<i class="fa fa-times fa-lg"></i>` + `</span>`;
+        } else {
+          return '';
+        }
       },
     },
     {
@@ -944,42 +948,22 @@ let giveTable = $('#give').DataTable({
       target: 3,
       render: function (data) {
         if (data == '0') {
-          return '플래티넘';
+          return '영본사';
         } else if (data == '1') {
-          return '골드';
+          return '부본사';
         } else if (data == '2') {
-          return '실버';
+          return '총판';
         } else if (data == '3') {
-          return '브론즈';
+          return '매장';
         } else if (data == '4') {
-          return '일반';
+          return '회원';
         }
       },
     },
     {
       target: 4,
       render: function (data, type, row) {
-        if (row.유저타입 == 0) {
-          return `<button type='button' class='btn btn-sm id-btn asset-danger'>` + data + `</button>`;
-        } else if (row.유저타입 == 1) {
-          return `<button type='button' class='btn btn-sm id-btn asset-warning'>` + data + `</button>`;
-        } else if (row.유저타입 == 2) {
-          return `<button type='button' class='btn btn-sm id-btn asset-success'>` + data + `</button>`;
-        } else if (row.유저타입 == 3) {
-          return `<button type='button' class='btn btn-sm id-btn asset-primary'>` + data + `</button>`;
-        } else if (row.유저타입 == 4) {
-          if (row.가입코드) {
-            return `<div class="btn-group" role="group" aria-label="Basic example">
-              <button type="button" class="btn btn-sm online-tag">온</button>
-              <button type='button' class='btn btn-sm btn-outline-dark id-btn'>${data}</button></div>`;
-          } else if (row.가입코드 == '') {
-            return `<div class="btn-group" role="group" aria-label="Basic example">
-              <button type="button" class="btn btn-sm local-tag">매장</button>
-              <button type='button' class='btn btn-sm btn-outline-dark id-btn'>${data}</button></div>`;
-          } else {
-            return `<button type='button' class='btn btn-sm btn-outline-dark id-btn'>${data}</button>`;
-          }
-        }
+        return `<div class='id-btn'>${data}(${row.닉네임})</div>`;
       },
     },
     {
@@ -1084,42 +1068,22 @@ let takeTable = $('#take').DataTable({
       target: 3,
       render: function (data) {
         if (data == '0') {
-          return '플래티넘';
+          return '영본사';
         } else if (data == '1') {
-          return '골드';
+          return '부본사';
         } else if (data == '2') {
-          return '실버';
+          return '총판';
         } else if (data == '3') {
-          return '브론즈';
+          return '매장';
         } else if (data == '4') {
-          return '일반';
+          return '회원';
         }
       },
     },
     {
       target: 4,
       render: function (data, type, row) {
-        if (row.유저타입 == 0) {
-          return `<button type='button' class='btn btn-sm id-btn asset-danger'>` + data + `</button>`;
-        } else if (row.유저타입 == 1) {
-          return `<button type='button' class='btn btn-sm id-btn asset-warning'>` + data + `</button>`;
-        } else if (row.유저타입 == 2) {
-          return `<button type='button' class='btn btn-sm id-btn asset-success'>` + data + `</button>`;
-        } else if (row.유저타입 == 3) {
-          return `<button type='button' class='btn btn-sm id-btn asset-primary'>` + data + `</button>`;
-        } else if (row.유저타입 == 4) {
-          if (row.가입코드) {
-            return `<div class="btn-group" role="group" aria-label="Basic example">
-              <button type="button" class="btn btn-sm online-tag">온</button>
-              <button type='button' class='btn btn-sm btn-outline-dark id-btn'>${data}</button></div>`;
-          } else if (row.가입코드 == '') {
-            return `<div class="btn-group" role="group" aria-label="Basic example">
-              <button type="button" class="btn btn-sm local-tag">매장</button>
-              <button type='button' class='btn btn-sm btn-outline-dark id-btn'>${data}</button></div>`;
-          } else {
-            return `<button type='button' class='btn btn-sm btn-outline-dark id-btn'>${data}</button>`;
-          }
-        }
+        return `<div class='id-btn'>${data}(${row.닉네임})</div>`;
       },
     },
     {

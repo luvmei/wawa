@@ -806,7 +806,6 @@ function login(e) {
     data: loginDataObject,
   })
     .done(function (result) {
-      console.log(result);
       checkLogin(result);
       e.target.disabled = true;
       setTimeout(() => {

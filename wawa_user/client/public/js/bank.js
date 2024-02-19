@@ -790,7 +790,6 @@ function pushRequestBtn(type) {
       data: { reqMoney: type.reqMoney },
     })
       .done(function (result) {
-        getAsset();
         const notice_text = document.querySelector('#confirm-text');
 
         if (!result.isValid) {
@@ -810,6 +809,9 @@ function pushRequestBtn(type) {
           document.querySelector('#deposit-submit').disabled = false;
           document.querySelector('#withdraw-submit').disabled = false;
         }
+        setTimeout(() => {
+          getAsset();
+        }, 1500);
       })
       .fail(function (err) {
         console.log(err);

@@ -8,7 +8,6 @@ const axios = require('axios');
 
 // #region 테이블 전송
 router.post('/headquarter', (req, res) => {
-  console.log(req.body);
   getData(res, 'headquarter', req.body);
 });
 

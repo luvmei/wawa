@@ -173,7 +173,7 @@ let balanceLog = $('#balanceLog').DataTable({
 let pointLog = $('#pointLog').DataTable({
   language: korean,
   responsive: true,
-  scrollY: '72vh',
+  scrollY: '57vh',
   scrollCollapse: true,
   ajax: {
     url: '/log/point',
@@ -313,11 +313,6 @@ let pointLog = $('#pointLog').DataTable({
           return `<div class="text-primary">${row['베팅마진 적용금액'].toLocaleString('ko-KR')}</div>`;
         }
       },
-      // createdCell: function (td, cellData, rowData, row, col) {
-      //   if (clientType == 9) {
-      //     $(td).addClass('divide');
-      //   }
-      // },
     },
     {
       target: [9, 11, 14],
@@ -327,6 +322,7 @@ let pointLog = $('#pointLog').DataTable({
       target: 11,
       render: function (data, type, row) {
         if (row['이벤트 타입'] != '포인트 전환') {
+          console.log(data);
           let str = data;
           let parts = str.split(' ');
 
@@ -334,6 +330,11 @@ let pointLog = $('#pointLog').DataTable({
           let realRate = parts[1] ? `<span class="text-primary fw-semibold">${parts[1]}</span>` : '';
 
           let newStr = `${totalRate}<br>${realRate}`;
+
+          if (clientType == 3) {
+            newStr = `${totalRate}`;
+          }
+
           return newStr;
         }
         return '';

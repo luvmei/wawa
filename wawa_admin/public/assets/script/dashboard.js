@@ -39,7 +39,7 @@ $('#onlineUsers').DataTable({
     { data: '아이디', responsivePriority: 1 },
     { data: '보유금', responsivePriority: 2 },
     { data: '접속아이피', className: 'desktop' },
-    { data: '최종접속게임', className: 'desktop' },
+    { data: '최종접속벤더', className: 'desktop' },
     { data: '접속도메인', className: 'desktop' },
     { data: '디바이스', className: 'desktop' },
     { data: '브라우저', className: 'desktop' },
@@ -97,6 +97,12 @@ $('#onlineUsers').DataTable({
           return `${data.toLocaleString('ko-KR')} <button type='button' class='ms-2 px-2 py-1 btn btn-sm btn-primary balanceGiveBtn balance-btn'>지급</button>`;
         }
       },
+    },
+    {
+      target: 5,
+      render: function (data, type, row) {
+        return `${row.최종접속게임명}<br>${data}`;
+      }
     },
     {
       target: 6,

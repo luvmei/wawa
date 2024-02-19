@@ -16,7 +16,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
         [{ header: [1, 2, 3, 4, 5, 6, false] }],
         [{ list: 'ordered' }, { list: 'bullet' }],
         [{ indent: '-1' }, { indent: '+1' }],
-        ['image'],
       ],
     },
     theme: 'snow',
@@ -262,7 +261,7 @@ $('#qna').DataTable({
     },
   ],
   initComplete: function () {
-    document.querySelector('#setMacro').innerHTML = `<i class="fas fa-cog pe-2"></i>답변 설정`;
+    document.querySelector('#setMacro').innerHTML = `답변 매크로 설정`;
     document.querySelector('#setMacro').addEventListener('click', () => {
       $('#setMacroModal').modal('show');
     });

@@ -352,7 +352,7 @@
         ORDER BY user_id DESC 
         LIMIT 1)
       );
-  </select> 
+  </select>
 
 // 상세보기관련
   <select id='userDetail'>

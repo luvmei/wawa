@@ -1288,10 +1288,10 @@ $('table').on('click', 'tbody tr .add-gold', function () {
   console.log(upperAgent);
 
   // 제목 변경
-  document.querySelector('#modal-title').innerHTML = '에이전트 생성 - 골드';
+  document.querySelector('#modal-title').innerHTML = '에이전트 생성 - 부본사';
 
   // 상위 에이전트 정보출력
-  document.querySelector('#upper-agent-title').innerHTML = '상위 플래티넘 에이전트 정보';
+  document.querySelector('#upper-agent-title').innerHTML = '상위 영본사 에이전트 정보';
 
   // 에이전트 타입 변경
   document.querySelector('#agent-type').value = '1';
@@ -1317,10 +1317,10 @@ $('table').on('click', 'tbody tr .add-silver', function () {
   upperAgent = $('table').DataTable().row($(this).parent('td')).data();
 
   // 제목 변경
-  document.querySelector('#modal-title').innerHTML = '에이전트 생성 - 실버';
+  document.querySelector('#modal-title').innerHTML = '에이전트 생성 - 총판';
 
   // 상위 에이전트 정보출력
-  document.querySelector('#upper-agent-title').innerHTML = '상위 골드 에이전트 정보';
+  document.querySelector('#upper-agent-title').innerHTML = '상위 부본사 에이전트 정보';
 
   // 에이전트 타입 변경
   document.querySelector('#agent-type').value = '2';
@@ -1346,10 +1346,10 @@ $('table').on('click', 'tbody tr .add-bronze', function () {
   upperAgent = $('table').DataTable().row($(this).parent('td')).data();
 
   // 제목 변경
-  document.querySelector('#modal-title').innerHTML = '에이전트 생성 - 브론즈';
+  document.querySelector('#modal-title').innerHTML = '에이전트 생성 - 매장';
 
   // 상위 에이전트 정보출력
-  document.querySelector('#upper-agent-title').innerHTML = '상위 실버 에이전트 정보';
+  document.querySelector('#upper-agent-title').innerHTML = '상위 총판 에이전트 정보';
 
   // 에이전트 타입 변경
   document.querySelector('#agent-type').value = '3';
@@ -1384,18 +1384,19 @@ let possibleCount;
 $('table').on('click', 'tbody tr .add-user', function () {
   upperAgent = $('table').DataTable().row($(this).parent('td')).data();
 
-  $.ajax({
-    method: 'POST',
-    url: '/agent/usercounter',
-    data: { id: upperAgent.아이디 },
-  })
-    .done(function (result) {
-      possibleCount = result.count;
-      document.querySelector('#user-count-label').innerHTML = `생성 가능 ( ${result.count} / 30 )`;
-    })
-    .fail(function (err) {
-      console.log('전송오류');
-    });
+  // 유저생성 매크로 시 사용
+  // $.ajax({
+  //   method: 'POST',
+  //   url: '/agent/usercounter',
+  //   data: { id: upperAgent.아이디 },
+  // })
+  //   .done(function (result) {
+  //     possibleCount = result.count;
+  //     document.querySelector('#user-count-label').innerHTML = `생성 가능 ( ${result.count} / 30 )`;
+  //   })
+  //   .fail(function (err) {
+  //     console.log('전송오류');
+  //   });
 
   $('#addUserModal').modal('show');
 });
@@ -2277,18 +2278,14 @@ user_nick_button.addEventListener('click', function () {
 let addUser = document.querySelector('#addUser');
 
 addUser.addEventListener('click', function () {
-  console.log(userId_isCheck);
-  console.log(user_pw_isValid);
-  console.log(user_nick_isCheck);
   // console.log(user_count_isValid);
 
   // if (userId_isCheck && user_pw_isValid && user_nick_isCheck && user_count_isValid) {
   if (userId_isCheck && user_pw_isValid && user_nick_isCheck) {
     let userJoinData = $('#user-join').serialize();
-    console.log(userJoinData);
-    // if (upperAgent) {
-    //   userJoinData += `&upper_id=${upperAgent['아이디']}`;
-    // }
+    if (upperAgent) {
+      userJoinData += `&upper_id=${upperAgent['아이디']}`;
+    }
 
     $.ajax({
       method: 'POST',

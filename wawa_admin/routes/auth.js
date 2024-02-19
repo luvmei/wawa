@@ -129,7 +129,7 @@ router.post('/login', (req, res, next) => {
     return res.send({ message: '로그인 정보를 확인하세요', isLogin: false });
   }
 
-  const { captcha } = req.body; // 사용자가 입력한 CAPTCHA 값
+  const { captcha } = req.body;
   if (req.session.captcha !== captcha) {
     return res.send({ message: 'CAPTCHA가 일치하지 않습니다.', isLogin: false });
   }

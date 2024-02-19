@@ -9,6 +9,7 @@ const socket = require('../utility/socket');
 const bcrypt = require('bcrypt');
 const crypto = require('../utility/cryptojs');
 const parser = require('ua-parser-js');
+const { get } = require('jquery');
 const api = require(`../utility/api/${process.env.API_TYPE}`);
 // #region 테이블 전송
 router.post('/info', (req, res) => {

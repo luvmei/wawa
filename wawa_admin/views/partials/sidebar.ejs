@@ -39,14 +39,15 @@
               <% } %>
             </a>
             <ul class="sidebar-submenu">
+              <li><a href="online">현재접속</a></li>
               <li><a class="lan-4" href="user-info">회원관리</a></li>
               <% if (user.type != 3) { %>
               <li><a class="lan-5" href="agent-info">파트너관리</a></li>
               <% } %>
+              <li><a href="user-connect">접속내역</a></li>
               <% if (user.type == 9) { %>
               <li><a href="user-block">차단회원</a></li>
               <% } %>
-              <li><a href="online">현재접속</a></li>
             </ul>
           </li>
           <li class="sidebar-list">

@@ -21,6 +21,7 @@ router.post('/depowith', function (req, res) {
 });
 
 router.post('/deposit', function (req, res) {
+  console.log(req.user[0]);
   req.body.node_id = req.user[0].node_id;
   getData(res, 'deposit', req.body);
 });
@@ -80,10 +81,8 @@ router.post('/withdraw/confirm', function (req, res) {
 //? 일괄 출금승인
 router.post('/withdraw/batchconfirm', async function (req, res) {
   let resultArr = [];
-  console.log(req.body.selectedData);
 
   for (const object of req.body.selectedData) {
-    console.log(object.currentStatus);
     if (object.currentStatus === '출금승인' || object.currentStatus === '신청취소' || object.currentStatus === '출금신청') {
       continue;
     } else if (object.currentStatus === '출금대기') {
@@ -93,7 +92,7 @@ router.post('/withdraw/batchconfirm', async function (req, res) {
     }
   }
 
-  console.log(resultArr);
+  log(resultArr);
 
   if (resultArr.length > 0 && resultArr.every((result) => result === true)) {
     console.log('모든 출금이 처리되었습니다');
@@ -116,7 +115,6 @@ router.post('/deposit/cancel', function (req, res) {
 
 //? 승인 후 출금 취소
 router.post('/withdraw/confirmcancel', function (req, res) {
-  console.log(req.body);
   cancelConfirm(res, req.body, 'withdraw');
 });
 
@@ -226,8 +224,7 @@ router.post('/agent/give', async function (req, res) {
   } else {
     if (req.user[0].type != 9) {
       let { slot_balance, casino_balance } = await beforeBalanceCheck(req.user[0].id);
-      let balance = slot_balance;
-      // let balance = req.body.receiverApiType == 's' ? slot_balance : casino_balance;
+      let balance = Math.max(slot_balance, casino_balance);
       if (balance < req.body.reqMoney) {
         res.send({ balanceCheck: false });
         return;
@@ -297,17 +294,21 @@ async function giveTakeBalance(res, params) {
     3: '매장',
     4: '회원',
   };
-  
+
   let senderType = userTypeMapping[params.senderType];
   let receiverType = userTypeMapping[params.receiverType];
-  
+
   params.id = params.senderId;
-  console.log(`[${params.type}신청] 신청: ${params.senderId}[${senderType}] / 대상: ${params.receiverId}[${receiverType}] / 금액: ${parseInt(params.reqMoney).toLocaleString('ko-KR')}`);
+  console.log(
+    `[${params.type}신청] 신청: ${params.senderId}[${senderType}] / 대상: ${params.receiverId}[${receiverType}] / 금액: ${parseInt(
+      params.reqMoney
+    ).toLocaleString('ko-KR')}`
+  );
   let conn = await pool.getConnection();
   let apiResult = {};
   params.receiverType = Number(params.receiverType);
   params.transactionId = params.reqType == 'give' ? 'G' + makeTransactionId() : 'T' + makeTransactionId();
-  
+
   try {
     // 로또 당첨 지급 시
     if (params.giveType && params.giveType == 'lottery') {
@@ -319,7 +320,7 @@ async function giveTakeBalance(res, params) {
     if (params.senderType === 9) {
       if (params.receiverType === 4) {
         apiResult = await api.requestAsset(params);
-      } 
+      }
       // else {
       //   console.log(`[${params.type}진행] ${params.senderId}[${senderType}]가 ${params.receiverId}[${receiverType}] 에이전트에게 ${params.type}합니다.`);
       // }
@@ -333,17 +334,25 @@ async function giveTakeBalance(res, params) {
       if (bankState[0].bank_req_state == 'n') {
         if (params.receiverType === 4) {
           apiResult = await api.requestAsset(params);
-        } 
+        }
         // else {
         //   console.log(`[${params.type}진행] ${params.senderId}가 ${params.receiverId} 에이전트에게 ${params.type}합니다.`);
         // }
 
         await updateDatabase(conn, params);
-        
-        console.log(`[${params.type}완료] 신청: ${params.senderId}[${senderType}] / 대상: ${params.receiverId}[${receiverType}] / 금액: ${parseInt(params.reqMoney).toLocaleString('ko-KR')}`);
+
+        console.log(
+          `[${params.type}완료] 신청: ${params.senderId}[${senderType}] / 대상: ${params.receiverId}[${receiverType}] / 금액: ${parseInt(
+            params.reqMoney
+          ).toLocaleString('ko-KR')}`
+        );
         res.send('지급완료');
       } else {
-        console.log(`[${params.type}취소] 신청: ${params.senderId}[${senderType}] / 대상: ${params.receiverId}[${receiverType}] / 금액: ${parseInt(params.reqMoney).toLocaleString('ko-KR')} / 입금 또는 출금신청이 처리 중`);
+        console.log(
+          `[${params.type}취소] 신청: ${params.senderId}[${senderType}] / 대상: ${params.receiverId}[${receiverType}] / 금액: ${parseInt(
+            params.reqMoney
+          ).toLocaleString('ko-KR')} / 입금 또는 출금신청이 처리 중`
+        );
         res.send({
           request: 'fail',
           msg: '입금 또는 출금신청이 처리 중입니다',
@@ -424,7 +433,7 @@ function capitalize(string) {
 async function getData(res, type, params = {}) {
   let conn = await pool.getConnection();
   let getData = mybatisMapper.getStatement('bank', type, params, sqlFormat);
-
+  
   try {
     let result = await conn.query(getData);
     result = JSONbig.stringify(result);
@@ -532,6 +541,7 @@ async function confirmDepositRequest(res, params) {
       params.bonusType = 4;
   }
 
+  params.apiType = await getUserApiType(params.id);
   params.타입 = '입금';
   params.transactionId = 'D' + makeTransactionId();
   status = mybatisMapper.getStatement('bank', 'updateDepositStatus', params, sqlFormat);
@@ -544,7 +554,6 @@ async function confirmDepositRequest(res, params) {
   let apiResult;
   if (params.type == 4) {
     apiResult = await api.requestAsset(params);
-    console.log(`[${params.타입}] API 요청 성공`);
   }
 
   if (params.type != 4 || (params.type == 4 && apiResult.status == 200)) {
@@ -560,25 +569,21 @@ async function confirmDepositRequest(res, params) {
         await conn.query(updateBonus);
         let confirmMsg = await updateEventState(params.id);
         socket.emit('to_user', { id: params.id, type: 'confirmDeposit', msg: confirmMsg });
-
-        //todo 아래 주석 이벤트.js 코드로 이전
-        // let { isAttendance, attendanceMsg } = await checkAttendance(params);
-        // console.log('출석여부: ', isAttendance);
-        // console.log('출석메세지: ', attendanceMsg);
-        // if (isAttendance) {
-        //   socket.emit('to_user', { id: params.id, type: 'confirmDepositAttendant', msg: attendanceMsg });
-        // } else {
-        //   socket.emit('to_user', { id: params.id, type: 'confirmDeposit' });
-        // }
       }
 
       if (params.type == 4) {
         await insertAssetTransId(params);
       }
       await insertLineAsset(params);
-      console.log(`${params.타입}승인 성공`);
       params.bankState = 'n';
       updateReqstate(params);
+
+      console.log(
+        `[${params.타입}완료] 신청: ${params.id} / 금액: ${parseInt(params.reqMoney).toLocaleString('ko-KR')} / 보너스: ${params.bonusMoney.toLocaleString(
+          'ko-KR'
+        )}`
+      );
+
       return true;
     } catch (e) {
       console.log(e);
@@ -589,7 +594,11 @@ async function confirmDepositRequest(res, params) {
     }
   } else {
     socket.emit('error', `${params.타입}신청API 응답오류`);
-    res.send(`${params.타입}요청 실패`);
+    console.log(
+      `[${params.타입}취소] 신청: ${params.senderId} / 금액: ${parseInt(params.reqMoney).toLocaleString('ko-KR')} / 보너스: ${params.bonusMoney.toLocaleString(
+        'ko-KR'
+      )} / 입금 또는 출금신청이 처리 중`
+    );
   }
 }
 
@@ -692,6 +701,7 @@ async function confirmWithdrawRequest(params) {
   //todo 보너스 타입이 '재충전'일 때 출금 승인 시 보너스 지급 해제 됨. 정의 필요
   params.bonusType = 0;
 
+  params.apiType = await getUserApiType(params.id);
   params.타입 = '출금';
   params.transactionId = 'W' + makeTransactionId();
   status = mybatisMapper.getStatement('bank', 'updateWithdrawStatus', params, sqlFormat);
@@ -713,7 +723,7 @@ async function confirmWithdrawRequest(params) {
 
     socket.emit('to_user', { id: params.id, type: 'confirmWithdraw' });
     await insertLineAsset(params);
-    console.log(`${params.타입}승인 성공`);
+    console.log(`[${params.타입}완료] 신청: ${params.id} / 금액: ${parseInt(params.reqMoney).toLocaleString('ko-KR')}`);
     params.bankState = 'n';
     updateReqstate(params);
     return true;
@@ -1024,6 +1034,21 @@ async function executeDBQuery(query, params) {
 
   try {
     return await conn.query(statement);
+  } catch (e) {
+    console.log(e);
+    return done(e);
+  } finally {
+    if (conn) conn.release();
+  }
+}
+
+async function getUserApiType(id) {
+  let conn = await pool.getConnection();
+  let sql = mybatisMapper.getStatement('user', 'getUserApiType', { id: id }, sqlFormat);
+
+  try {
+    let result = await conn.query(sql);
+    return result[0].api_type;
   } catch (e) {
     console.log(e);
     return done(e);

@@ -479,7 +479,7 @@ $('#onlineUsers').DataTable({
     { data: '아이디', className: 'desktop' },
     { data: '보유금' },
     { data: '접속아이피', className: 'desktop' },
-    { data: '최종접속게임' },
+    { data: '최종접속벤더' },
     { data: '접속도메인', className: 'desktop' },
     { data: '디바이스', className: 'desktop' },
     { data: '브라우저', className: 'desktop' },
@@ -534,6 +534,12 @@ $('#onlineUsers').DataTable({
         } else {
           return `${data.toLocaleString('ko-KR')} <button type='button' class='ms-2 px-2 py-1 btn btn-sm btn-primary balanceGiveBtn balance-btn'>지급</button>`;
         }
+      },
+    },
+    {
+      target: 5,
+      render: function (data, type, row) {
+        return `${row.최종접속게임명}<br>${data}`;
       },
     },
     {
@@ -1194,35 +1200,23 @@ $('#userConnect').DataTable({
       searchable: false,
     },
     {
-      target: [11, 12, 13, 14, 15],
+      target: [4, 11, 12, 13, 14, 15],
       visible: false,
     },
     {
       target: 2,
       render: function (data, type, row) {
         if (data == '로그인' || data == '회원가입') {
-          return `<button type='button' class='btn btn-sm btn-outline-primary id-btn'>${data}</button>`;
+          return `<button type='button' class='btn btn-sm btn-outline-primary'>${data}</button>`;
         } else if (data == '로그아웃' || data == '세션아웃') {
-          return `<button type='button' class='btn btn-sm btn-outline-danger id-btn'>${data}</button>`;
+          return `<button type='button' class='btn btn-sm btn-outline-secondary'>${data}</button>`;
         }
       },
     },
     {
       target: 3,
       render: function (data, type, row) {
-        if (row.가입코드) {
-          return `<div class="btn-group" role="group" aria-label="Basic example">
-        <button type="button" class="btn btn-sm online-tag">온</button>
-        <button type='button' class='btn btn-sm btn-outline-dark id-btn'>${data}</button></div>
-        `;
-        } else if (row.가입코드 == '') {
-          return `<div class="btn-group" role="group" aria-label="Basic example">
-        <button type="button" class="btn btn-sm local-tag">매장</button>
-        <button type='button' class='btn btn-sm btn-outline-dark id-btn'>${data}</button></div>
-        `;
-        } else {
-          return `<button type='button' class='btn btn-sm btn-outline-dark id-btn'>${data}</button>`;
-        }
+        return `<div class='id-btn'>${data}(${row.닉네임})</div>`;
       },
     },
     {
@@ -1253,6 +1247,11 @@ $('#userConnect').DataTable({
       orderable: false,
     },
   ],
+  initComplete: function (settings) {
+    if (clientType != 9) {
+      $('#userConnect').DataTable().column(5).visible(false);
+    }
+  },
 });
 
 $('#userBlock').DataTable({

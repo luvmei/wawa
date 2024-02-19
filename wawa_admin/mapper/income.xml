@@ -6,8 +6,6 @@
    SELECT
       IDX AS 'IDX',
       DATE_FORMAT(date, '%Y-%m-%d') AS '정산일자',
-      node_id,
-      node_pid,
       type AS '타입',
       id AS '아이디',
       nickname AS '닉네임',        
@@ -34,31 +32,14 @@
       SUM(change_rolling) AS '롤링전환'
     FROM 
       (
-          SELECT * FROM income_agent_daily_view
+          SELECT * FROM income_hq_view
           UNION
-          SELECT * FROM income_agent_daily
+          SELECT * FROM income_hq
       ) AS ut
     WHERE
       ut.date BETWEEN #{startDate} AND #{endDate}
     GROUP by date
   </select>
-
-  <!-- <select id='headquarter'>
-    SELECT 
-      *
-    FROM
-      (SELECT
-        *
-      FROM
-        income_hq_view
-      UNION
-      SELECT
-        *
-      FROM
-        income_headquarters) AS ut
-    WHERE 정산일자  
-      BETWEEN #{startDate} AND #{endDate}
-  </select> -->
 
 // 에이전트 정산
   <select id='agentDepoWith'>

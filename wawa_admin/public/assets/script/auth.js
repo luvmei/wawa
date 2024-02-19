@@ -15,6 +15,7 @@ login_form.addEventListener('submit', function (e) {
         location.href = '/';
         // location.reload();
       } else {
+        loadCaptcha();
         document.querySelector('#login-data').reset();
         document.querySelector('#login-alert').classList.remove('d-none');
       }

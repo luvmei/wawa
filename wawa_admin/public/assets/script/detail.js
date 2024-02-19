@@ -72,6 +72,13 @@ window.addEventListener('DOMContentLoaded', (event) => {
     });
   });
 
+  //? 관리자별 컬럼 노출
+  if (clientType != 9) {
+    document.getElementById('detailPoint-tab').parentElement.classList.add('d-none');
+    // detailSummaryBetting.column(3).visible(false); // 컬럼 3 숨기기
+    // detailSummaryBetting.column(6).visible(false); // 컬럼 6 숨기기
+  }
+
   //? 지급,회수 메모컬럼 숨김
   // if (clientType != 9) {
   //   console.log('관리자 아님');
@@ -1378,7 +1385,9 @@ let detailSummaryBetting = $('#detailSummaryBetting').DataTable({
         return intVal(a) + intVal(b);
       }, 0);
 
-    let summaryBettingFooter = `<div class="row text-start">
+    let summaryBettingFooter;
+    if(clientType == 9) {
+    summaryBettingFooter = `<div class="row text-start">
     <div class="col">베팅:</div>
     <div class="col text-end border-end pe-3">${totalBet.toLocaleString('ko-KR')}</div>
     <div class="col">획득:</div>
@@ -1390,6 +1399,16 @@ let detailSummaryBetting = $('#detailSummaryBetting').DataTable({
     <div class="col">결과:</div>
     <div class="col text-end border-end pe-3 ${totalResult < 0 ? 'text-danger' : ''}">${totalResult.toLocaleString('ko-KR')}</div>
     </div>`;
+    } else {
+      summaryBettingFooter = `<div class="row text-start">
+      <div class="col">베팅:</div>
+      <div class="col text-end border-end pe-3">${totlaMarginBet.toLocaleString('ko-KR')}</div>
+      <div class="col">획득:</div>
+      <div class="col text-end border-end pe-3">${totalMarginWin.toLocaleString('ko-KR')}</div>
+      <div class="col">결과:</div>
+      <div class="col text-end border-end pe-3 ${totalResult < 0 ? 'text-danger' : ''}">${totalResult.toLocaleString('ko-KR')}</div>
+      </div>`;
+    }
 
     $(api.column(0).footer()).html(summaryBettingFooter);
   },

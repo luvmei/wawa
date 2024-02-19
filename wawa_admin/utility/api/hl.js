@@ -94,9 +94,9 @@ async function getBetHistory(apiKey) {
   };
 
   if (apiKey === slotKey) {
-    console.log(`[HL_SLOT_API] 슬롯 베팅내역 가져오기: [시작]${localTime.start} ~ [종료]${localTime.end}`);
+    console.log(`[베팅내역 요청] 슬 롯 : [시작]${localTime.start} ~ [종료]${localTime.end}`);
   } else if (apiKey === casinoKey) {
-    console.log(`[HL_CASINO_API] 카지노 베팅내역 가져오기: [시작]${localTime.start} ~ [종료]${localTime.end}`);
+    console.log(`[베팅내역 요청] 카지노: [시작]${localTime.start} ~ [종료]${localTime.end}`);
   }
 
   let postData = {
@@ -135,9 +135,9 @@ async function insertDetailHlLog(betHistory, apiKey) {
   try {
     let result = await conn.query(insertBetHistory);
     if (apiKey === slotKey) {
-      console.log(`[HL_SLOT_API] 슬롯 베팅내역 업데이트 완료: 받아온 [${betHistory.length}]개 내역 중 [${result.affectedRows}]개 업데이트`);
+      console.log(`[베팅내역 응답] 슬 롯 : 업데이트 완료: 받아온 [${betHistory.length}]개 내역 중 [${result.affectedRows}]개 업데이트`);
     } else if (apiKey === casinoKey) {
-      console.log(`[HL_CASINO_API] 카지노 베팅내역 업데이트 완료: 받아온 [${betHistory.length}]개 내역 중 [${result.affectedRows}]개 업데이트`);
+      console.log(`[베팅내역 응답] 카지노: 업데이트 완료: 받아온 [${betHistory.length}]개 내역 중 [${result.affectedRows}]개 업데이트`);
     }
   } catch (e) {
     console.log(e);
@@ -201,24 +201,82 @@ function createUser(params, apiKey) {
     });
 }
 
+// async function requestAsset(params) {
+//   console.log('API 내 파라미터', params);
+//   let url;
+//   let apiKey;
+
+//   if (params.reqType == 'give' || params.reqType == 'take') {
+//     params.id = params.receiverId;
+//     params.nick = params.receiverNick;
+//   }
+
+//   await checkUserCasinoBalance(params.id);
+//   const userBalanceInfo = await updateUserBalance(params.id, slotKey);
+
+//   if (params.타입 == '입금' || params.type == '지급' || params.type == '출금취소') {
+//     url = `${process.env.HL_API_ENDPOINT}/user/add-balance`;
+//   } else if (params.타입 == '출금' || params.type == '회수') {
+//     console.log('유저밸런스', userBalanceInfo);
+//     if (params.reqMoney > userBalanceInfo.balance) {
+//       params.reqMoney = userBalanceInfo.balance;
+//     }
+//     url = `${process.env.HL_API_ENDPOINT}/user/sub-balance`;
+//   }
+
+//   let postData = {
+//     username: params.id,
+//     amount: parseInt(params.reqMoney) + parseInt(params.bonusMoney || 0),
+//   };
+
+//   const config = {
+//     method: 'post',
+//     url: url,
+//     headers: { Authorization: `Bearer ${slotKey}`, Accept: 'application/json', 'Content-Type': 'application/json' },
+//     data: postData,
+//   };
+
+//   try {
+//     let result = await axios(config);
+//     await updateUserBalance(params.id, casinoKey);
+//     if (params.senderId) {
+//       console.log(
+//         `[${params.type}완료] 신청: ${params.senderId} / 대상: ${params.id} / 금액: ${parseInt(params.reqMoney + params.reqBonus).toLocaleString('ko-KR')}`
+//       );
+//     } else {
+//       console.log(`[${params.타입}완료] 대상: ${params.id} / 금액: ${parseInt(params.reqMoney + params.reqBonus).toLocaleString('ko-KR')}`);
+//     }
+//     return result;
+//   } catch (error) {
+//     console.log(error.response);
+//     console.log(`${params.타입 || params.type}처리 실패: ID: ${params.id}`);
+//     createUser(params, slotKey);
+//     createUser(params, casinoKey);
+//   }
+// }
+
 async function requestAsset(params) {
   let url;
-  let apiKey;
+
+  if (params.apiType === 'c') {
+    const userCasino = await updateUserBalance(params.receiverId, casinoKey);
+    if (userCasino.balance > 0) {
+      await allBalanceWithdrawFromCasino(params.receiverId);
+    }
+    await swapUserApiType(params.receiverId);
+  }
 
   if (params.reqType == 'give' || params.reqType == 'take') {
     params.id = params.receiverId;
     params.nick = params.receiverNick;
   }
 
-  await checkUserCasinoBalance(params.id);
-  const userBalanceInfo = await updateUserBalance(params.id, slotKey);
-
   if (params.타입 == '입금' || params.type == '지급' || params.type == '출금취소') {
     url = `${process.env.HL_API_ENDPOINT}/user/add-balance`;
   } else if (params.타입 == '출금' || params.type == '회수') {
-    console.log('유저밸런스', userBalanceInfo);
-    if (params.reqMoney > userBalanceInfo.balance) {
-      params.reqMoney = userBalanceInfo.balance;
+    const userSlot = await updateUserBalance(params.id, slotKey);
+    if (params.reqMoney > userSlot.balance) {
+      params.reqMoney = userSlot.balance;
     }
     url = `${process.env.HL_API_ENDPOINT}/user/sub-balance`;
   }
@@ -237,7 +295,7 @@ async function requestAsset(params) {
 
   try {
     let result = await axios(config);
-    await updateUserBalance(params.id, casinoKey);
+    await updateUserBalance(params.id, slotKey);
     if (params.senderId) {
       console.log(
         `[${params.type}완료] 신청: ${params.senderId} / 대상: ${params.id} / 금액: ${parseInt(params.reqMoney + params.reqBonus).toLocaleString('ko-KR')}`
@@ -296,12 +354,10 @@ async function allBalanceWithdrawFromCasino(id) {
 
   try {
     const result = await axios(config);
-    setTimeout(async () => {
-      await allBalanceDepositToSlot(result.data.username, Math.abs(result.data.amount)); // await 추가
-    }, 1000);
+    console.log('카지노출금값', result.data.amount);
+    await allBalanceDepositToSlot(result.data.username, Math.abs(result.data.amount)); // await 추가
   } catch (error) {
     console.log(error);
-    await swapUserApiType(id); 
   }
 }
 
@@ -320,7 +376,7 @@ async function allBalanceDepositToSlot(id, balance) {
 
   await axios(config)
     .then((result) => {
-      // console.log(`[HL_SLOT_API] ${result.data.username}의 카지노 보유금 ${result.data.amount}원을 슬롯 보유금으로 입금완료`);
+      console.log(`[보유금 전환] ${result.data.username}의 카지노 보유금 ${result.data.amount}원을 슬롯 보유금으로 전환완료`);
     })
     .catch((error) => {
       console.log(error.response.data);
@@ -479,7 +535,7 @@ async function updateGameList(type) {
 async function requestDetailLog(apiKey, type) {
   let newBetArr = [];
   let getBetArr = await getBetHistory(apiKey);
-  let apiType = type === 'slot' ? 'HL_SLOT_API' : 'HL_CASINO_API';
+  let apiType = type === 'slot' ? '[베팅내역 응답] 슬 롯 :' : '[베팅내역 응답] 카지노:';
 
   if (getBetArr === undefined || getBetArr.length === 0) {
     console.log(`${apiType} 새로운 베팅내역 없음`);
