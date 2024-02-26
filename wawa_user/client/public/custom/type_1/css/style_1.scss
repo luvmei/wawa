@@ -973,7 +973,7 @@ h6 {
   .login-buttons {
     font-size: 1.1rem;
     font-weight: 500;
-    margin-left: 48rem;
+    // margin-left: 48rem;
 
     #nav-login,
     #nav-join,
@@ -1413,7 +1413,7 @@ h6 {
   }
 
   @mixin tab-image($num) {
-    background-image: url(/public/custom/type_1/icon/tap_banner_0#{$num}_off.png);
+    background-image: url(/public/custom/type_1/icon/tap_btn_0#{$num}.png);
     filter: brightness(0.3);
 
     &.active,
@@ -1488,7 +1488,7 @@ h6 {
   // 각 탭별 고유 배경 이미지
   #nav-casino {
     .image-container {
-      background-image: linear-gradient(to right, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('/public/images/casino/casino_bg_1.jpg');
+      background-image: linear-gradient(to right, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('/public/images/casino/casino_bg.jpg');
 
       .main-image::before {
         background: linear-gradient(to center, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
@@ -1498,7 +1498,7 @@ h6 {
 
   #nav-slots {
     .image-container {
-      background-image: linear-gradient(to right, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('/public/images/slots/slots_bg_1.jpg');
+      background-image: linear-gradient(to right, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('/public/images/slots/slots_bg.jpg');
       background-size: cover;
 
       .main-image::before {
@@ -1570,7 +1570,6 @@ h6 {
 --------------------------------------------------------------*/
 .carousel {
   width: 1617px;
-  height: 342px;
 
   .carousel-inner {
     outline: none;
@@ -2626,15 +2625,15 @@ body.modal-open {
 
           &.nav-tabs {
             border: none;
-            height: 209px;
+            height: 260px;
             margin: 0;
             #nav-casino-tab {
-              background-image: url(/public/custom/type_1/icon/m_tap_banner_01_off.png);
+              background-image: url(/public/custom/type_1/icon/m_tap_btn_01.png);
               width: 100%;
               margin-right: 0;
             }
             #nav-slots-tab {
-              background-image: url(/public/custom/type_1/icon/m_tap_banner_02_off.png);
+              background-image: url(/public/custom/type_1/icon/m_tap_btn_02.png);
               width: 100%;
               margin-left: 0;
             }
@@ -2664,7 +2663,7 @@ body.modal-open {
 @media screen and (max-width: 430px) {
   #main-section {
     background-position: center 62vh;
-    .container {
+    .container-xl {
       margin: auto;
 
       .banner-section {
@@ -2703,6 +2702,7 @@ body.modal-open {
           margin: 0;
           &.nav-tabs {
             border: none;
+            height: 136px;
             margin: 0;
           }
           #nav-casino-tab,
@@ -2759,36 +2759,42 @@ body.modal-open {
 
   .landing-login {
     max-width: 300px;
-    color: #7cdd4e;
+    // color은 진한 회색
+    color: #333;
     position: absolute;
-    top: 58vh;
+    top: 63vh;
     left: 50%;
     transform: translate(-50%, -50%);
+    .login-message {
+      font-size: 0.8rem;
+    }
     #landing-id,
     #landing-pw {
-      border: 2px solid #7cdd4e;
+      border: 2px solid #333;
     }
     #landing-login-btn {
-      background-color: #68d733;
+      background-color: $point;
       border-radius: 50px;
-      color: #fff;
+      color: #333;
       box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
       //호버시 색상과 테두리
       &:hover {
-        background-color: #46a31a;
-        border: 1px solid #46a31a;
+        background-color: #ffd561;
+        border: 1px solid $point;
       }
     }
 
     #landing-join-btn {
-      background-color: #0078ff;
+      background-color: #333;
       border-radius: 50px;
       color: #fff;
       box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+      border: 1px solid #333 !important;
+
       //호버시 색상과 테두리
       &:hover {
-        background-color: #0050c0;
-        border: 1px solid #0050c0;
+        background-color: #666666;
+        border: 1px solid #333;
       }
     }
   }
@@ -2811,7 +2817,7 @@ body.modal-open {
 
     .landing-login {
       width: 230px;
-      top: 55vh;
+      top: 67vh;
     }
   }
 }
@@ -2827,7 +2833,8 @@ body.modal-open {
       right: 0.5rem;
     }
     .landing-login {
-      top: 40vh;
+      width: 200px;
+      top: 51vh;
     }
   }
 }

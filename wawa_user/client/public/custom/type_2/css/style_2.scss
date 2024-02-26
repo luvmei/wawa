@@ -1428,13 +1428,13 @@ h6 {
   }
 
   @mixin tab-image($num) {
-    background-image: url(/public/custom/type_2/icon/tab_banner_0#{$num}.png);
+    background-image: url(/public/custom/type_2/icon/tab_btn_0#{$num}.png);
     filter: brightness(0.5);
 
     &.active,
     &:focus,
     &:active {
-      background-image: url(/public/custom/type_2/icon/tab_banner_0#{$num}.png);
+      background-image: url(/public/custom/type_2/icon/tab_btn_0#{$num}.png);
       filter: drop-shadow(0px 0px 10px #ff3399);
 
       & + .text {
@@ -1937,7 +1937,7 @@ footer {
 #  Information Section
 -------------------------------------------------*/
 #information {
-  margin-top: -4.5vh;
+  margin-top: -1.2vh;
   width: 80%;
   color: white;
 
@@ -2601,6 +2601,13 @@ footer {
 /*-------------------------------------------------
 #  ETC Section
 -------------------------------------------------*/
+// #captcha-img {
+//   border-top-left-radius: 0.375rem;
+//   border-bottom-left-radius: 0.375rem;
+//   background-color: #fafafa;
+//   cursor: pointer;
+// }
+
 #btn-back-to-top {
   position: fixed;
   bottom: 3.5%;
@@ -2885,6 +2892,115 @@ body.modal-open {
     span {
       margin-left: 5px;
       color: #ffe90a;
+    }
+  }
+}
+
+/*-------------------------------------------------
+#  Landing Section
+-------------------------------------------------*/
+.landing {
+  min-height: 100vh;
+  background-image: url('/public/custom/type_2/bg/landing.jpg');
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position: center;
+
+  #landing-langBtn {
+    position: absolute;
+    top: 2rem;
+    right: 3rem;
+  }
+
+  #landing-langLst {
+    top: 5rem;
+    right: 2.1rem;
+    width: 52px;
+
+    &.show {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+
+  .landing-login {
+    max-width: 300px;
+    // color은 진한 회색
+    color: #333;
+    position: absolute;
+    top: 59vh;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    .login-message {
+      font-size: 0.8rem;
+    }
+    #landing-id,
+    #landing-pw {
+      border: 2px solid #333;
+    }
+    #landing-login-btn {
+      background-color: $point;
+      border-radius: 50px;
+      color: #333;
+      box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+      //호버시 색상과 테두리
+      &:hover {
+        background-color: #ffd561;
+        border: 1px solid $point;
+      }
+    }
+
+    #landing-join-btn {
+      background-color: #333;
+      border-radius: 50px;
+      color: #fff;
+      box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+      border: 1px solid #333 !important;
+
+      //호버시 색상과 테두리
+      &:hover {
+        background-color: #666666;
+        border: 1px solid #333;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .landing {
+    background-image: url('/public/custom/type_2/bg/landing_m.jpg');
+    background-position: top;
+    background-size: 105%;
+    // background-size: cover;
+
+    #landing-langBtn {
+      right: 3rem;
+    }
+
+    #landing-langLst {
+      right: 2.2rem;
+    }
+
+    .landing-login {
+      width: 230px;
+      top: 67vh;
+    }
+  }
+}
+
+@media screen and (max-width: 430px) {
+  .landing {
+    background-size: cover;
+    #landing-langBtn {
+      right: 1.3rem;
+    }
+
+    #landing-langLst {
+      right: 0.5rem;
+    }
+    .landing-login {
+      width: 200px;
+      top: 51vh;
     }
   }
 }

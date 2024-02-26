@@ -1172,11 +1172,11 @@ h6 {
   background-size: contain;
 }
 .game-selector #nav-casino-tab {
-  background-image: url(/public/custom/type_2/icon/tab_banner_01.png);
+  background-image: url(/public/custom/type_2/icon/tab_btn_01.png);
   filter: brightness(0.5);
 }
 .game-selector #nav-casino-tab.active, .game-selector #nav-casino-tab:focus, .game-selector #nav-casino-tab:active {
-  background-image: url(/public/custom/type_2/icon/tab_banner_01.png);
+  background-image: url(/public/custom/type_2/icon/tab_btn_01.png);
   filter: drop-shadow(0px 0px 10px #ff3399);
 }
 .game-selector #nav-casino-tab.active + .text, .game-selector #nav-casino-tab:focus + .text, .game-selector #nav-casino-tab:active + .text {
@@ -1184,11 +1184,11 @@ h6 {
   font-weight: 700;
 }
 .game-selector #nav-slots-tab {
-  background-image: url(/public/custom/type_2/icon/tab_banner_02.png);
+  background-image: url(/public/custom/type_2/icon/tab_btn_02.png);
   filter: brightness(0.5);
 }
 .game-selector #nav-slots-tab.active, .game-selector #nav-slots-tab:focus, .game-selector #nav-slots-tab:active {
-  background-image: url(/public/custom/type_2/icon/tab_banner_02.png);
+  background-image: url(/public/custom/type_2/icon/tab_btn_02.png);
   filter: drop-shadow(0px 0px 10px #ff3399);
 }
 .game-selector #nav-slots-tab.active + .text, .game-selector #nav-slots-tab:focus + .text, .game-selector #nav-slots-tab:active + .text {
@@ -1196,11 +1196,11 @@ h6 {
   font-weight: 700;
 }
 .game-selector #nav-sport-tab {
-  background-image: url(/public/custom/type_2/icon/tab_banner_03.png);
+  background-image: url(/public/custom/type_2/icon/tab_btn_03.png);
   filter: brightness(0.5);
 }
 .game-selector #nav-sport-tab.active, .game-selector #nav-sport-tab:focus, .game-selector #nav-sport-tab:active {
-  background-image: url(/public/custom/type_2/icon/tab_banner_03.png);
+  background-image: url(/public/custom/type_2/icon/tab_btn_03.png);
   filter: drop-shadow(0px 0px 10px #ff3399);
 }
 .game-selector #nav-sport-tab.active + .text, .game-selector #nav-sport-tab:focus + .text, .game-selector #nav-sport-tab:active + .text {
@@ -2072,7 +2072,7 @@ footer .copyright {
 #  Information Section
 -------------------------------------------------*/
 #information {
-  margin-top: -4.5vh;
+  margin-top: -1.2vh;
   width: 80%;
   color: white;
 }
@@ -2868,4 +2868,98 @@ body.modal-open {
 .sns-mobile .kakao span {
   margin-left: 5px;
   color: #ffe90a;
+}
+
+/*-------------------------------------------------
+#  Landing Section
+-------------------------------------------------*/
+.landing {
+  min-height: 100vh;
+  background-image: url("/public/custom/type_2/bg/landing.jpg");
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position: center;
+}
+.landing #landing-langBtn {
+  position: absolute;
+  top: 2rem;
+  right: 3rem;
+}
+.landing #landing-langLst {
+  top: 5rem;
+  right: 2.1rem;
+  width: 52px;
+}
+.landing #landing-langLst.show {
+  visibility: visible;
+  opacity: 1;
+}
+.landing .landing-login {
+  max-width: 300px;
+  color: #333;
+  position: absolute;
+  top: 59vh;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.landing .landing-login .login-message {
+  font-size: 0.8rem;
+}
+.landing .landing-login #landing-id,
+.landing .landing-login #landing-pw {
+  border: 2px solid #333;
+}
+.landing .landing-login #landing-login-btn {
+  background-color: #ffc451;
+  border-radius: 50px;
+  color: #333;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+}
+.landing .landing-login #landing-login-btn:hover {
+  background-color: #ffd561;
+  border: 1px solid #ffc451;
+}
+.landing .landing-login #landing-join-btn {
+  background-color: #333;
+  border-radius: 50px;
+  color: #fff;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+  border: 1px solid #333 !important;
+}
+.landing .landing-login #landing-join-btn:hover {
+  background-color: #666666;
+  border: 1px solid #333;
+}
+
+@media screen and (max-width: 992px) {
+  .landing {
+    background-image: url("/public/custom/type_2/bg/landing_m.jpg");
+    background-position: top;
+    background-size: 105%;
+  }
+  .landing #landing-langBtn {
+    right: 3rem;
+  }
+  .landing #landing-langLst {
+    right: 2.2rem;
+  }
+  .landing .landing-login {
+    width: 230px;
+    top: 67vh;
+  }
+}
+@media screen and (max-width: 430px) {
+  .landing {
+    background-size: cover;
+  }
+  .landing #landing-langBtn {
+    right: 1.3rem;
+  }
+  .landing #landing-langLst {
+    right: 0.5rem;
+  }
+  .landing .landing-login {
+    width: 200px;
+    top: 51vh;
+  }
 }/*# sourceMappingURL=style_2.css.map */

@@ -771,7 +771,6 @@ h6 {
 #header .login-buttons {
   font-size: 1.1rem;
   font-weight: 500;
-  margin-left: 48rem;
 }
 #header .login-buttons #nav-login,
 #header .login-buttons #nav-join,
@@ -1158,7 +1157,7 @@ h6 {
   background-size: contain;
 }
 .game-selector #nav-casino-tab {
-  background-image: url(/public/custom/type_1/icon/tap_banner_01_off.png);
+  background-image: url(/public/custom/type_1/icon/tap_btn_01.png);
   filter: brightness(0.3);
 }
 .game-selector #nav-casino-tab.active, .game-selector #nav-casino-tab:hover {
@@ -1169,7 +1168,7 @@ h6 {
   font-weight: 700;
 }
 .game-selector #nav-slots-tab {
-  background-image: url(/public/custom/type_1/icon/tap_banner_02_off.png);
+  background-image: url(/public/custom/type_1/icon/tap_btn_02.png);
   filter: brightness(0.3);
 }
 .game-selector #nav-slots-tab.active, .game-selector #nav-slots-tab:hover {
@@ -1213,13 +1212,13 @@ h6 {
   opacity: 0;
 }
 .tab-content #nav-casino .image-container {
-  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("/public/images/casino/casino_bg_1.jpg");
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("/public/images/casino/casino_bg.jpg");
 }
 .tab-content #nav-casino .image-container .main-image::before {
   background: linear-gradient(to center, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
 }
 .tab-content #nav-slots .image-container {
-  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("/public/images/slots/slots_bg_1.jpg");
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("/public/images/slots/slots_bg.jpg");
   background-size: cover;
 }
 .tab-content #nav-slots .image-container .main-image::before {
@@ -1279,7 +1278,6 @@ h6 {
 --------------------------------------------------------------*/
 .carousel {
   width: 1617px;
-  height: 342px;
 }
 .carousel .carousel-inner {
   outline: none;
@@ -2633,16 +2631,16 @@ body.modal-open {
   }
   #main-section .container-xl .game-selector .nav.nav-tabs {
     border: none;
-    height: 209px;
+    height: 260px;
     margin: 0;
   }
   #main-section .container-xl .game-selector .nav.nav-tabs #nav-casino-tab {
-    background-image: url(/public/custom/type_1/icon/m_tap_banner_01_off.png);
+    background-image: url(/public/custom/type_1/icon/m_tap_btn_01.png);
     width: 100%;
     margin-right: 0;
   }
   #main-section .container-xl .game-selector .nav.nav-tabs #nav-slots-tab {
-    background-image: url(/public/custom/type_1/icon/m_tap_banner_02_off.png);
+    background-image: url(/public/custom/type_1/icon/m_tap_btn_02.png);
     width: 100%;
     margin-left: 0;
   }
@@ -2662,51 +2660,52 @@ body.modal-open {
   #main-section {
     background-position: center 62vh;
   }
-  #main-section .container {
+  #main-section .container-xl {
     margin: auto;
   }
-  #main-section .container .banner-section {
+  #main-section .container-xl .banner-section {
     margin-top: -2%;
     z-index: 1;
     background-size: contain;
   }
-  #main-section .container .banner-section .item-main img {
+  #main-section .container-xl .banner-section .item-main img {
     margin-top: -4.5%;
     width: 75%;
   }
-  #main-section .container .banner-section .text-logo {
+  #main-section .container-xl .banner-section .text-logo {
     top: 23%;
   }
-  #main-section .container .banner-section .text-logo img {
+  #main-section .container-xl .banner-section .text-logo img {
     width: 25%;
   }
-  #main-section .container .carousel {
+  #main-section .container-xl .carousel {
     top: 17%;
   }
-  #main-section .container .carousel .carousel-inner {
+  #main-section .container-xl .carousel .carousel-inner {
     width: 100%;
   }
-  #main-section .container .carousel .carousel-inner img {
+  #main-section .container-xl .carousel .carousel-inner img {
     width: 100%;
   }
-  #main-section .container .game-selector {
+  #main-section .container-xl .game-selector {
     padding: 0;
   }
-  #main-section .container .game-selector .nav {
+  #main-section .container-xl .game-selector .nav {
     margin: 0;
   }
-  #main-section .container .game-selector .nav.nav-tabs {
+  #main-section .container-xl .game-selector .nav.nav-tabs {
     border: none;
+    height: 136px;
     margin: 0;
   }
-  #main-section .container .game-selector .nav #nav-casino-tab,
-  #main-section .container .game-selector .nav #nav-slots-tab {
+  #main-section .container-xl .game-selector .nav #nav-casino-tab,
+  #main-section .container-xl .game-selector .nav #nav-slots-tab {
     width: 85%;
   }
-  #main-section .container .tab-content .tab-pane {
+  #main-section .container-xl .tab-content .tab-pane {
     margin-top: 0.5rem;
   }
-  #main-section .container .tab-content .row .overlay {
+  #main-section .container-xl .tab-content .row .overlay {
     border: #c9bd89 1px solid;
   }
   .m-login-message {
@@ -2739,35 +2738,39 @@ body.modal-open {
 }
 .landing .landing-login {
   max-width: 300px;
-  color: #7cdd4e;
+  color: #333;
   position: absolute;
-  top: 58vh;
+  top: 63vh;
   left: 50%;
   transform: translate(-50%, -50%);
 }
+.landing .landing-login .login-message {
+  font-size: 0.8rem;
+}
 .landing .landing-login #landing-id,
 .landing .landing-login #landing-pw {
-  border: 2px solid #7cdd4e;
+  border: 2px solid #333;
 }
 .landing .landing-login #landing-login-btn {
-  background-color: #68d733;
+  background-color: #ffba00;
   border-radius: 50px;
-  color: #fff;
+  color: #333;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 }
 .landing .landing-login #landing-login-btn:hover {
-  background-color: #46a31a;
-  border: 1px solid #46a31a;
+  background-color: #ffd561;
+  border: 1px solid #ffba00;
 }
 .landing .landing-login #landing-join-btn {
-  background-color: #0078ff;
+  background-color: #333;
   border-radius: 50px;
   color: #fff;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+  border: 1px solid #333 !important;
 }
 .landing .landing-login #landing-join-btn:hover {
-  background-color: #0050c0;
-  border: 1px solid #0050c0;
+  background-color: #666666;
+  border: 1px solid #333;
 }
 
 @media screen and (max-width: 992px) {
@@ -2784,7 +2787,7 @@ body.modal-open {
   }
   .landing .landing-login {
     width: 230px;
-    top: 55vh;
+    top: 67vh;
   }
 }
 @media screen and (max-width: 430px) {
@@ -2798,6 +2801,7 @@ body.modal-open {
     right: 0.5rem;
   }
   .landing .landing-login {
-    top: 40vh;
+    width: 200px;
+    top: 51vh;
   }
 }/*# sourceMappingURL=style_1.css.map */

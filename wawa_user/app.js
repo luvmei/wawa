@@ -290,7 +290,7 @@ app.get('/:code?', (req, res) => {
       title: title,
       recommend: process.env.EVENT_RECOMMEND,
       sport: process.env.SPORT_VIEW,
-      landing: true,
+      landing: process.env.LANDING_STATE === '1',
     });
   } else {
     req.session.destroy(() => {
@@ -305,7 +305,7 @@ app.get('/:code?', (req, res) => {
         title: title,
         recommend: process.env.EVENT_RECOMMEND,
         sport: process.env.SPORT_VIEW,
-        landing: true,
+        landing: process.env.LANDING_STATE === '1',
       });
     });
   }

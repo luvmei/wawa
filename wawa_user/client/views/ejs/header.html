@@ -163,7 +163,8 @@
       </div>
       <% } %>
     </div>
-    <nav class="navbar d-none  <% if (theme_type == '2') { %> d-lg-block <% } %> col-6 pe-3">
+    <nav
+      class="navbar d-none <%= theme_type == '2' ? 'col-6' : 'col-4' %> <%= theme_type == '2' ? 'd-lg-block' : '' %> pe-3">
       <div class="row justify-content-center">
         <div class="col">
           <a class="nav-link" id="nav-notice">공지</a>
@@ -195,12 +196,14 @@
         </div>
       </div>
     </nav>
-    <div class="login-buttons col-6 d-none d-lg-block" id="pc-login-buttons">
+    <div class="login-buttons <%= theme_type == 1 ? 'col-8' : 'col-6' %> d-none d-lg-block ms-auto"
+      id="pc-login-buttons">
       <!-- <div class="login-buttons col-7 d-none d-lg-block" id="pc-login-buttons"> -->
       <% if (isLogin) { %>
       <div class="row justify-content-around align-items-center" id="afterLoginNavbar">
         <i class="col-1 bi bi-currency-dollar login-icons"></i>
-        <div class="col-2 user-money text-start" id="navBalance"><%= (user[0].slot_balance + user[0].casino_balance).toLocaleString('ko-KR') %></div>
+        <div class="col-2 user-money text-start" id="navBalance">
+          <%= (user[0].slot_balance + user[0].casino_balance).toLocaleString('ko-KR') %></div>
         <i class="col-1 login-icons">P</i>
         <div class="col-2 user-point text-start" id="navPoint"><%= user[0].point.toLocaleString('ko-KR') %></div>
         <div class="col-3 user-name px-0" id="nav-user">

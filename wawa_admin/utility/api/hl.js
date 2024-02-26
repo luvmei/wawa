@@ -147,7 +147,7 @@ async function insertDetailHlLog(betHistory, apiKey) {
   }
 }
 
-const isTie = (betting) => {
+async function isTie(betting) {
   if (!betting.external) return false;
   if (betting.external?.detail?.data?.result?.outcome !== 'Tie') return false;
 
@@ -161,7 +161,7 @@ const isTie = (betting) => {
     }
   }
   return true; // Filter out if outcome is 'Tie' and stake and payout are equal
-};
+}
 // #endregion
 
 // #endregion
@@ -541,11 +541,12 @@ async function requestDetailLog(apiKey, type) {
     console.log(`${apiType} 새로운 베팅내역 없음`);
     return;
   }
-
+  
   for (const betting of getBetArr) {
-    if (betting.details === null || !(betting.type === 'bet' || betting.type === 'win')) {
+    if (betting.external === null || betting.details === null || !(betting.type === 'bet' || betting.type === 'win')) {
       continue;
     }
+     const isTieResult = await isTie(betting);
 
     const mappedItem = {
       created_date: moment(betting.processed_at).format('YYYY-MM-DD HH:mm:ss'),
@@ -556,8 +557,8 @@ async function requestDetailLog(apiKey, type) {
       category: betting.details.game.type === 'slot' ? 'slot' : betting.details.game.type === 'live-sport' ? 'live-sport' : 'casino',
       game_id: betting.details.game.id,
       game_title: betting.details.game.title.replace(/'/g, ''),
-      transaction_type: isTie(betting) ? 'tie' : betting.type,
-      transaction_amount: betting.amount,
+      transaction_type: isTieResult ? 'tie' : betting.type,
+      transaction_amount: isTieResult ? 0 : betting.amount,
       previous_balance: betting.before,
       available_balance: betting.before + betting.amount,
     };
