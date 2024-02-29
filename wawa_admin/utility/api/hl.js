@@ -82,6 +82,9 @@ async function insertGameList(gameList) {
 }
 
 // #region HL Detail Log
+let processedSlotBetIds = new Map();
+let processedCasinoBetIds = new Map();
+
 async function getBetHistory(apiKey) {
   let intervalTime = 20;
   let localTime = {
@@ -105,7 +108,7 @@ async function getBetHistory(apiKey) {
     page: 1,
     perPage: 1000,
     withDetails: 1,
-    odrer: 'asc',
+    order: 'asc',
   };
 
   const config = {
@@ -115,14 +118,52 @@ async function getBetHistory(apiKey) {
     data: postData,
   };
 
-  return await axios(config)
-    .then((result) => {
-      return result.data.data;
-    })
-    .catch((error) => {
-      console.log(`[HL API]베팅내역 가져오기 실패`);
-      console.log(error);
-    });
+  try {
+    let newData;
+
+    const response = await axios(config);
+    const data = response.data.data;
+
+    if (apiKey === slotKey) {
+      newData = processBetData(processedSlotBetIds, data);
+    } else if (apiKey === casinoKey) {
+      newData = processBetData(processedCasinoBetIds, data);
+    }
+
+    const processedData = newData
+      .filter((item) => item.type === 'bet' || item.type === 'win')
+      .map((item) => {
+        const isTie = item.external?.detail?.data?.result?.outcome === 'Tie';
+
+        return {
+          ...item,
+          transaction_type: isTie ? 'tie' : item.type,
+        };
+      });
+
+      console.log(processedData)
+    return processedData;
+  } catch (error) {
+    console.log('[HL API]베팅내역 가져오기 실패');
+    console.error(error);
+    return [];
+  }
+}
+
+function processBetData(processedBetIds, data) {
+  const now = Date.now();
+  const twentyMinutes = 20 * 60 * 1000;
+
+  processedBetIds.forEach((value, key) => {
+    if (now - value > twentyMinutes) {
+      processedBetIds.delete(key);
+    }
+  });
+
+  let newData = data.filter((item) => !processedBetIds.has(item.id));
+  newData.forEach((item) => processedBetIds.set(item.id, now));
+
+  return newData;
 }
 
 async function insertDetailHlLog(betHistory, apiKey) {
@@ -145,22 +186,6 @@ async function insertDetailHlLog(betHistory, apiKey) {
   } finally {
     if (conn) conn.release();
   }
-}
-
-async function isTie(betting) {
-  if (!betting.external) return false;
-  if (betting.external?.detail?.data?.result?.outcome !== 'Tie') return false;
-
-  let participants = betting.external?.detail?.data?.participants || [];
-
-  for (let participant of participants) {
-    let bets = participant.bets || [];
-
-    for (let bet of bets) {
-      if (bet.stake !== bet.payout) return false; // Do not filter if stake and payout are not equal
-    }
-  }
-  return true; // Filter out if outcome is 'Tie' and stake and payout are equal
 }
 // #endregion
 
@@ -258,17 +283,17 @@ function createUser(params, apiKey) {
 async function requestAsset(params) {
   let url;
 
-  if (params.apiType === 'c') {
-    const userCasino = await updateUserBalance(params.receiverId, casinoKey);
-    if (userCasino.balance > 0) {
-      await allBalanceWithdrawFromCasino(params.receiverId);
-    }
-    await swapUserApiType(params.receiverId);
-  }
-
   if (params.reqType == 'give' || params.reqType == 'take') {
     params.id = params.receiverId;
     params.nick = params.receiverNick;
+  }
+
+  if (params.apiType === 'c') {
+    const userCasino = await updateUserBalance(params.id, casinoKey);
+    if (userCasino.balance > 0) {
+      await allBalanceWithdrawFromCasino(params.id);
+    }
+    await swapUserApiType(params.id);
   }
 
   if (params.타입 == '입금' || params.type == '지급' || params.type == '출금취소') {
@@ -294,7 +319,9 @@ async function requestAsset(params) {
   };
 
   try {
+    await delay(1000);
     let result = await axios(config);
+    // await delay(1000);
     await updateUserBalance(params.id, slotKey);
     if (params.senderId) {
       console.log(
@@ -532,6 +559,24 @@ async function updateGameList(type) {
   }
 }
 
+async function isTie(betting) {
+  if (!betting.external || betting.external?.detail?.data?.result?.outcome !== 'Tie') return false;
+
+  let participants = betting.external?.detail?.data?.participants || [];
+
+  if (participants.length === 0) return false;
+
+  for (let participant of participants) {
+    let bets = participant.bets || [];
+    if (bets.length === 0) return false;
+
+    for (let bet of bets) {
+      if (bet.stake !== bet.payout) return false; // Do not filter if stake and payout are not equal
+    }
+  }
+  return true; // Filter out if outcome is 'Tie' and stake and payout are equal
+}
+
 async function requestDetailLog(apiKey, type) {
   let newBetArr = [];
   let getBetArr = await getBetHistory(apiKey);
@@ -541,35 +586,26 @@ async function requestDetailLog(apiKey, type) {
     console.log(`${apiType} 새로운 베팅내역 없음`);
     return;
   }
-  
-  for (const betting of getBetArr) {
-    if (betting.external === null || betting.details === null || !(betting.type === 'bet' || betting.type === 'win')) {
-      continue;
-    }
-     const isTieResult = await isTie(betting);
 
-    const mappedItem = {
-      created_date: moment(betting.processed_at).format('YYYY-MM-DD HH:mm:ss'),
-      transaction_id: betting.id,
-      round_id: betting.details.game.round,
-      username: betting.user.username,
-      provider_name: betting.details.game.vendor,
-      category: betting.details.game.type === 'slot' ? 'slot' : betting.details.game.type === 'live-sport' ? 'live-sport' : 'casino',
-      game_id: betting.details.game.id,
-      game_title: betting.details.game.title.replace(/'/g, ''),
-      transaction_type: isTieResult ? 'tie' : betting.type,
-      transaction_amount: isTieResult ? 0 : betting.amount,
-      previous_balance: betting.before,
-      available_balance: betting.before + betting.amount,
-    };
+  let mappedBetArr = getBetArr.map((betting) => ({
+    created_date: moment(betting.processed_at).format('YYYY-MM-DD HH:mm:ss'),
+    transaction_id: betting.id,
+    round_id: betting.details.game.round,
+    username: betting.user.username,
+    provider_name: betting.details.game.vendor,
+    category: betting.details.game.type === 'slot' ? 'slot' : betting.details.game.type === 'live-sport' ? 'live-sport' : 'casino',
+    game_id: betting.details.game.id,
+    game_title: betting.details.game.title.replace(/'/g, ''),
+    transaction_type: betting.transaction_type,
+    transaction_amount: betting.amount,
+    previous_balance: betting.before,
+    available_balance: betting.before + betting.amount,
+  }));
 
-    newBetArr.push(mappedItem);
-  }
+  let betUsers = [...new Set(mappedBetArr.map((betting) => betting.username))];
 
-  let betUsers = [...new Set(newBetArr.map((betting) => betting.username))];
-
-  if (newBetArr.length > 0) {
-    await insertDetailHlLog(newBetArr, apiKey);
+  if (mappedBetArr.length > 0) {
+    await insertDetailHlLog(mappedBetArr, apiKey);
   }
 
   return betUsers;

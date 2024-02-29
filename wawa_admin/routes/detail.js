@@ -61,6 +61,7 @@ async function getData(req, res) {
 
   let conn = await pool.getConnection();
   let getData = mybatisMapper.getStatement('detail', params.tableType, params, sqlFormat);
+
   try {
     let result = await conn.query(getData);
     result = JSONbig.stringify(result);

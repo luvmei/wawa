@@ -2687,7 +2687,7 @@ function pushRequestBtn(params, type) {
         $(modalId).modal('hide');
         $('#agentConfirmModal').modal('show');
         $('#onlineUsers, #onlineUsersAgent, #userInfoTotal, #agentInfo').DataTable().ajax.reload(null, false);
-      }, 2000);
+      }, 1000);
     })
     .fail(function (err) {
       spinnerToggle();

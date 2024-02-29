@@ -43,8 +43,23 @@ export let korean = {
 // #region 모달열기, 닫기
 //? 네비메뉴 모달열기
 document.querySelector('.navbar').addEventListener('click', function (e) {
-  let selectedMenu = `#${e.target.id.slice(4)}Modal`;
-  openModals(selectedMenu);
+  let selectedMenu;
+
+  if (e.target.tagName === 'SPAN') {
+    selectedMenu = `#${e.target.id.slice(4)}Modal`;
+  } else if (e.target.tagName === 'A') {
+    const spanElement = e.target.querySelector('span');
+    e.preventDefault();
+    if (spanElement) {
+      selectedMenu = `#${spanElement.id.slice(4)}Modal`;
+    } else {
+      selectedMenu = `#${e.target.id.slice(4)}Modal`;
+    }
+  }
+
+  if (selectedMenu) {
+    openModals(selectedMenu);
+  }
 });
 
 //? 모바일 모달열기

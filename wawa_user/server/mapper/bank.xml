@@ -233,7 +233,7 @@
 
   <select id='getUserAsset'>
     SELECT
-      balance,
+      slot_balance + casino_balance AS balance,
       point
     FROM 
       user_asset_info

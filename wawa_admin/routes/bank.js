@@ -21,7 +21,6 @@ router.post('/depowith', function (req, res) {
 });
 
 router.post('/deposit', function (req, res) {
-  console.log(req.user[0]);
   req.body.node_id = req.user[0].node_id;
   getData(res, 'deposit', req.body);
 });

@@ -180,7 +180,7 @@ router.post('/asset', function (req, res) {
 router.post('/reward', function (req, res) {
   let params = {
     id: req.user[0].id,
-    balance: req.user[0].balance,
+    balance: req.user[0].slot_balance + req.user[0].casino_balance,
     point: req.user[0].point,
     reqPoint: parseInt(req.body.reqPoints),
     time: getCurrentTime(),
@@ -371,6 +371,8 @@ async function getUserAsset(res, params) {
 
   try {
     let result = await conn.query(getUserAsset);
+    result[0].balance = result[0].balance.toLocaleString('ko-KR');
+
     res.send(result[0]);
   } catch (e) {
     console.log(e);

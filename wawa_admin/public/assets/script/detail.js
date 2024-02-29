@@ -2,13 +2,19 @@ window.addEventListener('DOMContentLoaded', (event) => {
   // #region 상세내역 타입선택 버튼
   const detailSelectCasinoBtn = document.querySelector('.detailViewCasino');
   const detailSelectSlotBtn = document.querySelector('.detailViewSlot');
+  const detailSelectResetBtn = document.querySelector('.detailViewReset');
+
   const summarySelectCasinoBtn = document.querySelector('.summaryViewCasino');
   const summarySelectSlotBtn = document.querySelector('.summaryViewSlot');
+  const summarySelectResetBtn = document.querySelector('.summaryViewReset');
 
-  detailSelectCasinoBtn.innerHTML = '에볼루션내역';
-  detailSelectSlotBtn.innerHTML = '슬롯내역';
-  summarySelectCasinoBtn.innerHTML = '에볼루션내역';
-  summarySelectSlotBtn.innerHTML = '슬롯내역';
+  detailSelectCasinoBtn.innerHTML = '에볼루션 내역';
+  detailSelectSlotBtn.innerHTML = '슬롯 내역';
+  detailSelectResetBtn.innerHTML = '전체 내역';
+
+  summarySelectCasinoBtn.innerHTML = '에볼루션 내역';
+  summarySelectSlotBtn.innerHTML = '슬롯 내역';
+  summarySelectResetBtn.innerHTML = '전체 내역';
 
   detailSelectCasinoBtn.addEventListener('click', () => {
     let searchText = 'casino';
@@ -18,6 +24,10 @@ window.addEventListener('DOMContentLoaded', (event) => {
     let searchText = 'slot';
     detailBetting.search(searchText).draw();
   });
+  detailSelectResetBtn.addEventListener('click', () => {
+    detailBetting.search('').draw();
+  });
+
   summarySelectCasinoBtn.addEventListener('click', () => {
     let searchText = '카지노';
     detailSummaryBetting.search(searchText).draw();
@@ -25,6 +35,9 @@ window.addEventListener('DOMContentLoaded', (event) => {
   summarySelectSlotBtn.addEventListener('click', () => {
     let searchText = '슬롯';
     detailSummaryBetting.search(searchText).draw();
+  });
+  summarySelectResetBtn.addEventListener('click', () => {
+    detailSummaryBetting.search('').draw();
   });
   // #endregion
 
@@ -1075,7 +1088,7 @@ let detailBetting = $('#detailBetting').DataTable({
     },
     // dataSrc: '',
   },
-  dom: '<"detailDateInput float-start dateWidth me-2"><"ms-2 btn btn-primary detailViewCasino"><"ms-1 btn btn-secondary detailViewSlot">lfrtip',
+  dom: '<"detailDateInput float-start dateWidth me-2"><"ms-2 btn btn-sm btn-primary detailViewCasino"><"ms-1 btn btn-sm btn-secondary detailViewSlot"><"ms-4 btn btn-sm btn-dark detailViewReset">lfrtip',
   columns: [
     { data: 'IDX' },
     { data: '발생시간', className: 'desktop' },
@@ -1252,7 +1265,7 @@ let detailSummaryBetting = $('#detailSummaryBetting').DataTable({
     },
     dataSrc: '',
   },
-  dom: '<"detailDateInput float-start dateWidth me-2"><"ms-2 btn btn-primary summaryViewCasino"><"ms-1 btn btn-secondary summaryViewSlot">lfrtip',
+  dom: '<"detailDateInput float-start dateWidth me-2"><"ms-2 btn btn-sm btn-primary summaryViewCasino"><"ms-1 btn btn-sm btn-secondary summaryViewSlot"><"ms-4 btn btn-sm btn-dark summaryViewReset">lfrtip',
   columns: [
     { data: 'IDX' },
     { data: '결과수신시간', className: 'desktop' },
@@ -1386,8 +1399,8 @@ let detailSummaryBetting = $('#detailSummaryBetting').DataTable({
       }, 0);
 
     let summaryBettingFooter;
-    if(clientType == 9) {
-    summaryBettingFooter = `<div class="row text-start">
+    if (clientType == 9) {
+      summaryBettingFooter = `<div class="row text-start">
     <div class="col">베팅:</div>
     <div class="col text-end border-end pe-3">${totalBet.toLocaleString('ko-KR')}</div>
     <div class="col">획득:</div>
@@ -1427,7 +1440,7 @@ let detailConnect = $('#detailConnect').DataTable({
       d.endDate = endDateTime;
       d.tableType = 'connect';
       d.node_id = selectedUser ? selectedUser.node_id : '';
-      d.userType = selectedUser ? selectedUser.타입 : '';
+      d.userType = selectedUser ? selectedUser.유저타입 : '';
       d.userId = selectedUser ? selectedUser.아이디 : '';
       return d;
     },

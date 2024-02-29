@@ -162,8 +162,7 @@
 // 승인 관련
   <select id='updateAssetDepositConfirm'>
     UPDATE user_asset_info AS a
-    SET a.slot_balance = a.slot_balance + ${reqMoney} + ${bonusMoney},   
-        a.recent_deposit = ${reqMoney} + ${bonusMoney},
+    SET a.recent_deposit = ${reqMoney} + ${bonusMoney},
         a.today_deposit = a.today_deposit + ${reqMoney},
         a.total_deposit = a.total_deposit + ${reqMoney},
         a.today_bonus = a.today_bonus + ${bonusMoney},
@@ -187,8 +186,7 @@
 
   <select id='updateAssetWithdrawConfirm'>
     UPDATE user_asset_info AS a
-    SET a.slot_balance = a.slot_balance - ${reqMoney},
-        a.recent_withdraw = ${reqMoney},        
+    SET a.recent_withdraw = ${reqMoney},        
         a.today_withdraw = a.today_withdraw + ${reqMoney},
         a.total_withdraw = a.total_withdraw + ${reqMoney}
     WHERE  a.user_id = (SELECT user_id

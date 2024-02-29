@@ -488,6 +488,7 @@ $('#rewardModal').on('show.bs.modal', async function () {
     method: 'POST',
     url: '/bank/asset',
   }).done(function (result) {
+    console.log('result', result);
     reward.curBalance.textContent = result.balance.toLocaleString('ko-KR');
     reward.curPoint.textContent = result.point.toLocaleString('ko-KR');
     reward.requestPoint.textContent = '0';

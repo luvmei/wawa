@@ -1262,6 +1262,7 @@ h6 {
   min-height: 100vh;
 }
 #main-section .container {
+  margin-top: 110px;
   position: relative;
   padding: 0;
   max-width: 75%;
@@ -2237,6 +2238,8 @@ footer .copyright {
     padding-top: 0.25rem;
   }
   #information #jackpot {
+    margin-bottom: 1rem !important;
+    width: 98%;
     font-size: 1.8rem;
     height: 4rem;
   }
@@ -2298,6 +2301,7 @@ footer .copyright {
     height: 6rem;
   }
   #information #jackpot {
+    margin-bottom: 0.5rem !important;
     font-size: 1.8rem;
     height: 3rem;
   }
@@ -2704,7 +2708,7 @@ body.modal-open {
     background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(/public/custom/type_2/bg/m_main_bg.jpg);
   }
   #main-section .container {
-    margin: 1rem auto;
+    margin: 0rem auto;
     max-width: 90%;
   }
   #main-section .container .carousel-cover {
@@ -2727,7 +2731,8 @@ body.modal-open {
   }
   #main-section .container .game-selector .nav.nav-tabs {
     border: none;
-    margin: 1rem 0;
+    margin: 0;
+    height: 12rem;
     background-image: url(/public/custom/type_2/main/partition.png);
     background-repeat: no-repeat;
     background-size: auto 80%;
