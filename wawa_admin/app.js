@@ -930,7 +930,7 @@ http.listen(process.env.ADMIN_PORT, '0.0.0.0', () => {
 
   setTimeout(updateUserBalances, timeUntilMidnight);
   setInterval(updateUserBalances, 1000 * 5);
-  setInterval(logOnlineUsersAndRequestDetails, 1000 * 60);
+  setInterval(logOnlineUsersAndRequestDetails, 1000 * 90);
 
   console.log(`Example app listening on port ${process.env.ADMIN_PORT}`);
 });

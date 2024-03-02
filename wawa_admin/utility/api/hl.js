@@ -130,18 +130,15 @@ async function getBetHistory(apiKey) {
       newData = processBetData(processedCasinoBetIds, data);
     }
 
-    const processedData = newData
-      .filter((item) => item.type === 'bet' || item.type === 'win')
-      .map((item) => {
-        const isTie = item.external?.detail?.data?.result?.outcome === 'Tie';
+    const processedData = newData.map((item) => {
+      const isTie = item.external?.detail?.data?.result?.outcome === 'Tie';
 
-        return {
-          ...item,
-          transaction_type: isTie ? 'tie' : item.type,
-        };
-      });
+      return {
+        ...item,
+        transaction_type: isTie ? 'tie' : item.type,
+      };
+    });
 
-      console.log(processedData)
     return processedData;
   } catch (error) {
     console.log('[HL API]베팅내역 가져오기 실패');
@@ -160,7 +157,18 @@ function processBetData(processedBetIds, data) {
     }
   });
 
-  let newData = data.filter((item) => !processedBetIds.has(item.id));
+  let newData = data.filter((item) => {
+    if (item.type !== 'bet' && item.type !== 'win') {
+      return false;
+    }
+
+    if (item.details.game.type !== 'slot' && item.external.detail == null) {
+      return false;
+    }
+
+    return !processedBetIds.has(item.id);
+  });
+
   newData.forEach((item) => processedBetIds.set(item.id, now));
 
   return newData;
