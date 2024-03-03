@@ -167,10 +167,13 @@
         a.total_deposit = a.total_deposit + ${reqMoney},
         a.today_bonus = a.today_bonus + ${bonusMoney},
         a.total_bonus = a.total_bonus + ${bonusMoney}
+         <if test="type != '4'">
+        , a.slot_balance = a.slot_balance + #{reqMoney} + #{bonusMoney}
+        </if>
     WHERE  a.user_id = (SELECT user_id
                         FROM   user
                         WHERE  id = #{id}); 
-  </select>  
+  </select>
 
   <select id='insertDepositMemo'>
     UPDATE deposit_request_history
@@ -189,6 +192,9 @@
     SET a.recent_withdraw = ${reqMoney},        
         a.today_withdraw = a.today_withdraw + ${reqMoney},
         a.total_withdraw = a.total_withdraw + ${reqMoney}
+        <if test="type != '4'">
+        , a.slot_balance = a.slot_balance - ${reqMoney}
+        </if>
     WHERE  a.user_id = (SELECT user_id
                         FROM   user
                         WHERE  id = #{id}); 
@@ -505,8 +511,8 @@
 
   <select id='exchangePoint'>
     UPDATE user_asset_info
-    SET slot_balance = slot_balance + ${curPoint},
-        point = 0        
+    SET slot_balance = slot_balance + ${reqPoint},
+        point = point - ${reqPoint}
     WHERE user_id = (SELECT user_id
                     FROM user 
                     WHERE id = #{id});
@@ -529,9 +535,9 @@
         FROM user 
         WHERE id = #{id}),
         '포인트 전환',
-        ${curPoint},
+        ${reqPoint},
         ${balance},
-        ${balance} + ${curPoint}
+        ${balance} + ${reqPoint}
       )
   </insert>
 
@@ -552,9 +558,9 @@
         FROM user 
         WHERE id = #{id}),
         '포인트 전환',
-        -${curPoint},
-        ${curPoint},
-        0
+        -${reqPoint},
+        ${reqPoint},
+        ${afterPoint}
       )
   </insert>
 

@@ -71,7 +71,7 @@
       <!-- Page Sidebar Start-->
       <%- include ./partials/sidebar %>
       <!-- Page Sidebar Ends-->
-      <div class="page-body">
+      <div class="page-body" style="<%= user.type != 9 ? 'margin-top: 100px;' : '' %>">
         <%- include ./partials/page-title %>
         <!-- Container-fluid starts-->
         <%- body %>

@@ -1401,7 +1401,7 @@ $('table').on('click', 'tbody tr .add-user', function () {
   $('#addUserModal').modal('show');
 });
 
-$('#addBatchUser').on('click', function () {
+$('#addBatchUser, #mobileAddBatchUser').on('click', function () {
   $.ajax({
     method: 'POST',
     url: '/agent/usercounter',
@@ -2191,7 +2191,7 @@ user_pw.addEventListener('input', () => {
 user_pw_button.addEventListener('click', () => {
   if (user_pw.type === 'password') {
     user_pw.type = 'text';
-    user_pw_button.innerHTML = `<i class="fa-solid fa-eye-slash fa-lg"></i>`;
+    user_pw_button.innerHTML = `<i class="fa fa-eye-slash fa-lg"></i>`;
   } else {
     user_pw.type = 'password';
     user_pw_button.innerHTML = `<i class="fa fa-eye fa-lg"></i>`;
@@ -2437,18 +2437,6 @@ if (document.querySelector('#agentWithdrawBtn')) {
 }
 // #endregion
 
-// #region 포인트전환 모달
-document.querySelector('#exchange-submit').addEventListener('click', function () {
-  let exchange = {
-    reqExist: true,
-    reqPoint: parseInt(exchangePointInput, 10),
-  };
-  document.querySelector('#exchange-submit').disabled = true;
-  pushRequestBtn(exchange, 'exchange');
-});
-
-// #endregion
-
 // #region 에이전트 입출금 관련 함수
 let notice_text = document.querySelector('#confirm-text');
 
@@ -2645,7 +2633,7 @@ function pushRequestBtn(params, type) {
   `;
     modalId = `#agentExchangeModal`;
     reqBtn = document.querySelector('#exchange-submit');
-    data = { curPoint: params.reqPoint };
+    data = { reqPoint: params.reqPoint, afterPoint: params.afterPoint };
   }
 
   $.ajax({
@@ -3051,6 +3039,15 @@ document.addEventListener('DOMContentLoaded', function () {
       afterExchangeBalanceInput.value = ''; // 조건을 만족하지 않을 때 필드를 비웁니다.
       afterExchangePointInput.value = ''; // 조건을 만족하지 않을 때 필드를 비웁니다.
     }
+  });
+
+  document.querySelector('#exchange-submit').addEventListener('click', function () {
+    let exchange = {
+      reqExist: true,
+      reqPoint: parseInt(exchangePointInput.value, 10),
+    };
+    document.querySelector('#exchange-submit').disabled = true;
+    pushRequestBtn(exchange, 'exchange');
   });
 });
 
@@ -3862,29 +3859,53 @@ function agentCheckNoti() {
     .done(function (result) {
       const qnaIcon = document.querySelector('#qnaIcon > i');
       const messageIcon = document.querySelector('#messageIcon > i');
+      const mobileQnaBtn = document.querySelector('#mobileQnaBtn');
+      const mobileMessageBtn = document.querySelector('#mobileMsgBtn');
 
-      if (result.question) {
-        qnaIcon.classList.remove('fa-2x');
-        qnaIcon.classList.add('fa-3x');
-        qnaIcon.classList.remove('text-secondary');
-        qnaIcon.classList.add('txt-secondary');
-        qnaIcon.style.animation = 'tada 1.5s ease infinite';
-      } else {
-        qnaIcon.classList.remove('fa-3x');
-        qnaIcon.classList.add('fa-2x');
-        qnaIcon.classList.add('text-secondary');
-        qnaIcon.classList.remove('txt-secondary');
-        qnaIcon.style.animation = 'none';
+      if (mobileQnaBtn) {
+        if (result.question) {
+          mobileQnaBtn.classList.remove('asset-dark');
+          mobileQnaBtn.classList.add('asset-danger');
+        } else {
+          mobileQnaBtn.classList.remove('asset-danger');
+          mobileQnaBtn.classList.add('asset-dark');
+        }
+
+        if (result.message) {
+          mobileMessageBtn.classList.remove('asset-dark');
+          mobileMessageBtn.classList.add('asset-danger');
+        } else {
+          mobileMessageBtn.classList.remove('asset-danger');
+          mobileMessageBtn.classList.add('asset-dark');
+        }
       }
 
-      if (result.message) {
-        messageIcon.classList.remove('text-secondary');
-        messageIcon.classList.add('txt-secondary');
-        messageIcon.style.animation = 'tada 1.5s ease infinite';
-      } else {
-        messageIcon.classList.add('text-secondary');
-        messageIcon.classList.remove('txt-secondary');
-        messageIcon.style.animation = 'none';
+      if (qnaIcon) {
+        if (result.question) {
+          qnaIcon.classList.remove('fa-2x');
+          qnaIcon.classList.add('fa-3x');
+          qnaIcon.classList.remove('text-secondary');
+          qnaIcon.classList.add('txt-secondary');
+          qnaIcon.style.animation = 'tada 1.5s ease infinite';
+        } else {
+          qnaIcon.classList.remove('fa-3x');
+          qnaIcon.classList.add('fa-2x');
+          qnaIcon.classList.add('text-secondary');
+          qnaIcon.classList.remove('txt-secondary');
+          qnaIcon.style.animation = 'none';
+        }
+      }
+
+      if (messageIcon) {
+        if (result.message) {
+          messageIcon.classList.remove('text-secondary');
+          messageIcon.classList.add('txt-secondary');
+          messageIcon.style.animation = 'tada 1.5s ease infinite';
+        } else {
+          messageIcon.classList.add('text-secondary');
+          messageIcon.classList.remove('txt-secondary');
+          messageIcon.style.animation = 'none';
+        }
       }
 
       if (result.question && result.message) {

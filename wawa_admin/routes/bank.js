@@ -187,17 +187,19 @@ router.post('/agent/exchange', function (req, res) {
     params.agentType = req.user[0].type;
     params.type = '포인트전환';
     params.balance = req.user[0].slot_balance + req.user[0].casino_balance;
+    params.afterPoint = req.user[0].point - req.body.reqPoint;
+    console.log('포인트', params);
     exchangePoint(res, params);
   }
 });
 
-//todo 하는 중
 async function exchangePoint(res, params) {
   let conn = await pool.getConnection();
   let exchangePoint = mybatisMapper.getStatement('bank', 'exchangePoint', params, sqlFormat);
   let exchangePointLog = mybatisMapper.getStatement('bank', 'exchangePointLog', params, sqlFormat);
   let exchangeBalanceLog = mybatisMapper.getStatement('bank', 'exchangeBalanceLog', params, sqlFormat);
 
+  console.log('포인트전환 파라미터', params);
   try {
     await conn.beginTransaction();
     await conn.query(exchangePoint);
@@ -1175,11 +1177,10 @@ async function insertRequestQuery(res, type, params) {
 
     let checkBankState = mybatisMapper.getStatement('bank', 'checkBankState', params, sqlFormat);
     let bankState = await conn.query(checkBankState);
-    console.log(bankState[0].bank_req_state);
 
     if (bankState[0].bank_req_state == 'n') {
       params.bankState = 'y';
-      updateReqstate(params); // Assuming this is a synchronous function. If it's not, you should await it.
+      updateReqstate(params);
 
       let sqlType = type == 'deposit' ? 'insertReqDeposit' : 'insertReqWithdraw';
       let insertReqSql = mybatisMapper.getStatement('bank', sqlType, params, sqlFormat);

@@ -246,4 +246,23 @@
     <script class="empty-template"
       type="text/x-handlebars-template"><div class="EmptyMessage">Your search turned up 0 results. This most likely means the backend is down, yikes!</div></script>
   </div>
+  <% if (user.type != 9) { %>
+  <div class="header-btn d-block d-lg-none row m-0 text-center">
+    <div class="btn-group">
+      <button type="button" class="btn btn-sm asset-dark p-1" id="mobileQnaBtn" data-bs-toggle="modal"
+        data-bs-target="#agentQuestionModal">문의</button>
+      <button type="button" class="btn btn-sm asset-dark p-1" id="mobileMsgBtn" data-bs-toggle="modal"
+        data-bs-target="#agentMessageModal">쪽지</button>
+      <button type="button" class="btn btn-sm asset-dark p-1" data-bs-toggle="modal"
+        data-bs-target="#agentExchangeModal">롤링금 전환</button>
+      <button type="button" class="btn btn-sm asset-dark p-1" data-bs-toggle="modal"
+        data-bs-target="#agentDepositModal">입금신청</button>
+      <button type="button" class="btn btn-sm asset-dark p-1" data-bs-toggle="modal"
+        data-bs-target="#agentWithdrawModal">출금신청</button>
+      <% if (user.type === 3) { %>
+      <button type="button" class="btn btn-sm asset-dark p-1" id="mobileAddBatchUser">회원 생성</button>
+      <% } %>
+    </div>
+  </div>
+  <% } %>
 </div>
