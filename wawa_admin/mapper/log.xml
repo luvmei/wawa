@@ -156,7 +156,7 @@
       u.type AS 회원타입
     FROM log_hl_betting_detail AS d 
     JOIN wawa.user AS u ON u.id = d.user_id
-    JOIN wawa.game_list AS g ON d.game_id = g.uuid
+    LEFT JOIN wawa.game_list AS g ON d.provider_name = g.provider AND d.game_id = g.uuid
     JOIN wawa.system_tree AS t ON u.upper_agt = t.user_id
     <where>      
       SUBSTR(event_date, 1, 16) 

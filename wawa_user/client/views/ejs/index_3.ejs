@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title><%= title %></title>
+
+  <!-- site favicon -->
+  <link rel="icon" type="image/png" href="/public/custom/type_3/favicon/favicon.png" />
+
+  <!-- All stylesheet and icons css -->
+  <!-- <link rel="stylesheet" href="/public/output/styles.css" /> -->
+  <link rel="stylesheet" href="/public/vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="/public/vendor/bootstrap-icons/bootstrap-icons.css" />
+  <link href="https://cdn.datatables.net/v/dt/dt-1.13.7/r-2.5.0/datatables.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/public/vendor/aos/aos.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <link rel="stylesheet" href="/public/custom/type_3/css/style_3.css" />
+</head>
+<%- include('modal.html') %>
+
+<body>
+  <% if (landing && !isLogin) { %>
+  <div class="landing">
+    <div id="landing-langBtn" class="langBtn"></div>
+    <div id="landing-langLst" class="list-group text-start langLst">
+      <a href="#" data-value="ko" class="list-group-item list-group-item-action">
+        <img src="/public/images/flag/1x1/ko.svg" />
+      </a>
+      <a href="#" data-value="us" class="list-group-item list-group-item-action">
+        <img src="/public/images/flag/1x1/us.svg" />
+      </a>
+      <a href="#" data-value="cn" class="list-group-item list-group-item-action">
+        <img src="/public/images/flag/1x1/cn.svg" />
+      </a>
+      <a href="#" data-value="th" class="list-group-item list-group-item-action">
+        <img src="/public/images/flag/1x1/th.svg" />
+      </a>
+      <a href="#" data-value="vn" class="list-group-item list-group-item-action">
+        <img src="/public/images/flag/1x1/vn.svg" />
+      </a>
+    </div>
+    <div class="landing-login">
+      <form id="landing-login-data">
+        <div class="form-floating mb-3">
+          <input type="text" class="form-control" id="landing-id" name="id" placeholder="ID" autocomplete="off">
+          <label for="landingId">ID</label>
+        </div>
+        <div class="form-floating">
+          <input type="password" class="form-control" id="landing-pw" name="pw" placeholder="Password"
+            autocomplete="off">
+          <label for="landingPw">Password</label>
+        </div>
+        <div class="mt-1 login-message text-danger">
+          <br />
+        </div>
+        <div class="input-group my-2 w-100">
+          <img src="/user/captcha" class="captcha-img bg-white border rounded-start" alt="CAPTCHA"
+            onclick="loadCaptcha()">
+          <input type="text" class="form-control captcha-input" placeholder="이미지 클릭 시 새로고침" name="captcha" maxlength="3"
+            required />
+        </div>
+        <button class="btn w-100 mt-3 py-2" type="submit" id="landing-login-btn">로그인</button>
+        <button class="btn btn-primary w-100 mt-2 py-2" type="button" data-bs-toggle="modal" data-bs-target="#joinModal"
+          id="landing-join-btn">회원가입</button>
+      </form>
+    </div>
+  </div>
+  <% } %>
+  <div class="not-landing <% if(landing && !isLogin) { %> d-none <% } %>">
+    <div class="spinner-container d-none">
+      <div class="spinner-border text-light" role="status"></div>
+    </div>
+    <div class="sns-pc d-none">
+      <div class="telegram">
+        <img src="/public/images/telegram.png" alt="telegram" />
+        <span class="text-center">
+          <a href="https://t.me/#" class="ps-2" target="_blank">WAWALINE</a>
+        </span>
+      </div>
+      <div class="kakao mt-2">
+        <img src="/public/images/kakao.png" alt="kakao" />
+        <span class="text-center ps-2">WAWALINE</span>
+      </div>
+    </div>
+    <div class="dummy">
+      <div class="d-none" id="nav-logout"></div>
+      <div class="d-none" id="main-popular"></div>
+      <div class="d-none" id="main-new"></div>
+      <div class="d-none" id="main-casino"></div>
+      <div class="d-none" id="main-slots"></div>
+      <div class="d-none" id="main-showAll"></div>
+      <div class="d-none offcanvas-body">
+        <div class="d-none login"></div>
+        <div class="d-none logout"></div>
+        <div class="d-none notice"></div>
+        <div class="d-none deposit"></div>
+        <div class="d-none withdraw"></div>
+        <div class="d-none reward"></div>
+        <div class="d-none question"></div>
+      </div>
+      <div class="d-none" id="mobileLotteryList"></div>
+      <div class="d-none" id="mobileAttendance"></div>
+      <div class="d-none" id="landing-login-btn"></div>
+      <div class="d-none" id="landing-join-btn"></div>
+
+      <div class="d-none" id="mobileUserInfo"></div>
+      <div class="d-none" id="mobileMessage"></div>
+      <div class="d-none" id="mobileQuestion"></div>
+    </div>
+
+    <!-- ======= PC_Header ======= -->
+    <header class="pc-header align-items-center d-none d-lg-block">
+      <div class="login-buttons">
+        <div class="container">
+          <% if(!isLogin) { %>
+          <div class="row justify-content-end align-items-center" id="beforeLoginNavbar">
+            <button class="col-1 btn btn-sm btn-warning me-3" id="nav-login" data-bs-toggle="modal"
+              data-bs-target="#loginModal">로그인</button>
+            <button class="sign col-1 btn btn-sm btn-warning me-5" id="nav-join" data-bs-toggle="modal"
+              data-bs-target="#joinModal">회원가입</button>
+          </div>
+          <% } else { %>
+          <div class="row justify-content-around align-items-center" id="afterLoginNavbar">
+            <div class="col-1 btn btn-sm btn-outline-danger">보유금</div>
+            <div class="col-2 user-money text-start" id="navBalance">
+              <%= (user[0].slot_balance + user[0].casino_balance).toLocaleString('ko-KR') %></div>
+            <div class="col-1 btn btn-sm btn-outline-danger">롤링금</div>
+            <div class="col-2 user-point text-start" id="navPoint"><%= user[0].point.toLocaleString('ko-KR') %></div>
+            <div class="col-3 user-name px-0" id="nav-user">
+              <sapn class="btn btn-sm btn-outline-danger me-2">LV. <%= user[0].level %></sapn>
+              <span><%= user[0].nickname %> [<%= user[0].id %>]</span>
+              <span> 님</span>
+              <span class="dropdown ms-2 d-none">
+                <i class="bi bi-gear-fill login-icons" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                <ul class="dropdown-menu dropdown-menu-dark">
+                  <!-- <li><button class="dropdown-item changeNick" type="button">닉네임 변경</button></li> -->
+                  <li><button class="dropdown-item changePassword" type="button">비밀번호 변경</button></li>
+                </ul>
+              </span>
+            </div>
+            <a class="me-3 d-none" id="nav-login" data-bs-toggle="modal" data-bs-target="#loginModal">로그인</a>
+            <a class="sign d-none" id="nav-join" data-bs-toggle="modal" data-bs-target="#joinModal">회원가입</a>
+            <div class="col-1 logout ms-3 btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#logoutModal"
+              id="nav-logout">로그아웃
+            </div>
+            <div class="col-2 langBtn">
+              <!-- <img src="/public/images/flag/1x1/ko.svg" /> -->
+            </div>
+          </div>
+          <% } %>
+        </div>
+      </div>
+      <nav class="navbar">
+        <div class="container">
+          <div class="row">
+            <div class="col-5">
+              <a class="nav-link">로고자리</a>
+            </div>
+            <div class="col">
+              <a class="nav-link" id="nav-notice">공지</a>
+            </div>
+            <div class="col">
+              <a class="nav-link" id="nav-deposit">입금</a>
+            </div>
+            <div class="col">
+              <a class="nav-link" id="nav-withdraw">출금</a>
+            </div>
+            <div class="col">
+              <a class="nav-link" id="nav-reward">콤프</a>
+            </div>
+            <div class="col">
+              <a class="nav-link" id="nav-question">문의</a>
+            </div>
+            <div class="col">
+              <a class="nav-link" id="nav-message">메세지</a>
+            </div>
+            <div class="col<% if (attendance == '0') { %> d-none <% } %>">
+              <a class="nav-link" id="nav-attendance">출석체크</a>
+            </div>
+            <div class="col<% if (lotto == '0') { %> d-none <% } %>">
+              <a class="nav-link" id="nav-lotteryList">로또</a>
+            </div>
+            <div class="col">
+              <a class="nav-link" id="nav-userInfo">회원정보</a>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <header class="mobile-header d-block d-lg-none">
+      <div class="row w-100">
+        <div class="col-6">
+          <a class="nav-link">로고자리</a>
+        </div>
+        <% if(!isLogin) { %>
+        <div class="col-6 text-end">
+          <button class="btn btn-sm btn-warning me-1" id="mobile-login" data-bs-toggle="modal"
+            data-bs-target="#loginModal">로그인</button>
+          <button class="btn btn-sm btn-warning" id="mobile-join" data-bs-toggle="modal"
+            data-bs-target="#joinModal">회원가입</button>
+        </div>
+        <% } else { %>
+        <div class="col-6 text-end">
+          <button class="btn btn-sm btn-warning me-1" id="mobile-logout" data-bs-toggle="modal"
+            data-bs-target="#logoutModal">로그아웃</button>
+          <button class="btn btn-sm btn-warning" id="mobile-userInfo" data-bs-toggle="modal"
+            data-bs-target="#userInfoModal">회원정보</button>/
+        <% } %>
+      </div>
+    </header>
+
+
+    <!-- <header class="mobile-header d-flex d-lg-none">
+      <div class="row">
+        <div class="col-6">
+          <a class="nav-link">로고자리</a>
+        </div>
+        <div class="col-6 text-end">
+          <button class="col btn btn-sm btn-warning me-2" id="mobile-login" data-bs-toggle="modal"
+            data-bs-target="#loginModal">로그인</button>
+          <button class="col btn btn-sm btn-warning me-2" id="mobile-join" data-bs-toggle="modal"
+            data-bs-target="#joinModal">회원가입</button>
+        </div>
+      </div>
+    </header> -->
+
+    <!-- ======= Main ======= -->
+    <div id="main-section">
+      <div class="container text-center">
+        <div class="carousel"></div>
+        <div class="game-selector">
+          <div class="row g-2">
+            <div class="col-12 col-md-6 casinoSelector">
+              <img src="/public/custom/type_3/icon/tab_btn_01.png" alt="casino" />
+            </div>
+            <div class="col-12 col-md-6 slotSelector">
+              <img src="/public/custom/type_3/icon/tab_btn_02.png" alt="slot" />
+            </div>
+          </div>
+        </div>
+        <div id="information">
+          <div class="row mx-auto mx-lg-0">
+            <div class="col-12" id="jackpot">
+              <span id="counter"></span>
+            </div>
+            <div class="d-none col-12 col-md-6 col-lg-6">
+              <div id='notice-list' class="overflow-hidden">
+                <nav>
+                  <div class="nav nav-pills nav-justified" role="tablist">
+                    <button class="nav-link event" id="info-event-tab" data-bs-toggle="tab"
+                      data-bs-target="#info-event-content" type="button" role="tab" aria-controls="info-event-content"
+                      aria-selected="false">이벤트</button>
+                    <button class="nav-link notice active" id="info-notice-tab" data-bs-toggle="tab"
+                      data-bs-target="#info-notice-content" type="button" role="tab" aria-controls="info-notice-content"
+                      aria-selected="true">공지사항</button>
+                  </div>
+                </nav>
+                <div class="tab-content" id="nav-tabContent">
+                  <div class="tab-pane fade show active" id="info-event-content" role="tabpanel" tabindex="0">
+                    <div class="list-group event marquee">
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="info-notice-content" role="tabpanel" tabindex="0">
+                    <div class="list-group notice marquee">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="d-none col-12 col-md-6 col-lg-6">
+              <div id='bank-list' class="overflow-hidden">
+                <nav>
+                  <div class="nav nav-pills nav-justified" role="tablist">
+                    <button class="nav-link withdraw active" id="info-withdraw-tab" data-bs-toggle="tab"
+                      data-bs-target="#info-withdraw-content" type="button" role="tab"
+                      aria-controls="info-withdraw-content" aria-selected="false">실시간 출금내역</button>
+                    <button class="nav-link deposit" id="info-deposit-tab" data-bs-toggle="tab"
+                      data-bs-target="#info-deposit-content" type="button" role="tab"
+                      aria-controls="info-deposit-content" aria-selected="true">실시간 입금내역</button>
+                  </div>
+                </nav>
+                <div class="tab-content" id="nav-tabContent">
+                  <div class="tab-pane fade show active" id="info-withdraw-content" role="tabpanel" tabindex="0">
+                    <div class="list-group withdraw marquee">
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="info-deposit-content" role="tabpanel" tabindex="0">
+                    <div class="list-group deposit marquee">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer>
+        <div class="container text-center">
+          <img src="/public/images/footer/partners.png" class="partners" />
+          <div class="copyright d-none d-lg-block">Copyright 2023. WAWA LINE. All rights reserved.</div>
+        </div>
+      </footer>
+    </div>
+</body>
+<script src="/public/bundle/bundle.js" defer></script>
+<!-- <script src="/public/vendor/bootstrap/bootstrap.bundle.min.js"></script> -->
+
+</html>

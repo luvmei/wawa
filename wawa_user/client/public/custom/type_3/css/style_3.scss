@@ -1,0 +1,1387 @@
+@import '../../../../public/css/font.scss';
+
+/*--------------------------------------------------------------
+# Color
+--------------------------------------------------------------*/
+$primary: #001676;
+$secondary: #af0e1c;
+$modal-primary: #000;
+$modal-secondary: rgba(0, 0, 0, 0.6);
+$font-primary: #ffc451;
+$font-secondary: #ffc451;
+$point: #896e1e;
+$alert: #f95668;
+
+/*--------------------------------------------------------------
+# General
+--------------------------------------------------------------*/
+body::-webkit-scrollbar,
+html::-webkit-scrollbar {
+  display: none;
+}
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+body {
+  font-family: 'SCoreDream', sans-serif;
+  // font-family: 'Noto Sans KR', sans-serif;
+  overflow-y: overlay;
+  background-color: #000;
+  // padding-right: 0 !important;
+}
+
+@media Screen and (max-width: 430px) {
+  html,
+  body {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+}
+
+a {
+  color: $point;
+  text-decoration: none;
+
+  &:hover {
+    color: $point;
+    text-decoration: none;
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+h3 {
+  font-size: 1.2rem;
+}
+
+h4 {
+  font-size: 1rem;
+}
+
+h5 {
+  font-size: 0.8rem;
+}
+h6 {
+  font-size: 0.6rem;
+}
+
+.asset-danger {
+  color: #b02a37;
+  background-color: #f8d7da;
+  border-color: #f1aeb5;
+
+  &:hover,
+  &:focus {
+    background-color: #f1aeb5;
+  }
+}
+
+.asset-warning {
+  color: #997404;
+  background-color: #fff3cd;
+  border-color: #ffe69c;
+
+  &:hover,
+  &:focus {
+    background-color: #ffe69c;
+  }
+}
+
+.asset-primary {
+  color: #0a58ca;
+  background-color: #cfe2ff;
+  border-color: #9ec5fe;
+
+  &:hover,
+  &:focus {
+    background-color: #9ec5fe;
+  }
+}
+
+.asset-secondary {
+  color: #6c757d;
+  background-color: #f8f9fa;
+  border-color: #e9ecef;
+
+  &:hover,
+  &:focus {
+    background-color: #e9ecef;
+  }
+}
+
+.asset-success {
+  color: #146c43;
+  background-color: #d1e7dd;
+  border-color: #a3cfbb;
+
+  &:hover,
+  &:focus {
+    background-color: #a3cfbb;
+  }
+}
+
+.asset-dark {
+  color: #495057;
+  background-color: #ced4da;
+  border-color: #adb5bd;
+
+  &:hover,
+  &:focus {
+    background-color: #adb5bd;
+  }
+}
+
+.pastel-danger {
+  color: #ffbdc2;
+}
+
+.pastel-primary {
+  color: #b7d5ff;
+}
+
+.bg-pastel-danger {
+  background-color: #fff9fa !important;
+}
+
+.bg-pastel-primary {
+  background-color: #b7d5ff !important;
+}
+
+.bg-pastel-success {
+  background-color: #f7fffb !important;
+}
+/*--------------------------------------------------------------
+#  Modal 
+--------------------------------------------------------------*/
+.modal {
+  color: white;
+
+  .back-btn {
+    cursor: pointer;
+  }
+
+  .modal-content {
+    border-radius: 0 !important;
+    border: 10px solid #242424;
+    background-color: #181818;
+    // background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url(/public/custom/type_2/bg/modal_bg.webp);
+    // background-repeat: no-repeat;
+    // background-size: cover;
+    // background-position: center;
+
+    padding: 1.5rem;
+
+    .modal-header,
+    .modal-footer {
+      border: none;
+
+      .btn {
+        font-size: 1.1rem;
+      }
+    }
+
+    .modal-header {
+      height: 40px;
+      font-size: 1.2rem;
+
+      .modal-title {
+        font-weight: 600;
+        font-size: 1.4rem;
+        color: $point;
+      }
+    }
+
+    .modal-body {
+      .form-check {
+        label {
+          color: rgb(175, 175, 175);
+        }
+      }
+    }
+  }
+
+  &.login {
+    .modal-content {
+      .form-floating {
+        .form-control,
+        .form-select {
+          height: 50px;
+          font-size: 0.9rem;
+        }
+
+        label {
+          padding: 0.75rem 0.75rem;
+        }
+      }
+    }
+    .description {
+      font-size: 1.1rem;
+      margin-left: 0.5rem;
+      font-weight: 500;
+      color: red;
+      text-decoration: none;
+    }
+
+    .login-message {
+      color: $alert;
+    }
+
+    #login-btn,
+    #change-nick-btn,
+    #change-password-btn {
+      border: 2px solid $point;
+      font-weight: 700;
+      color: $primary;
+      background-color: $point;
+      width: 100%;
+      height: 50px;
+      transition: all 0.3s;
+
+      &:hover {
+        filter: brightness(0.7);
+      }
+    }
+
+    a {
+      font-size: 1.1rem;
+      margin-left: 0.5rem;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.5);
+      text-decoration: none;
+      cursor: pointer;
+
+      &:hover {
+        filter: brightness(0.7);
+      }
+    }
+
+    #login-join {
+      color: $point;
+    }
+  }
+
+  &.join {
+    .modal-dialog {
+      max-width: 1000px;
+      .modal-content {
+        .form-select {
+          height: 50px;
+          font-size: 1rem;
+        }
+        .form-floating {
+          .form-control {
+            color: #000 !important;
+            height: 50px;
+          }
+
+          label {
+            font-weight: 500;
+            color: $primary;
+            padding: 0.8rem 0.75rem;
+          }
+        }
+
+        .btn {
+          font-weight: 500;
+          color: $point;
+          background-color: rgba(0, 0, 0, 0.5);
+          font-size: 0.9rem;
+          border: 1px solid $point;
+
+          &:hover,
+          &:focus {
+            box-shadow: rgb(255, 193, 7) 0px 0px 5px 3px inset;
+          }
+        }
+
+        .description {
+          color: rgba(255, 255, 255, 0.5);
+          margin-top: 8px;
+          margin-left: 7px;
+          font-size: 0.95rem;
+        }
+      }
+    }
+    #join-btn {
+      font-weight: 700;
+      background-color: $point;
+      width: 100%;
+      height: 50px;
+      color: black;
+      font-size: 1.2rem;
+      transition: all 0.3s;
+
+      &.notice {
+        background-color: #ffdbdb;
+        color: $alert;
+        border: 1px solid $alert;
+      }
+
+      &:hover {
+        filter: brightness(0.7);
+      }
+    }
+
+    a {
+      font-size: 1.2rem;
+      margin-left: 0.5rem;
+      font-weight: 700;
+      color: $point;
+      text-decoration: none;
+      cursor: pointer;
+
+      &:hover {
+        color: $point;
+        filter: brightness(0.7);
+      }
+    }
+  }
+
+  &.deposit,
+  &.withdraw,
+  &.reward {
+    .modal-content {
+      padding: 2rem 2rem 1rem 2rem;
+
+      .modal-body {
+        .check {
+          h3 {
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
+          }
+
+          p {
+            font-size: 1rem;
+            font-weight: 300;
+            color: #d6d6d6;
+          }
+
+          a {
+            color: $point;
+            cursor: pointer;
+            font-weight: 700;
+          }
+        }
+
+        .form {
+          font-weight: 500;
+          font-size: 1.1rem;
+          .row {
+            background-color: $modal-secondary;
+            border-radius: 10px;
+
+            #deposit-bank-value {
+              text-align: center;
+              font-size: 0.95rem;
+            }
+
+            hr {
+              border: 1px solid $point;
+              text-align: center;
+              opacity: 0.7;
+              width: 110%;
+              margin-left: auto;
+              margin-right: auto;
+            }
+
+            div {
+              margin: 7px 0;
+              &:nth-child(1),
+              &:nth-child(2),
+              &:nth-child(4),
+              &:nth-child(7),
+              &:nth-child(8),
+              &:nth-child(17),
+              &:nth-child(18),
+              &:nth-child(19),
+              &:nth-child(20),
+              &:nth-child(21) {
+                color: $point;
+              }
+            }
+
+            .btn {
+              width: 100%;
+              background-color: $point;
+              color: black;
+              font-size: 0.9rem;
+              font-weight: 600;
+
+              &.btn-light {
+                background-color: white;
+              }
+
+              &.history {
+                background-color: transparent !important;
+                color: $point;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &.userInfo {
+    .modal-dialog {
+      max-width: 400px !important;
+      .modal-content {
+        font-size: 1.1rem;
+        padding: 1rem 1rem 0.5rem 1rem;
+
+        .modal-body {
+          padding: 1.5rem;
+          background-image: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)), url(/public/custom/type_2/bg/modal_bg.webp);
+          background-repeat: no-repeat;
+          background-size: cover;
+          background-position: center;
+          border-radius: 5px;
+
+          .row {
+            i {
+              padding-right: 10px;
+            }
+            .type {
+              color: darken($point, 5%);
+              &.bankInfo {
+                padding: 0 0 0 35px !important;
+              }
+            }
+            .value {
+              text-align: right;
+            }
+            .col-4 {
+              padding: 5px !important;
+
+              .historyBtn {
+                font-size: 0.9rem;
+                width: 100%;
+                padding: 10px 6px;
+              }
+            }
+
+            div {
+              margin-bottom: 10px;
+
+              &.bankName {
+                color: $point;
+              }
+
+              &.maintenance {
+                font-size: 0.9rem;
+                font-weight: 300;
+                padding: 0;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &.withdraw {
+    .input-group {
+      text-align: center;
+      .input-group-text {
+        background-color: $modal-primary;
+        color: $point;
+        border: 1px solid $point;
+        width: 40%;
+      }
+    }
+    .form-control {
+      border: none;
+    }
+  }
+
+  &.bankTime {
+    .modal-content {
+      .modal-body {
+        .row {
+          div {
+            margin-bottom: 10px;
+
+            &.bankName {
+              color: $point;
+            }
+
+            &.maintenance {
+              font-size: 0.9rem;
+              font-weight: 300;
+              padding: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &.reward {
+    .modal-content {
+      padding: 1rem 1rem 0.5rem 1rem;
+      .modal-body {
+        padding: 1rem 0.5rem;
+        .row {
+          div {
+            &:nth-child(2),
+            &:nth-child(18),
+            &:nth-child(19) {
+              color: white !important;
+            }
+            &:nth-child(3),
+            &:nth-child(15),
+            &:nth-child(17) {
+              color: $point;
+            }
+          }
+          // #reward-after-text {
+          //   color: $points;
+          // }
+        }
+      }
+    }
+  }
+
+  &.notice {
+    --bs-modal-width: 400px;
+    .modal-content {
+      box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+      .modal-header {
+        height: auto;
+        padding: 0;
+        i {
+          font-size: 2.5rem;
+          color: $point;
+        }
+      }
+      .modal-footer {
+        .btn {
+          font-weight: 500;
+        }
+      }
+    }
+
+    &#logoutModal {
+      .modal-content {
+        border: 2px solid #dc3545;
+        i {
+          color: #dc3545;
+        }
+      }
+    }
+  }
+
+  &.question,
+  &.message,
+  &.bankHistory {
+    .modal-content {
+      color: #000;
+      padding: 1.5rem 1rem 0 1rem;
+
+      .modal-body {
+        margin-top: 10px;
+        padding: 20px;
+        background-color: #fff;
+      }
+    }
+
+    &#reqQuestionModal,
+    &#viewQuestionModal,
+    &#viewMessageModal,
+    &#readNoticeModal {
+      .modal-dialog {
+        .modal-content {
+          padding: 1.5rem 1.2rem 1rem 1.2rem;
+          .modal-body {
+            background-color: $modal-secondary;
+          }
+        }
+      }
+    }
+  }
+
+  &.popup {
+    overflow: hidden !important;
+    .modal-dialog {
+      padding: 0;
+      .modal-content {
+        background-color: #000;
+        background-image: none;
+        max-width: 460px;
+        height: 760px;
+        padding: 0;
+        border: 1px solid rgba(255, 193, 7, 0.5);
+        font-size: 1.15rem;
+        color: rgb(214, 214, 214);
+
+        .modal-header {
+          display: none;
+        }
+
+        .modal-body {
+          padding: 30px;
+        }
+
+        .form-floating {
+          .form-control,
+          .form-select {
+            height: 50px;
+            font-size: 0.9rem;
+          }
+
+          label {
+            padding: 0.75rem 0.75rem;
+          }
+        }
+      }
+    }
+
+    .popup-count-2 {
+      &.popup-order-1 {
+        right: 50%;
+      }
+
+      &.popup-order-2 {
+        left: 50%;
+      }
+    }
+
+    .popup-count-3 {
+      &.popup-order-1 {
+        right: 100%;
+      }
+
+      &.popup-order-3 {
+        left: 100%;
+      }
+    }
+
+    .popup-count-4 {
+      &.popup-order-1 {
+        right: 137.5%;
+      }
+
+      &.popup-order-2 {
+        right: 42.5%;
+      }
+
+      &.popup-order-3 {
+        left: 52.5%;
+      }
+
+      &.popup-order-4 {
+        left: 147.5%;
+      }
+    }
+
+    .popup-count-5 {
+      &.popup-order-1 {
+        right: 137.5%;
+      }
+
+      &.popup-order-2 {
+        right: 42.5%;
+      }
+
+      &.popup-order-3 {
+        left: 52.5%;
+      }
+
+      &.popup-order-4 {
+        left: 147.5%;
+      }
+
+      &.popup-order-5 {
+        left: 147.5%;
+      }
+    }
+
+    #noticePopupImage {
+      width: 100% !important;
+      margin-bottom: 16px;
+    }
+  }
+
+  &#slotModal {
+    .modal-content {
+      background-attachment: fixed;
+    }
+  }
+}
+
+#popup1 {
+  z-index: 1057;
+}
+#popup2 {
+  z-index: 1058;
+}
+#popup3 {
+  z-index: 1059;
+}
+#popup4 {
+  z-index: 1060;
+}
+#popup5 {
+  z-index: 1061;
+}
+
+#attendanceTable {
+  .countinueCounter,
+  #attendanceBtn {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+  }
+
+  table {
+    font-weight: bolder;
+    color: #000;
+    background-color: #fff;
+    tbody {
+      border-radius: 5px;
+      td {
+        width: 80px;
+        height: 100px;
+        padding: 8px;
+        &.checked {
+          background-color: rgba(255, 196, 81, 0.5);
+          background-image: url('/public/images/attendance.png');
+          background-repeat: no-repeat;
+          background-size: 60px 60px;
+          background-position: center 60%;
+        }
+      }
+    }
+  }
+}
+
+.modal-backdrop {
+  opacity: 0.6 !important;
+}
+
+@media screen and (max-width: 992px) {
+  .modal {
+    &.popup {
+      .modal-dialog {
+        .modal-content {
+          height: 670px;
+        }
+      }
+
+      .popup-count-2 {
+        &.popup-order-1 {
+          right: auto;
+        }
+
+        &.popup-order-2 {
+          left: auto;
+        }
+      }
+
+      .popup-count-3 {
+        &.popup-order-1 {
+          right: auto;
+        }
+
+        &.popup-order-3 {
+          left: auto;
+        }
+      }
+
+      .popup-count-4 {
+        &.popup-order-1 {
+          right: auto;
+        }
+
+        &.popup-order-2 {
+          right: auto;
+        }
+
+        &.popup-order-3 {
+          left: auto;
+        }
+
+        &.popup-order-4 {
+          left: auto;
+        }
+      }
+
+      .popup-count-5 {
+        &.popup-order-1 {
+          right: auto;
+        }
+
+        &.popup-order-2 {
+          right: auto;
+        }
+
+        &.popup-order-3 {
+          left: auto;
+        }
+
+        &.popup-order-4 {
+          left: auto;
+        }
+
+        &.popup-order-5 {
+          left: auto;
+        }
+      }
+    }
+  }
+
+  #popup1 {
+    z-index: 1061;
+  }
+  #popup2 {
+    z-index: 1060;
+  }
+  #popup3 {
+    z-index: 1059;
+  }
+  #popup4 {
+    z-index: 1058;
+  }
+  #popup5 {
+    z-index: 1057;
+  }
+}
+
+@media screen and (max-width: 430px) {
+  .modal {
+    font-size: 0.8rem;
+
+    .modal-content {
+      padding: 1rem;
+      margin: 0 1rem;
+
+      .modal-header {
+        .modal-title {
+          font-size: 1.2rem;
+        }
+      }
+
+      .btn {
+        font-size: 0.7rem;
+      }
+
+      .join-text {
+        a {
+          font-size: 0.9rem;
+        }
+      }
+    }
+
+    &.login,
+    &.join {
+      .form-check {
+        padding-top: 0.2rem;
+      }
+
+      a {
+        font-size: 1rem;
+      }
+
+      #login-btn,
+      #join-btn {
+        font-size: 1rem;
+        color: #240057;
+        border: none;
+        background-color: $point;
+
+        &:active {
+          position: relative;
+          top: 1px;
+          left: 1px;
+          box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.42);
+        }
+      }
+    }
+
+    &.deposit,
+    &.withdraw {
+      .modal-content {
+        padding: 0.5rem;
+
+        .modal-title {
+          font-size: 1.2rem;
+        }
+
+        .modal-body {
+          .check {
+            margin-bottom: 2rem;
+
+            h3 {
+              font-size: 1rem;
+            }
+
+            p {
+              font-size: 0.8rem;
+              font-weight: 500;
+            }
+          }
+
+          .form {
+            font-size: 1rem;
+            .row {
+              .input-group {
+                .input-group-text,
+                .form-control {
+                  font-size: 0.8rem;
+                }
+              }
+              .btn {
+                font-size: 0.8rem;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    &.bankTime {
+      .modal-body {
+        .row {
+          div {
+            &.maintenance {
+              font-size: 0.8rem;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/*--------------------------------------------------------------
+# Header
+--------------------------------------------------------------*/
+.pc-header {
+  font-family: 'GmarketSansMedium', sans-serif;
+  width: 100%;
+
+  .login-buttons {
+    display: flex;
+    height: 65px;
+    align-items: center;
+
+    #beforeLoginNavbar {
+      #nav-login,
+      #nav-join {
+        border-radius: 50px;
+        padding-top: 8px;
+        font-size: 0.95rem;
+        color: white;
+      }
+      #nav-login {
+        border-color: $point !important;
+        background-color: black !important;
+        &:hover {
+          background-color: $point !important;
+        }
+      }
+      #nav-join {
+        border-color: $point !important;
+        background-color: $point !important;
+      }
+    }
+
+    #afterLoginNavbar {
+      color: white;
+
+      .btn-outline-danger {
+        padding-top: 8px !important;
+        border: 2px solid $point !important;
+        color: $point !important;
+      }
+
+      #nav-logout {
+        padding-top: 8px !important;
+        color: whitesmoke;
+        border-radius: 50px;
+        font-size: 0.95rem;
+        border-color: $point !important;
+        background-color: $point !important;
+      }
+    }
+  }
+
+  .navbar {
+    padding-top: 10px;
+    height: 60px;
+    background-color: #333;
+    border-bottom: 2px solid $point;
+
+    .row {
+      font-size: 1.1rem;
+      width: 100%;
+      color: whitesmoke;
+      .nav-link {
+        cursor: pointer;
+        &:hover {
+          color: $point;
+        }
+      }
+    }
+  }
+}
+
+.mobile-header {
+  width: 100%;
+  color: whitesmoke;
+  display: none !important;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 55px;
+  border-bottom: 2px solid $point;
+
+  .btn {
+    padding-top: 4px !important;
+    font-size: 0.8rem;
+  }
+  #mobile-login {
+    border-radius: 50px;
+    background-color: black;
+    color: white;
+    border: $point 2px solid;
+  }
+  #mobile-join {
+    border-radius: 50px;
+    background-color: $point;
+    color: white;
+    border: $point 2px solid;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .mobile-header {
+    display: flex !important;
+  }
+}
+
+/*--------------------------------------------------------------
+#  Main Section
+--------------------------------------------------------------*/
+@mixin icon-background($num) {
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('/public/custom/type_3/icon/tab_btn_0#{$num}_bg.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    filter: grayscale(100%);
+    filter: brightness(0.2);
+    transition: all 0.5s;
+  }
+}
+
+#main-section {
+  height: 100vh;
+  background-image: url('/public/custom/type_3/bg/main_bg.webp');
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: top;
+
+  .container {
+    .carousel {
+      background-image: url('/public/custom/type_3/bg/carousel_bg.png');
+      background-size: 40%;
+      background-repeat: no-repeat;
+      background-position: 100% 10%;
+      height: 480px;
+      background-color: transparent;
+    }
+    .game-selector {
+      .casinoSelector {
+        position: relative;
+        @include icon-background(1);
+        &:hover::before {
+          filter: grayscale(0%);
+          filter: brightness(1.2);
+        }
+      }
+
+      .slotSelector {
+        position: relative;
+        @include icon-background(2);
+        &:hover::before {
+          filter: grayscale(0%);
+          filter: brightness(1.2);
+        }
+      }
+
+      img {
+        width: 100%;
+        position: relative;
+        z-index: 0;
+        cursor: pointer;
+      }
+    }
+
+    #information {
+      color: white;
+
+      #jackpot {
+        position: relative;
+        // height: 13vh;
+        margin: 10px 0;
+        height: 180px;
+        font-family: 'Giants-Bold';
+        font-size: 2rem;
+        background-image: url(/public/custom/type_2/main/main_jackpot_bg.png);
+        background-repeat: no-repeat;
+        background-size: 100%;
+        background-position: center;
+        #counter {
+          position: absolute;
+          right: 4%;
+          top: 50%;
+          transform: translate(0, -50%);
+          font-size: 5rem;
+          font-family: 'Giants-Bold';
+          // font-weight: semi-bold;
+          // text-shadow: 3px 5px 2px #818181, 2px 2px 2px rgba(206, 89, 55, 0);
+          color: #f5f5f5;
+        }
+      }
+
+      .col-lg-6 {
+        padding: 0;
+        &:nth-child(2) {
+          padding-right: 3px;
+        }
+        &:nth-child(3) {
+          padding-left: 3px;
+        }
+      }
+
+      #lottery-list,
+      #notice-list,
+      #bank-list,
+      #win-list {
+        height: 9vw;
+        border: 3px solid $point;
+        border-radius: 10px;
+      }
+
+      #lottery-list,
+      #notice-list,
+      #bank-list {
+        background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(/public/custom/type_2/bg/live-bank.jpg);
+        background-repeat: no-repeat;
+        background-size: cover;
+
+        .nav-pills {
+          .nav-link {
+            font-size: 1.1rem;
+            font-family: 'GmarketSansMedium';
+            padding-top: 0.75rem;
+            background-color: transparent;
+            color: $point;
+            border-radius: 0;
+            padding-bottom: 6px;
+            &.active {
+              background-image: linear-gradient(to right, $point, $point);
+              background-repeat: no-repeat;
+              background-size: 65% 2px; /* 밑줄 길이와 두께 조절 */
+              background-position: center 100%; /* 가운데 정렬 및 Y 위치 조절 */
+              padding-bottom: 5px; /* 글자와 밑줄 사이의 간격 조절 */
+            }
+          }
+        }
+
+        .list-group-item {
+          color: white;
+          background-color: transparent;
+        }
+        .marquee {
+          padding-left: 5%;
+          text-align: left;
+          overflow: hidden;
+          &:hover {
+            color: red;
+          }
+        }
+      }
+
+      #notice-list {
+        background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(/public/custom/type_2/bg/spotlight.jpg);
+        .marquee {
+          height: 150px;
+        }
+      }
+
+      #lottery-list {
+        background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(/public/custom/type_2/main/ball_mix.webp),
+          url(/public/custom/type_2/main/ball_case.webp), url(/public/custom/type_2/bg/spotlight.jpg);
+        background-repeat: no-repeat;
+        background-size: cover, 23%, 23%, cover;
+        background-position: center, 95% 50%, 95% 50%, center;
+
+        .lottery-title,
+        .lottery-count {
+          font-size: 1.1rem;
+          font-family: 'GmarketSansMedium';
+          padding-top: 0.75rem;
+          background-color: transparent;
+          color: $point;
+          border-radius: 0;
+          padding-bottom: 6px;
+        }
+
+        .lottery-title {
+          padding-left: 30px;
+        }
+
+        .lottery-count {
+          font-size: 1.4rem;
+          font-weight: bold;
+        }
+
+        .marquee {
+          padding-left: 0;
+          &:hover {
+            color: white;
+          }
+        }
+
+        .ball {
+          font-size: 0.9rem;
+          display: inline-block;
+          width: 27px;
+          height: 27px;
+          line-height: 27px;
+          text-align: center;
+          border-radius: 50%;
+          color: white;
+          margin-right: 5px;
+          text-shadow: 1px 1px 1px black;
+
+          &.yellow {
+            background-color: #fac200;
+          }
+          &.blue {
+            background-color: #5bb4dd;
+          }
+          &.red {
+            background-color: #ff7272;
+          }
+          &.gray {
+            background-color: #aaaaaa;
+          }
+          &.green {
+            background-color: #b0d840;
+          }
+        }
+      }
+
+      #win-list {
+        background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(/public/custom/type_2/bg/spotlight.jpg);
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+    }
+  }
+}
+
+@media Screen and (max-width: 992px) {
+  #main-section {
+    background-size: 500%;
+    background-position: 50% 40%;
+
+    .container {
+      padding: 0;
+      margin: 0 !important;
+      
+      .carousel {
+        background-size: 65%;
+        background-position: 100% -55%;
+        height: 230px;
+      }
+      .game-selector {
+        img{
+          width: 90%;
+        }
+        
+      }
+      #information {
+        #jackpot {
+          background-image: url(/public/custom/type_3/main/main_m_jackpot_bg.png);
+          background-size: 90%;
+          margin: 10px 0;
+          height: 95px;
+          #counter {
+            top: 67%;
+            right: 17%;
+            padding-top: 5px;
+            font-size: 2.1rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+/*--------------------------------------------------------------
+#  Footer Section
+--------------------------------------------------------------*/
+footer {
+  background-color: #000;
+
+  .partners {
+    width: 1200px;
+    height: 180px;
+  }
+
+  .copyright {
+    color: rgb(105, 105, 105);
+    padding: 10px 0;
+    font-size: 1rem;
+  }
+}
+
+@media Screen and (max-width: 992px) {
+  footer {
+    .container {
+      margin: auto;
+      width: 100% !important;
+      .partners {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+}
+
+@media Screen and (max-width: 430px) {
+  footer {
+    .copyright {
+      font-size: 0.8rem;
+    }
+  }
+}

@@ -63,17 +63,19 @@ document.querySelector('.navbar').addEventListener('click', function (e) {
 });
 
 //? 모바일 모달열기
-document.querySelector('.sidebarMenu').addEventListener('click', function (e) {
-  // 초기에 클릭된 요소의 id를 체크하거나 형제 요소의 id를 사용합니다.
-  let elementId = e.target.id || (e.target.nextElementSibling ? e.target.nextElementSibling.id : null);
+if (document.querySelector('.sidebarMenu')) {
+  document.querySelector('.sidebarMenu').addEventListener('click', function (e) {
+    // 초기에 클릭된 요소의 id를 체크하거나 형제 요소의 id를 사용합니다.
+    let elementId = e.target.id || (e.target.nextElementSibling ? e.target.nextElementSibling.id : null);
 
-  // ID가 존재하는 경우에만 모달을 연다.
-  if (elementId) {
-    let strippedId = elementId.slice(6); // 첫 6글자 제거
-    let selectedMenu = `#${strippedId.charAt(0).toLowerCase()}${strippedId.slice(1)}Modal`; // 남은 문자열의 첫 글자를 소문자로
-    openModals(selectedMenu);
-  }
-});
+    // ID가 존재하는 경우에만 모달을 연다.
+    if (elementId) {
+      let strippedId = elementId.slice(6); // 첫 6글자 제거
+      let selectedMenu = `#${strippedId.charAt(0).toLowerCase()}${strippedId.slice(1)}Modal`; // 남은 문자열의 첫 글자를 소문자로
+      openModals(selectedMenu);
+    }
+  });
+}
 
 function openModals(menu) {
   $.ajax({

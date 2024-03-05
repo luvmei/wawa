@@ -255,10 +255,22 @@
   <select id='checkUserId'>
     SELECT id
     FROM user
-    WHERE REGEXP_REPLACE(id, '[0-9]+', '') = #{id};
+    WHERE id = #{id};
   </select>
 
   <select id='checkUserNick'>
+    SELECT nickname
+    FROM user
+    WHERE nickname = #{nickname};
+  </select>
+
+  <select id='checkRepeatUserId'>
+    SELECT id
+    FROM user
+    WHERE REGEXP_REPLACE(id, '[0-9]+', '') = #{id};
+  </select>
+
+  <select id='checkRepeatUserNick'>
     SELECT nickname
     FROM user
     WHERE REGEXP_REPLACE(nickname, '[0-9]+', '') = #{nickname};

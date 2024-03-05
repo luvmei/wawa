@@ -84,14 +84,13 @@ function getCasinoList() {
                   </div>
                 </div>
         `;
-
-          // const providers = [...result.providerSet];
-          // console.log('providers', providers);
-          // makeSlotProvider(providers, result.api_type);
         }
       });
-      document.querySelector('#nav-casino .row').innerHTML = elements;
-      addEventListenersToGameStartButtons('liveCasino');
+
+      if (document.querySelector('#nav-casino .row')) {
+        document.querySelector('#nav-casino .row').innerHTML = elements;
+        addEventListenersToGameStartButtons('liveCasino');
+      }
     })
     .fail(function (err) {
       console.log(err);
@@ -119,221 +118,222 @@ function getProviderList() {
 
 function makeSlotProvider(providers, api_type, listType) {
   const navSlotList = document.querySelector('#navSlotList');
-  providers.forEach((provider, i) => {
-    let providerName;
+  if (navSlotList) {
+    providers.forEach((provider, i) => {
+      let providerName;
 
-    if (api_type === 'hl') {
-      switch (provider) {
-        case 'amatic':
-          providerName = '아마틱';
-          break;
-        case 'bgaming':
-          providerName = '비게이밍';
-          break;
-        case 'expanse':
-          providerName = '익스펜스';
-          break;
-        case 'Hacksaw':
-          providerName = '핵쏘';
-          break;
-        case 'JDB':
-          providerName = 'JDB';
-          break;
-        case 'Kalamba':
-          providerName = '칼람바';
-          break;
-        case 'mplay':
-          providerName = '엠플레이';
-          break;
-        case 'revolver':
-          providerName = '리볼버';
-          break;
-        case 'RubyPlay':
-          providerName = '루비플레이';
-          break;
-        case 'Slotmill':
-          providerName = '스롯밀';
-          break;
-        case 'kagaming':
-          providerName = 'KAG 게이밍';
-          break;
-        case 'MicroGaming Plus Slo':
-          providerName = '마이크로 게이밍';
-          break;
-        case 'micro-gaming':
-          providerName = '마이크로 게이밍';
-          break;
-        case 'PragmaticPlay':
-          providerName = '프라그마틱 플레이';
-          break;
-        case 'spinomenal':
-          providerName = '스피노메날';
-          break;
-        case 'playngo':
-          providerName = '플레이 앤 고';
-          break;
-        case 'wazdan':
-          providerName = '와즈단';
-          break;
-        case 'redtiger':
-          providerName = '레드 타이거';
-          break;
-        case 'CQ9':
-          providerName = '씨큐나인';
-          break;
-        case 'greentube':
-          providerName = '그린튜브';
-          break;
-        case 'evoplay':
-          providerName = '에보플레이';
-          break;
-        case 'Blueprint Gaming':
-          providerName = '블루프린트 게이밍';
-          break;
-        case 'Habanero':
-          providerName = '하바네로';
-          break;
-        case 'amatic':
-          providerName = '아마틱';
-          break;
-        case 'endorphina':
-          providerName = '엔도르피나';
-          break;
-        case 'platingaming':
-          providerName = '플레이팅 게이밍';
-          break;
-        case 'dreamtech':
-          providerName = '드림테크';
-          break;
-        case 'netent':
-          providerName = '넷엔트';
-          break;
-        case 'egtjackpot':
-          providerName = 'EGT 잭팟';
-          break;
-        case 'booming':
-          providerName = '부밍';
-          break;
-        case 'PG Soft':
-          providerName = 'PG 소프트';
-          break;
-        case 'eagaming':
-          providerName = 'EA 게이밍';
-          break;
-        case 'Asia Gaming Slot':
-          providerName = '아시아 게이밍 슬롯';
-          break;
-        case 'platipus':
-          providerName = '프라티푸스';
-          break;
-        case 'GameArt':
-          providerName = '게임아트';
-          break;
-        case 'redrake':
-          providerName = '레드 레이크';
-          break;
-        case 'merkur':
-          providerName = '멀커';
-          break;
-        case 'bfgames':
-          providerName = 'BF 게임즈';
-          break;
-        case 'Elk Studios':
-          providerName = '엘크 스튜디오';
-          break;
-        case 'Booongo':
-          providerName = '부운고';
-          break;
-        case 'Nolimit City':
-          providerName = '노리밋 시티';
-          break;
-        case 'intouch-games':
-          providerName = '인터치 게임즈';
-          break;
-        case 'Playson':
-          providerName = '플레이슨';
-          break;
-        case 'PlayPearls':
-          providerName = '플레이 펄스';
-          break;
-        case 'Thunderkick':
-          providerName = '썬더킥';
-          break;
-        case 'retrogames':
-          providerName = '레트로 게임즈';
-          break;
-        case 'Mobilots':
-          providerName = '모빌롯츠';
-          break;
-        case 'PlayStar':
-          providerName = '플레이 스타';
-          break;
-        case 'caletagaming':
-          providerName = '카르타 게이밍';
-          break;
-        case 'netgame':
-          providerName = '넷 게임';
-          break;
-        case 'Relax Gaming':
-          providerName = '릴렉스 게이밍';
-          break;
-        case 'Dragoon Soft':
-          providerName = '드라군 소프트';
-          break;
-        case '1X2 Gaming':
-          providerName = '1X2 게이밍';
-          break;
-        case 'fils':
-          providerName = '필스';
-          break;
-        case 'smartsoft':
-          providerName = '스마트 소프트';
-          break;
-        case 'mancala':
-          providerName = '만칼라';
-          break;
-        case 'onetouch':
-          providerName = '원터치';
-          break;
-        case 'popok':
-          providerName = '포폭';
-          break;
-        case 'Triple Profit Gaming':
-          providerName = '트리플 프로핏 게이밍';
-          break;
-        case 'quickspin':
-          providerName = '퀵스핀';
-          break;
-        case '7777':
-          providerName = '7777';
-          break;
-        case 'classic casino':
-          providerName = '클래식 카지노';
-          break;
-        case '7-mojos-slots':
-          providerName = '세븐 모조스 슬롯';
-          break;
-        case 'iconix':
-          providerName = '아이코닉';
-          break;
-        case 'macaw':
-          providerName = '마카우';
-          break;
-        case 'BigTimeGaming':
-          providerName = '빅타임 게이밍';
-          break;
-        case 'galaxsys':
-          providerName = '갤럭시스';
-          break;
-        case 'Skywind':
-          providerName = '스카이윈드';
-          break;
-      }
-      if (!providerName) {
-        return;
-      } else if (listType == 1) {
-        const indexStr = String(i + 1).padStart(3, '0');
-        let newList = `<div class="col-4 col-md-3 col-lg-2 provider-banner">                                                   
+      if (api_type === 'hl') {
+        switch (provider) {
+          case 'amatic':
+            providerName = '아마틱';
+            break;
+          case 'bgaming':
+            providerName = '비게이밍';
+            break;
+          case 'expanse':
+            providerName = '익스펜스';
+            break;
+          case 'Hacksaw':
+            providerName = '핵쏘';
+            break;
+          case 'JDB':
+            providerName = 'JDB';
+            break;
+          case 'Kalamba':
+            providerName = '칼람바';
+            break;
+          case 'mplay':
+            providerName = '엠플레이';
+            break;
+          case 'revolver':
+            providerName = '리볼버';
+            break;
+          case 'RubyPlay':
+            providerName = '루비플레이';
+            break;
+          case 'Slotmill':
+            providerName = '스롯밀';
+            break;
+          case 'kagaming':
+            providerName = 'KAG 게이밍';
+            break;
+          case 'MicroGaming Plus Slo':
+            providerName = '마이크로 게이밍';
+            break;
+          case 'micro-gaming':
+            providerName = '마이크로 게이밍';
+            break;
+          case 'PragmaticPlay':
+            providerName = '프라그마틱 플레이';
+            break;
+          case 'spinomenal':
+            providerName = '스피노메날';
+            break;
+          case 'playngo':
+            providerName = '플레이 앤 고';
+            break;
+          case 'wazdan':
+            providerName = '와즈단';
+            break;
+          case 'redtiger':
+            providerName = '레드 타이거';
+            break;
+          case 'CQ9':
+            providerName = '씨큐나인';
+            break;
+          case 'greentube':
+            providerName = '그린튜브';
+            break;
+          case 'evoplay':
+            providerName = '에보플레이';
+            break;
+          case 'Blueprint Gaming':
+            providerName = '블루프린트 게이밍';
+            break;
+          case 'Habanero':
+            providerName = '하바네로';
+            break;
+          case 'amatic':
+            providerName = '아마틱';
+            break;
+          case 'endorphina':
+            providerName = '엔도르피나';
+            break;
+          case 'platingaming':
+            providerName = '플레이팅 게이밍';
+            break;
+          case 'dreamtech':
+            providerName = '드림테크';
+            break;
+          case 'netent':
+            providerName = '넷엔트';
+            break;
+          case 'egtjackpot':
+            providerName = 'EGT 잭팟';
+            break;
+          case 'booming':
+            providerName = '부밍';
+            break;
+          case 'PG Soft':
+            providerName = 'PG 소프트';
+            break;
+          case 'eagaming':
+            providerName = 'EA 게이밍';
+            break;
+          case 'Asia Gaming Slot':
+            providerName = '아시아 게이밍 슬롯';
+            break;
+          case 'platipus':
+            providerName = '프라티푸스';
+            break;
+          case 'GameArt':
+            providerName = '게임아트';
+            break;
+          case 'redrake':
+            providerName = '레드 레이크';
+            break;
+          case 'merkur':
+            providerName = '멀커';
+            break;
+          case 'bfgames':
+            providerName = 'BF 게임즈';
+            break;
+          case 'Elk Studios':
+            providerName = '엘크 스튜디오';
+            break;
+          case 'Booongo':
+            providerName = '부운고';
+            break;
+          case 'Nolimit City':
+            providerName = '노리밋 시티';
+            break;
+          case 'intouch-games':
+            providerName = '인터치 게임즈';
+            break;
+          case 'Playson':
+            providerName = '플레이슨';
+            break;
+          case 'PlayPearls':
+            providerName = '플레이 펄스';
+            break;
+          case 'Thunderkick':
+            providerName = '썬더킥';
+            break;
+          case 'retrogames':
+            providerName = '레트로 게임즈';
+            break;
+          case 'Mobilots':
+            providerName = '모빌롯츠';
+            break;
+          case 'PlayStar':
+            providerName = '플레이 스타';
+            break;
+          case 'caletagaming':
+            providerName = '카르타 게이밍';
+            break;
+          case 'netgame':
+            providerName = '넷 게임';
+            break;
+          case 'Relax Gaming':
+            providerName = '릴렉스 게이밍';
+            break;
+          case 'Dragoon Soft':
+            providerName = '드라군 소프트';
+            break;
+          case '1X2 Gaming':
+            providerName = '1X2 게이밍';
+            break;
+          case 'fils':
+            providerName = '필스';
+            break;
+          case 'smartsoft':
+            providerName = '스마트 소프트';
+            break;
+          case 'mancala':
+            providerName = '만칼라';
+            break;
+          case 'onetouch':
+            providerName = '원터치';
+            break;
+          case 'popok':
+            providerName = '포폭';
+            break;
+          case 'Triple Profit Gaming':
+            providerName = '트리플 프로핏 게이밍';
+            break;
+          case 'quickspin':
+            providerName = '퀵스핀';
+            break;
+          case '7777':
+            providerName = '7777';
+            break;
+          case 'classic casino':
+            providerName = '클래식 카지노';
+            break;
+          case '7-mojos-slots':
+            providerName = '세븐 모조스 슬롯';
+            break;
+          case 'iconix':
+            providerName = '아이코닉';
+            break;
+          case 'macaw':
+            providerName = '마카우';
+            break;
+          case 'BigTimeGaming':
+            providerName = '빅타임 게이밍';
+            break;
+          case 'galaxsys':
+            providerName = '갤럭시스';
+            break;
+          case 'Skywind':
+            providerName = '스카이윈드';
+            break;
+        }
+        if (!providerName) {
+          return;
+        } else if (listType == 1) {
+          const indexStr = String(i + 1).padStart(3, '0');
+          let newList = `<div class="col-4 col-md-3 col-lg-2 provider-banner">                                                   
                           <div class="image-container">
                           <div class="overlay">
                             <div class="name">${providerName}</div>
@@ -346,9 +346,9 @@ function makeSlotProvider(providers, api_type, listType) {
                           <div class="logo-text">${providerName}</div>
                           </div>
                         </div>`;
-        navSlotList.innerHTML += newList;
-      } else if (listType == 2) {
-        let newList = `<div class="col-4 col-md-3 col-lg-2 provider-banner">
+          navSlotList.innerHTML += newList;
+        } else if (listType == 2) {
+          let newList = `<div class="col-4 col-md-3 col-lg-2 provider-banner">
                           <img src="/public/images/slots/${provider.toLowerCase()}.png" class="w-100 rounded-3" />               
                           <div class="overlay">
                             <div class="name">${providerName}</div>
@@ -357,24 +357,25 @@ function makeSlotProvider(providers, api_type, listType) {
                               </a>                            
                           </div>
                         </div>`;
-        navSlotList.innerHTML += newList;
-      }
-    }
-
-    $('.openSlotModal').on('click', function (e) {
-      let provider = $(this).data('providername') || $(this).data('provider');
-      $.ajax({
-        method: 'POST',
-        url: '/bank/modal',
-      }).done(function (result) {
-        if (result) {
-          $('#slotModal').data('provider', provider).modal('show');
-        } else {
-          $('#notLoginModal').modal('show');
+          navSlotList.innerHTML += newList;
         }
+      }
+
+      $('.openSlotModal').on('click', function (e) {
+        let provider = $(this).data('providername') || $(this).data('provider');
+        $.ajax({
+          method: 'POST',
+          url: '/bank/modal',
+        }).done(function (result) {
+          if (result) {
+            $('#slotModal').data('provider', provider).modal('show');
+          } else {
+            $('#notLoginModal').modal('show');
+          }
+        });
       });
     });
-  });
+  }
 }
 // #endregion
 
@@ -510,7 +511,7 @@ function sendGameStartRequest(gameId, provider, gameType) {
   $.ajax({
     method: 'POST',
     url: '/game/start',
-    data: { gameId: gameId, provider: provider, gameType: gameType},
+    data: { gameId: gameId, provider: provider, gameType: gameType },
   })
     .done(function (result) {
       spinnerToggle();

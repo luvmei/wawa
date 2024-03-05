@@ -105,7 +105,7 @@
         </div>
 
         <!--  ======= Carousel ======= -->
-        <div class="carousel-cover mx-auto">
+        <div class="carousel-cover mx-auto d-none">
           <picture>
             <source media="(max-width: 992px)" srcset="/public/custom/type_2/main/m_main_slide_banner_bg.webp" />
             <img src="/public/custom/type_2/main/main_slide_banner_bg.webp" width='100%' height="100%"
@@ -155,13 +155,13 @@
           </button> -->
           </div>
         </div>
-        <div id="information" class="mx-auto">
-          <div class="row mx-2 mx-lg-0">
+        <div id="information" class="d-none mx-auto">
+          <div class="d-none row mx-2 mx-lg-0">
             <div class="col-12 m-auto my-1 mt-lg-1 px-5" id="jackpot">
               <span id="counter"></span>
             </div>
             <div
-              class="col-12 col-md-6 col-12 col-lg-6 mb-2 mb-lg-3 mt-md-2 px-1 <% if (lotto == '0') { %> d-none <% } %>">
+              class="d-none col-12 col-md-6 col-12 col-lg-6 mb-2 mb-lg-3 mt-md-2 px-1 <% if (lotto == '0') { %> d-none <% } %>">
               <div id='lottery-list' class="overflow-hidden row g-0">
                 <div class="col-12 lottery-title text-start"></div>
                 <div class="col-2 ps-4 lottery-count pt-0 pt-lg-4"></div>
@@ -170,7 +170,7 @@
               </div>
             </div>
             <div
-              class="col-12 col-md-6 col-12 mb-2 col-lg-6 mt-md-2 ps-md-3 pe-md-1 ps-2 pe-2 <% if (lotto != '0') { %> d-none <% } %>">
+              class="d-none col-12 col-md-6 col-12 mb-2 col-lg-6 mt-md-2 ps-md-3 pe-md-1 ps-2 pe-2 <% if (lotto != '0') { %> d-none <% } %>">
               <div id='notice-list' class="overflow-hidden">
                 <nav>
                   <div class="nav nav-pills nav-justified" role="tablist">
@@ -194,7 +194,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-12 col-md-6 col-12 col-lg-6 mb-3 mt-md-2 ps-md-1 pe-md-3 ps-2 pe-2">
+            <div class="d-none col-12 col-md-6 col-12 col-lg-6 mb-3 mt-md-2 ps-md-1 pe-md-3 ps-2 pe-2">
               <div id='bank-list' class="overflow-hidden">
                 <nav>
                   <div class="nav nav-pills nav-justified" role="tablist">
@@ -241,7 +241,7 @@
               <div class="sport-tab <% if (sport == 1) { %> col-4 <% } else { %> d-none <% } %>">
                 <button class="nav-link" id="nav-sport-tab" data-bs-toggle="tab" data-bs-target="#nav-sport"
                   type="button" role="tab"></button>
-                <div id="main-slots" class="text d-none">라이브스포츠</div>
+                <div id="main-sport" class="text d-none">라이브스포츠</div>
               </div>
               <div class="popular-tab col-3 col-lg-2 d-none">
                 <button class="nav-link" id="nav-popular-tab" data-bs-toggle="tab" data-bs-target="#nav-popular"

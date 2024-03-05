@@ -257,6 +257,24 @@ router.post('/userblock', (req, res) => {
 
 // #region 임의생성
 router.post('/doublecheck', (req, res) => {
+  // if (req.body.type == 'repeat') {
+  //   if (req.body.nickname == undefined) {
+  //     console.log('매크로 아이디 중복검사 시작');
+  //     doubleCheck(res, 'checkRepeatUserId', req.body);
+  //   } else {
+  //     console.log('매크로 닉네임 중복검사 시작');
+  //     doubleCheck(res, 'checkRepeatUserNick', req.body);
+  //   }
+  // } else if (req.body.type == 'single') {
+  //   console.log('단일 아이디 중복검사 시작');
+  //   if (req.body.nickname == undefined) {
+  //     console.log('아이디 중복검사 시작');
+  //     doubleCheck(res, 'checkUserId', req.body);
+  //   } else {
+  //     console.log('닉네임 중복검사 시작');
+  //     doubleCheck(res, 'checkUserNick', req.body);
+  //   }
+  // }
   if (req.body.nickname == undefined) {
     console.log('아이디 중복검사 시작');
     doubleCheck(res, 'checkUserId', req.body);
@@ -599,6 +617,7 @@ async function getData(res, type, params = {}) {
   }
   let conn = await pool.getConnection();
   let getData = mybatisMapper.getStatement('user', type, params, sqlFormat);
+  console.log(getData);
   try {
     let result = await conn.query(getData);
     if (
@@ -608,7 +627,8 @@ async function getData(res, type, params = {}) {
       type == 'userAsset' ||
       type == 'userInfoDate' ||
       type == 'userBetting' ||
-      type == 'userConfirm'
+      type == 'userConfirm' ||
+      type == 'userBlock'
     ) {
       result = JSONbig.stringify(result);
       result = JSONbig.parse(result);

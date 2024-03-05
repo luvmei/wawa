@@ -17,6 +17,7 @@ async function initializeJackpotCounter() {
   };
 
   jackpot = new CountUp(target, endValue, options);
+
   if (!jackpot.error) {
     jackpot.start();
     scheduleNextUpdate();
@@ -183,7 +184,8 @@ async function getLottoInfo() {
       const { latestRound, data } = result;
       const participationCount = data.length;
 
-      document.getElementById('lottery-list').innerHTML = `
+      if (document.getElementById('lottery-list')) {
+        document.getElementById('lottery-list').innerHTML = `
         <div class="col-12 lottery-title text-start">
           ${latestRound} 회차 로또이벤트 참여현황
         </div>
@@ -192,14 +194,21 @@ async function getLottoInfo() {
         </div>
         <div class="col-10 list-group lottery marquee"></div>
       `;
+      } else {
+        return;
+      }
 
       const lotteryList = document.querySelector('#lottery-list .list-group.lottery');
 
-      lotteryList.innerHTML = '';
+      if (lotteryList) {
+        lotteryList.innerHTML = '';
 
-      for (let i = 0; i < data.length && i < 50; i++) {
-        const elementCopy = { ...data[i] };
-        createList(elementCopy, lotteryList);
+        for (let i = 0; i < data.length && i < 50; i++) {
+          const elementCopy = { ...data[i] };
+          createList(elementCopy, lotteryList);
+        }
+      } else {
+        return;
       }
 
       startMarquee($('#lottery-list .marquee'));
@@ -272,7 +281,7 @@ function createList(element, targetList) {
       .slice(1, -1)
       .split(',')
       .map((num) => parseInt(num.trim(), 10));
-      
+
     const balls = numbersArray
       .map((num) => {
         const colorClass = getBallColorClass(num);

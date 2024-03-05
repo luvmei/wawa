@@ -182,7 +182,7 @@ h6 {
   .modal-content {
     border: 2px solid $point;
     background-color: $modal-primary;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.)), url(/public/custom/type_2/bg/modal_bg.webp);
+    background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url(/public/custom/type_2/bg/modal_bg.webp);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -1962,12 +1962,13 @@ footer {
     background-position: center;
     #counter {
       position: absolute;
-      right: 17%;
+      right: 4%;
       top: 50%;
       transform: translate(0, -50%);
-      font-size: 3rem;
+      font-size: 5rem;
       font-family: 'Giants-Bold';
-      text-shadow: 3px 5px 2px #818181, 2px 2px 2px rgba(206, 89, 55, 0);
+      // font-weight: semi-bold;
+      // text-shadow: 3px 5px 2px #818181, 2px 2px 2px rgba(206, 89, 55, 0);
       color: #f5f5f5;
     }
   }

@@ -1,0 +1,1205 @@
+@charset "UTF-8";
+/*--------------------------------------------------------------
+# Web Font
+--------------------------------------------------------------*/
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap");
+@font-face {
+  font-family: "GangwonEduPowerExtraBoldA";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEduPowerExtraBoldA.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "GmarketSansMedium";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Pretendard-Regular";
+  src: url("https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Giants-Bold";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-1@1.1/Giants-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: "BMDOHYEON";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMDOHYEON.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "scdream";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "SCoreDream";
+  font-weight: 100;
+  font-style: normal;
+  src: url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream1.woff2) format("woff2"), url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream1.woff) format("woff");
+  font-display: swap;
+}
+@font-face {
+  font-family: "SCoreDream";
+  font-weight: 200;
+  font-style: normal;
+  src: url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream2.woff2) format("woff2"), url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream2.woff) format("woff");
+  font-display: swap;
+}
+@font-face {
+  font-family: "SCoreDream";
+  font-weight: 300;
+  font-style: normal;
+  src: url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream3.woff2) format("woff2"), url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream3.woff) format("woff");
+  font-display: swap;
+}
+@font-face {
+  font-family: "SCoreDream";
+  font-weight: 400;
+  font-style: normal;
+  src: url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream4.woff2) format("woff2"), url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream4.woff) format("woff");
+  font-display: swap;
+}
+@font-face {
+  font-family: "SCoreDream";
+  font-weight: 500;
+  font-style: normal;
+  src: url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream5.woff2) format("woff2"), url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream5.woff) format("woff");
+  font-display: swap;
+}
+@font-face {
+  font-family: "SCoreDream";
+  font-weight: 600;
+  font-style: normal;
+  src: url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream6.woff2) format("woff2"), url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream6.woff) format("woff");
+  font-display: swap;
+}
+@font-face {
+  font-family: "SCoreDream";
+  font-weight: 700;
+  font-style: normal;
+  src: url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream7.woff2) format("woff2"), url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream7.woff) format("woff");
+  font-display: swap;
+}
+@font-face {
+  font-family: "SCoreDream";
+  font-weight: 800;
+  font-style: normal;
+  src: url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream8.woff2) format("woff2"), url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream8.woff) format("woff");
+  font-display: swap;
+}
+@font-face {
+  font-family: "SCoreDream";
+  font-weight: 900;
+  font-style: normal;
+  src: url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream9.woff2) format("woff2"), url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream9.woff) format("woff");
+  font-display: swap;
+}
+/*--------------------------------------------------------------
+# Color
+--------------------------------------------------------------*/
+/*--------------------------------------------------------------
+# General
+--------------------------------------------------------------*/
+body::-webkit-scrollbar,
+html::-webkit-scrollbar {
+  display: none;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+body {
+  font-family: "SCoreDream", sans-serif;
+  overflow-y: overlay;
+  background-color: #000;
+}
+
+@media Screen and (max-width: 430px) {
+  html,
+  body {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+}
+a {
+  color: #896e1e;
+  text-decoration: none;
+}
+a:hover {
+  color: #896e1e;
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Noto Sans KR", sans-serif;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+h3 {
+  font-size: 1.2rem;
+}
+
+h4 {
+  font-size: 1rem;
+}
+
+h5 {
+  font-size: 0.8rem;
+}
+
+h6 {
+  font-size: 0.6rem;
+}
+
+.asset-danger {
+  color: #b02a37;
+  background-color: #f8d7da;
+  border-color: #f1aeb5;
+}
+.asset-danger:hover, .asset-danger:focus {
+  background-color: #f1aeb5;
+}
+
+.asset-warning {
+  color: #997404;
+  background-color: #fff3cd;
+  border-color: #ffe69c;
+}
+.asset-warning:hover, .asset-warning:focus {
+  background-color: #ffe69c;
+}
+
+.asset-primary {
+  color: #0a58ca;
+  background-color: #cfe2ff;
+  border-color: #9ec5fe;
+}
+.asset-primary:hover, .asset-primary:focus {
+  background-color: #9ec5fe;
+}
+
+.asset-secondary {
+  color: #6c757d;
+  background-color: #f8f9fa;
+  border-color: #e9ecef;
+}
+.asset-secondary:hover, .asset-secondary:focus {
+  background-color: #e9ecef;
+}
+
+.asset-success {
+  color: #146c43;
+  background-color: #d1e7dd;
+  border-color: #a3cfbb;
+}
+.asset-success:hover, .asset-success:focus {
+  background-color: #a3cfbb;
+}
+
+.asset-dark {
+  color: #495057;
+  background-color: #ced4da;
+  border-color: #adb5bd;
+}
+.asset-dark:hover, .asset-dark:focus {
+  background-color: #adb5bd;
+}
+
+.pastel-danger {
+  color: #ffbdc2;
+}
+
+.pastel-primary {
+  color: #b7d5ff;
+}
+
+.bg-pastel-danger {
+  background-color: #fff9fa !important;
+}
+
+.bg-pastel-primary {
+  background-color: #b7d5ff !important;
+}
+
+.bg-pastel-success {
+  background-color: #f7fffb !important;
+}
+
+/*--------------------------------------------------------------
+#  Modal 
+--------------------------------------------------------------*/
+.modal {
+  color: white;
+}
+.modal .back-btn {
+  cursor: pointer;
+}
+.modal .modal-content {
+  border-radius: 0 !important;
+  border: 10px solid #242424;
+  background-color: #181818;
+  padding: 1.5rem;
+}
+.modal .modal-content .modal-header,
+.modal .modal-content .modal-footer {
+  border: none;
+}
+.modal .modal-content .modal-header .btn,
+.modal .modal-content .modal-footer .btn {
+  font-size: 1.1rem;
+}
+.modal .modal-content .modal-header {
+  height: 40px;
+  font-size: 1.2rem;
+}
+.modal .modal-content .modal-header .modal-title {
+  font-weight: 600;
+  font-size: 1.4rem;
+  color: #896e1e;
+}
+.modal .modal-content .modal-body .form-check label {
+  color: rgb(175, 175, 175);
+}
+.modal.login .modal-content .form-floating .form-control,
+.modal.login .modal-content .form-floating .form-select {
+  height: 50px;
+  font-size: 0.9rem;
+}
+.modal.login .modal-content .form-floating label {
+  padding: 0.75rem 0.75rem;
+}
+.modal.login .description {
+  font-size: 1.1rem;
+  margin-left: 0.5rem;
+  font-weight: 500;
+  color: red;
+  text-decoration: none;
+}
+.modal.login .login-message {
+  color: #f95668;
+}
+.modal.login #login-btn,
+.modal.login #change-nick-btn,
+.modal.login #change-password-btn {
+  border: 2px solid #896e1e;
+  font-weight: 700;
+  color: #001676;
+  background-color: #896e1e;
+  width: 100%;
+  height: 50px;
+  transition: all 0.3s;
+}
+.modal.login #login-btn:hover,
+.modal.login #change-nick-btn:hover,
+.modal.login #change-password-btn:hover {
+  filter: brightness(0.7);
+}
+.modal.login a {
+  font-size: 1.1rem;
+  margin-left: 0.5rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: none;
+  cursor: pointer;
+}
+.modal.login a:hover {
+  filter: brightness(0.7);
+}
+.modal.login #login-join {
+  color: #896e1e;
+}
+.modal.join .modal-dialog {
+  max-width: 1000px;
+}
+.modal.join .modal-dialog .modal-content .form-select {
+  height: 50px;
+  font-size: 1rem;
+}
+.modal.join .modal-dialog .modal-content .form-floating .form-control {
+  color: #000 !important;
+  height: 50px;
+}
+.modal.join .modal-dialog .modal-content .form-floating label {
+  font-weight: 500;
+  color: #001676;
+  padding: 0.8rem 0.75rem;
+}
+.modal.join .modal-dialog .modal-content .btn {
+  font-weight: 500;
+  color: #896e1e;
+  background-color: rgba(0, 0, 0, 0.5);
+  font-size: 0.9rem;
+  border: 1px solid #896e1e;
+}
+.modal.join .modal-dialog .modal-content .btn:hover, .modal.join .modal-dialog .modal-content .btn:focus {
+  box-shadow: rgb(255, 193, 7) 0px 0px 5px 3px inset;
+}
+.modal.join .modal-dialog .modal-content .description {
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 8px;
+  margin-left: 7px;
+  font-size: 0.95rem;
+}
+.modal.join #join-btn {
+  font-weight: 700;
+  background-color: #896e1e;
+  width: 100%;
+  height: 50px;
+  color: black;
+  font-size: 1.2rem;
+  transition: all 0.3s;
+}
+.modal.join #join-btn.notice {
+  background-color: #ffdbdb;
+  color: #f95668;
+  border: 1px solid #f95668;
+}
+.modal.join #join-btn:hover {
+  filter: brightness(0.7);
+}
+.modal.join a {
+  font-size: 1.2rem;
+  margin-left: 0.5rem;
+  font-weight: 700;
+  color: #896e1e;
+  text-decoration: none;
+  cursor: pointer;
+}
+.modal.join a:hover {
+  color: #896e1e;
+  filter: brightness(0.7);
+}
+.modal.deposit .modal-content, .modal.withdraw .modal-content, .modal.reward .modal-content {
+  padding: 2rem 2rem 1rem 2rem;
+}
+.modal.deposit .modal-content .modal-body .check h3, .modal.withdraw .modal-content .modal-body .check h3, .modal.reward .modal-content .modal-body .check h3 {
+  margin-bottom: 0.8rem;
+  font-size: 1.1rem;
+}
+.modal.deposit .modal-content .modal-body .check p, .modal.withdraw .modal-content .modal-body .check p, .modal.reward .modal-content .modal-body .check p {
+  font-size: 1rem;
+  font-weight: 300;
+  color: #d6d6d6;
+}
+.modal.deposit .modal-content .modal-body .check a, .modal.withdraw .modal-content .modal-body .check a, .modal.reward .modal-content .modal-body .check a {
+  color: #896e1e;
+  cursor: pointer;
+  font-weight: 700;
+}
+.modal.deposit .modal-content .modal-body .form, .modal.withdraw .modal-content .modal-body .form, .modal.reward .modal-content .modal-body .form {
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+.modal.deposit .modal-content .modal-body .form .row, .modal.withdraw .modal-content .modal-body .form .row, .modal.reward .modal-content .modal-body .form .row {
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 10px;
+}
+.modal.deposit .modal-content .modal-body .form .row #deposit-bank-value, .modal.withdraw .modal-content .modal-body .form .row #deposit-bank-value, .modal.reward .modal-content .modal-body .form .row #deposit-bank-value {
+  text-align: center;
+  font-size: 0.95rem;
+}
+.modal.deposit .modal-content .modal-body .form .row hr, .modal.withdraw .modal-content .modal-body .form .row hr, .modal.reward .modal-content .modal-body .form .row hr {
+  border: 1px solid #896e1e;
+  text-align: center;
+  opacity: 0.7;
+  width: 110%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.modal.deposit .modal-content .modal-body .form .row div, .modal.withdraw .modal-content .modal-body .form .row div, .modal.reward .modal-content .modal-body .form .row div {
+  margin: 7px 0;
+}
+.modal.deposit .modal-content .modal-body .form .row div:nth-child(1), .modal.deposit .modal-content .modal-body .form .row div:nth-child(2), .modal.deposit .modal-content .modal-body .form .row div:nth-child(4), .modal.deposit .modal-content .modal-body .form .row div:nth-child(7), .modal.deposit .modal-content .modal-body .form .row div:nth-child(8), .modal.deposit .modal-content .modal-body .form .row div:nth-child(17), .modal.deposit .modal-content .modal-body .form .row div:nth-child(18), .modal.deposit .modal-content .modal-body .form .row div:nth-child(19), .modal.deposit .modal-content .modal-body .form .row div:nth-child(20), .modal.deposit .modal-content .modal-body .form .row div:nth-child(21), .modal.withdraw .modal-content .modal-body .form .row div:nth-child(1), .modal.withdraw .modal-content .modal-body .form .row div:nth-child(2), .modal.withdraw .modal-content .modal-body .form .row div:nth-child(4), .modal.withdraw .modal-content .modal-body .form .row div:nth-child(7), .modal.withdraw .modal-content .modal-body .form .row div:nth-child(8), .modal.withdraw .modal-content .modal-body .form .row div:nth-child(17), .modal.withdraw .modal-content .modal-body .form .row div:nth-child(18), .modal.withdraw .modal-content .modal-body .form .row div:nth-child(19), .modal.withdraw .modal-content .modal-body .form .row div:nth-child(20), .modal.withdraw .modal-content .modal-body .form .row div:nth-child(21), .modal.reward .modal-content .modal-body .form .row div:nth-child(1), .modal.reward .modal-content .modal-body .form .row div:nth-child(2), .modal.reward .modal-content .modal-body .form .row div:nth-child(4), .modal.reward .modal-content .modal-body .form .row div:nth-child(7), .modal.reward .modal-content .modal-body .form .row div:nth-child(8), .modal.reward .modal-content .modal-body .form .row div:nth-child(17), .modal.reward .modal-content .modal-body .form .row div:nth-child(18), .modal.reward .modal-content .modal-body .form .row div:nth-child(19), .modal.reward .modal-content .modal-body .form .row div:nth-child(20), .modal.reward .modal-content .modal-body .form .row div:nth-child(21) {
+  color: #896e1e;
+}
+.modal.deposit .modal-content .modal-body .form .row .btn, .modal.withdraw .modal-content .modal-body .form .row .btn, .modal.reward .modal-content .modal-body .form .row .btn {
+  width: 100%;
+  background-color: #896e1e;
+  color: black;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+.modal.deposit .modal-content .modal-body .form .row .btn.btn-light, .modal.withdraw .modal-content .modal-body .form .row .btn.btn-light, .modal.reward .modal-content .modal-body .form .row .btn.btn-light {
+  background-color: white;
+}
+.modal.deposit .modal-content .modal-body .form .row .btn.history, .modal.withdraw .modal-content .modal-body .form .row .btn.history, .modal.reward .modal-content .modal-body .form .row .btn.history {
+  background-color: transparent !important;
+  color: #896e1e;
+}
+.modal.userInfo .modal-dialog {
+  max-width: 400px !important;
+}
+.modal.userInfo .modal-dialog .modal-content {
+  font-size: 1.1rem;
+  padding: 1rem 1rem 0.5rem 1rem;
+}
+.modal.userInfo .modal-dialog .modal-content .modal-body {
+  padding: 1.5rem;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)), url(/public/custom/type_2/bg/modal_bg.webp);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  border-radius: 5px;
+}
+.modal.userInfo .modal-dialog .modal-content .modal-body .row i {
+  padding-right: 10px;
+}
+.modal.userInfo .modal-dialog .modal-content .modal-body .row .type {
+  color: #745d19;
+}
+.modal.userInfo .modal-dialog .modal-content .modal-body .row .type.bankInfo {
+  padding: 0 0 0 35px !important;
+}
+.modal.userInfo .modal-dialog .modal-content .modal-body .row .value {
+  text-align: right;
+}
+.modal.userInfo .modal-dialog .modal-content .modal-body .row .col-4 {
+  padding: 5px !important;
+}
+.modal.userInfo .modal-dialog .modal-content .modal-body .row .col-4 .historyBtn {
+  font-size: 0.9rem;
+  width: 100%;
+  padding: 10px 6px;
+}
+.modal.userInfo .modal-dialog .modal-content .modal-body .row div {
+  margin-bottom: 10px;
+}
+.modal.userInfo .modal-dialog .modal-content .modal-body .row div.bankName {
+  color: #896e1e;
+}
+.modal.userInfo .modal-dialog .modal-content .modal-body .row div.maintenance {
+  font-size: 0.9rem;
+  font-weight: 300;
+  padding: 0;
+}
+.modal.withdraw .input-group {
+  text-align: center;
+}
+.modal.withdraw .input-group .input-group-text {
+  background-color: #000;
+  color: #896e1e;
+  border: 1px solid #896e1e;
+  width: 40%;
+}
+.modal.withdraw .form-control {
+  border: none;
+}
+.modal.bankTime .modal-content .modal-body .row div {
+  margin-bottom: 10px;
+}
+.modal.bankTime .modal-content .modal-body .row div.bankName {
+  color: #896e1e;
+}
+.modal.bankTime .modal-content .modal-body .row div.maintenance {
+  font-size: 0.9rem;
+  font-weight: 300;
+  padding: 0;
+}
+.modal.reward .modal-content {
+  padding: 1rem 1rem 0.5rem 1rem;
+}
+.modal.reward .modal-content .modal-body {
+  padding: 1rem 0.5rem;
+}
+.modal.reward .modal-content .modal-body .row div:nth-child(2), .modal.reward .modal-content .modal-body .row div:nth-child(18), .modal.reward .modal-content .modal-body .row div:nth-child(19) {
+  color: white !important;
+}
+.modal.reward .modal-content .modal-body .row div:nth-child(3), .modal.reward .modal-content .modal-body .row div:nth-child(15), .modal.reward .modal-content .modal-body .row div:nth-child(17) {
+  color: #896e1e;
+}
+.modal.notice {
+  --bs-modal-width: 400px;
+}
+.modal.notice .modal-content {
+  box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+}
+.modal.notice .modal-content .modal-header {
+  height: auto;
+  padding: 0;
+}
+.modal.notice .modal-content .modal-header i {
+  font-size: 2.5rem;
+  color: #896e1e;
+}
+.modal.notice .modal-content .modal-footer .btn {
+  font-weight: 500;
+}
+.modal.notice#logoutModal .modal-content {
+  border: 2px solid #dc3545;
+}
+.modal.notice#logoutModal .modal-content i {
+  color: #dc3545;
+}
+.modal.question .modal-content, .modal.message .modal-content, .modal.bankHistory .modal-content {
+  color: #000;
+  padding: 1.5rem 1rem 0 1rem;
+}
+.modal.question .modal-content .modal-body, .modal.message .modal-content .modal-body, .modal.bankHistory .modal-content .modal-body {
+  margin-top: 10px;
+  padding: 20px;
+  background-color: #fff;
+}
+.modal.question#reqQuestionModal .modal-dialog .modal-content, .modal.question#viewQuestionModal .modal-dialog .modal-content, .modal.question#viewMessageModal .modal-dialog .modal-content, .modal.question#readNoticeModal .modal-dialog .modal-content, .modal.message#reqQuestionModal .modal-dialog .modal-content, .modal.message#viewQuestionModal .modal-dialog .modal-content, .modal.message#viewMessageModal .modal-dialog .modal-content, .modal.message#readNoticeModal .modal-dialog .modal-content, .modal.bankHistory#reqQuestionModal .modal-dialog .modal-content, .modal.bankHistory#viewQuestionModal .modal-dialog .modal-content, .modal.bankHistory#viewMessageModal .modal-dialog .modal-content, .modal.bankHistory#readNoticeModal .modal-dialog .modal-content {
+  padding: 1.5rem 1.2rem 1rem 1.2rem;
+}
+.modal.question#reqQuestionModal .modal-dialog .modal-content .modal-body, .modal.question#viewQuestionModal .modal-dialog .modal-content .modal-body, .modal.question#viewMessageModal .modal-dialog .modal-content .modal-body, .modal.question#readNoticeModal .modal-dialog .modal-content .modal-body, .modal.message#reqQuestionModal .modal-dialog .modal-content .modal-body, .modal.message#viewQuestionModal .modal-dialog .modal-content .modal-body, .modal.message#viewMessageModal .modal-dialog .modal-content .modal-body, .modal.message#readNoticeModal .modal-dialog .modal-content .modal-body, .modal.bankHistory#reqQuestionModal .modal-dialog .modal-content .modal-body, .modal.bankHistory#viewQuestionModal .modal-dialog .modal-content .modal-body, .modal.bankHistory#viewMessageModal .modal-dialog .modal-content .modal-body, .modal.bankHistory#readNoticeModal .modal-dialog .modal-content .modal-body {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+.modal.popup {
+  overflow: hidden !important;
+}
+.modal.popup .modal-dialog {
+  padding: 0;
+}
+.modal.popup .modal-dialog .modal-content {
+  background-color: #000;
+  background-image: none;
+  max-width: 460px;
+  height: 760px;
+  padding: 0;
+  border: 1px solid rgba(255, 193, 7, 0.5);
+  font-size: 1.15rem;
+  color: rgb(214, 214, 214);
+}
+.modal.popup .modal-dialog .modal-content .modal-header {
+  display: none;
+}
+.modal.popup .modal-dialog .modal-content .modal-body {
+  padding: 30px;
+}
+.modal.popup .modal-dialog .modal-content .form-floating .form-control,
+.modal.popup .modal-dialog .modal-content .form-floating .form-select {
+  height: 50px;
+  font-size: 0.9rem;
+}
+.modal.popup .modal-dialog .modal-content .form-floating label {
+  padding: 0.75rem 0.75rem;
+}
+.modal.popup .popup-count-2.popup-order-1 {
+  right: 50%;
+}
+.modal.popup .popup-count-2.popup-order-2 {
+  left: 50%;
+}
+.modal.popup .popup-count-3.popup-order-1 {
+  right: 100%;
+}
+.modal.popup .popup-count-3.popup-order-3 {
+  left: 100%;
+}
+.modal.popup .popup-count-4.popup-order-1 {
+  right: 137.5%;
+}
+.modal.popup .popup-count-4.popup-order-2 {
+  right: 42.5%;
+}
+.modal.popup .popup-count-4.popup-order-3 {
+  left: 52.5%;
+}
+.modal.popup .popup-count-4.popup-order-4 {
+  left: 147.5%;
+}
+.modal.popup .popup-count-5.popup-order-1 {
+  right: 137.5%;
+}
+.modal.popup .popup-count-5.popup-order-2 {
+  right: 42.5%;
+}
+.modal.popup .popup-count-5.popup-order-3 {
+  left: 52.5%;
+}
+.modal.popup .popup-count-5.popup-order-4 {
+  left: 147.5%;
+}
+.modal.popup .popup-count-5.popup-order-5 {
+  left: 147.5%;
+}
+.modal.popup #noticePopupImage {
+  width: 100% !important;
+  margin-bottom: 16px;
+}
+.modal#slotModal .modal-content {
+  background-attachment: fixed;
+}
+
+#popup1 {
+  z-index: 1057;
+}
+
+#popup2 {
+  z-index: 1058;
+}
+
+#popup3 {
+  z-index: 1059;
+}
+
+#popup4 {
+  z-index: 1060;
+}
+
+#popup5 {
+  z-index: 1061;
+}
+
+#attendanceTable .countinueCounter,
+#attendanceTable #attendanceBtn {
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+#attendanceTable table {
+  font-weight: bolder;
+  color: #000;
+  background-color: #fff;
+}
+#attendanceTable table tbody {
+  border-radius: 5px;
+}
+#attendanceTable table tbody td {
+  width: 80px;
+  height: 100px;
+  padding: 8px;
+}
+#attendanceTable table tbody td.checked {
+  background-color: rgba(255, 196, 81, 0.5);
+  background-image: url("/public/images/attendance.png");
+  background-repeat: no-repeat;
+  background-size: 60px 60px;
+  background-position: center 60%;
+}
+
+.modal-backdrop {
+  opacity: 0.6 !important;
+}
+
+@media screen and (max-width: 992px) {
+  .modal.popup .modal-dialog .modal-content {
+    height: 670px;
+  }
+  .modal.popup .popup-count-2.popup-order-1 {
+    right: auto;
+  }
+  .modal.popup .popup-count-2.popup-order-2 {
+    left: auto;
+  }
+  .modal.popup .popup-count-3.popup-order-1 {
+    right: auto;
+  }
+  .modal.popup .popup-count-3.popup-order-3 {
+    left: auto;
+  }
+  .modal.popup .popup-count-4.popup-order-1 {
+    right: auto;
+  }
+  .modal.popup .popup-count-4.popup-order-2 {
+    right: auto;
+  }
+  .modal.popup .popup-count-4.popup-order-3 {
+    left: auto;
+  }
+  .modal.popup .popup-count-4.popup-order-4 {
+    left: auto;
+  }
+  .modal.popup .popup-count-5.popup-order-1 {
+    right: auto;
+  }
+  .modal.popup .popup-count-5.popup-order-2 {
+    right: auto;
+  }
+  .modal.popup .popup-count-5.popup-order-3 {
+    left: auto;
+  }
+  .modal.popup .popup-count-5.popup-order-4 {
+    left: auto;
+  }
+  .modal.popup .popup-count-5.popup-order-5 {
+    left: auto;
+  }
+  #popup1 {
+    z-index: 1061;
+  }
+  #popup2 {
+    z-index: 1060;
+  }
+  #popup3 {
+    z-index: 1059;
+  }
+  #popup4 {
+    z-index: 1058;
+  }
+  #popup5 {
+    z-index: 1057;
+  }
+}
+@media screen and (max-width: 430px) {
+  .modal {
+    font-size: 0.8rem;
+  }
+  .modal .modal-content {
+    padding: 1rem;
+    margin: 0 1rem;
+  }
+  .modal .modal-content .modal-header .modal-title {
+    font-size: 1.2rem;
+  }
+  .modal .modal-content .btn {
+    font-size: 0.7rem;
+  }
+  .modal .modal-content .join-text a {
+    font-size: 0.9rem;
+  }
+  .modal.login .form-check, .modal.join .form-check {
+    padding-top: 0.2rem;
+  }
+  .modal.login a, .modal.join a {
+    font-size: 1rem;
+  }
+  .modal.login #login-btn,
+  .modal.login #join-btn, .modal.join #login-btn,
+  .modal.join #join-btn {
+    font-size: 1rem;
+    color: #240057;
+    border: none;
+    background-color: #896e1e;
+  }
+  .modal.login #login-btn:active,
+  .modal.login #join-btn:active, .modal.join #login-btn:active,
+  .modal.join #join-btn:active {
+    position: relative;
+    top: 1px;
+    left: 1px;
+    box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.42);
+  }
+  .modal.deposit .modal-content, .modal.withdraw .modal-content {
+    padding: 0.5rem;
+  }
+  .modal.deposit .modal-content .modal-title, .modal.withdraw .modal-content .modal-title {
+    font-size: 1.2rem;
+  }
+  .modal.deposit .modal-content .modal-body .check, .modal.withdraw .modal-content .modal-body .check {
+    margin-bottom: 2rem;
+  }
+  .modal.deposit .modal-content .modal-body .check h3, .modal.withdraw .modal-content .modal-body .check h3 {
+    font-size: 1rem;
+  }
+  .modal.deposit .modal-content .modal-body .check p, .modal.withdraw .modal-content .modal-body .check p {
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
+  .modal.deposit .modal-content .modal-body .form, .modal.withdraw .modal-content .modal-body .form {
+    font-size: 1rem;
+  }
+  .modal.deposit .modal-content .modal-body .form .row .input-group .input-group-text,
+  .modal.deposit .modal-content .modal-body .form .row .input-group .form-control, .modal.withdraw .modal-content .modal-body .form .row .input-group .input-group-text,
+  .modal.withdraw .modal-content .modal-body .form .row .input-group .form-control {
+    font-size: 0.8rem;
+  }
+  .modal.deposit .modal-content .modal-body .form .row .btn, .modal.withdraw .modal-content .modal-body .form .row .btn {
+    font-size: 0.8rem;
+  }
+  .modal.bankTime .modal-body .row div.maintenance {
+    font-size: 0.8rem;
+  }
+}
+/*--------------------------------------------------------------
+# Header
+--------------------------------------------------------------*/
+.pc-header {
+  font-family: "GmarketSansMedium", sans-serif;
+  width: 100%;
+}
+.pc-header .login-buttons {
+  display: flex;
+  height: 65px;
+  align-items: center;
+}
+.pc-header .login-buttons #beforeLoginNavbar #nav-login,
+.pc-header .login-buttons #beforeLoginNavbar #nav-join {
+  border-radius: 50px;
+  padding-top: 8px;
+  font-size: 0.95rem;
+  color: white;
+}
+.pc-header .login-buttons #beforeLoginNavbar #nav-login {
+  border-color: #896e1e !important;
+  background-color: black !important;
+}
+.pc-header .login-buttons #beforeLoginNavbar #nav-login:hover {
+  background-color: #896e1e !important;
+}
+.pc-header .login-buttons #beforeLoginNavbar #nav-join {
+  border-color: #896e1e !important;
+  background-color: #896e1e !important;
+}
+.pc-header .login-buttons #afterLoginNavbar {
+  color: white;
+}
+.pc-header .login-buttons #afterLoginNavbar .btn-outline-danger {
+  padding-top: 8px !important;
+  border: 2px solid #896e1e !important;
+  color: #896e1e !important;
+}
+.pc-header .login-buttons #afterLoginNavbar #nav-logout {
+  padding-top: 8px !important;
+  color: whitesmoke;
+  border-radius: 50px;
+  font-size: 0.95rem;
+  border-color: #896e1e !important;
+  background-color: #896e1e !important;
+}
+.pc-header .navbar {
+  padding-top: 10px;
+  height: 60px;
+  background-color: #333;
+  border-bottom: 2px solid #896e1e;
+}
+.pc-header .navbar .row {
+  font-size: 1.1rem;
+  width: 100%;
+  color: whitesmoke;
+}
+.pc-header .navbar .row .nav-link {
+  cursor: pointer;
+}
+.pc-header .navbar .row .nav-link:hover {
+  color: #896e1e;
+}
+
+.mobile-header {
+  width: 100%;
+  color: whitesmoke;
+  display: none !important;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 55px;
+  border-bottom: 2px solid #896e1e;
+}
+.mobile-header .btn {
+  padding-top: 4px !important;
+  font-size: 0.8rem;
+}
+.mobile-header #mobile-login {
+  border-radius: 50px;
+  background-color: black;
+  color: white;
+  border: #896e1e 2px solid;
+}
+.mobile-header #mobile-join {
+  border-radius: 50px;
+  background-color: #896e1e;
+  color: white;
+  border: #896e1e 2px solid;
+}
+
+@media screen and (max-width: 992px) {
+  .mobile-header {
+    display: flex !important;
+  }
+}
+/*--------------------------------------------------------------
+#  Main Section
+--------------------------------------------------------------*/
+#main-section {
+  height: 100vh;
+  background-image: url("/public/custom/type_3/bg/main_bg.webp");
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: top;
+}
+#main-section .container .carousel {
+  background-image: url("/public/custom/type_3/bg/carousel_bg.png");
+  background-size: 40%;
+  background-repeat: no-repeat;
+  background-position: 100% 10%;
+  height: 480px;
+  background-color: transparent;
+}
+#main-section .container .game-selector .casinoSelector {
+  position: relative;
+}
+#main-section .container .game-selector .casinoSelector::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("/public/custom/type_3/icon/tab_btn_01_bg.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  filter: grayscale(100%);
+  filter: brightness(0.2);
+  transition: all 0.5s;
+}
+#main-section .container .game-selector .casinoSelector:hover::before {
+  filter: grayscale(0%);
+  filter: brightness(1.2);
+}
+#main-section .container .game-selector .slotSelector {
+  position: relative;
+}
+#main-section .container .game-selector .slotSelector::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("/public/custom/type_3/icon/tab_btn_02_bg.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  filter: grayscale(100%);
+  filter: brightness(0.2);
+  transition: all 0.5s;
+}
+#main-section .container .game-selector .slotSelector:hover::before {
+  filter: grayscale(0%);
+  filter: brightness(1.2);
+}
+#main-section .container .game-selector img {
+  width: 100%;
+  position: relative;
+  z-index: 0;
+  cursor: pointer;
+}
+#main-section .container #information {
+  color: white;
+}
+#main-section .container #information #jackpot {
+  position: relative;
+  margin: 10px 0;
+  height: 180px;
+  font-family: "Giants-Bold";
+  font-size: 2rem;
+  background-image: url(/public/custom/type_2/main/main_jackpot_bg.png);
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position: center;
+}
+#main-section .container #information #jackpot #counter {
+  position: absolute;
+  right: 4%;
+  top: 50%;
+  transform: translate(0, -50%);
+  font-size: 5rem;
+  font-family: "Giants-Bold";
+  color: #f5f5f5;
+}
+#main-section .container #information .col-lg-6 {
+  padding: 0;
+}
+#main-section .container #information .col-lg-6:nth-child(2) {
+  padding-right: 3px;
+}
+#main-section .container #information .col-lg-6:nth-child(3) {
+  padding-left: 3px;
+}
+#main-section .container #information #lottery-list,
+#main-section .container #information #notice-list,
+#main-section .container #information #bank-list,
+#main-section .container #information #win-list {
+  height: 9vw;
+  border: 3px solid #896e1e;
+  border-radius: 10px;
+}
+#main-section .container #information #lottery-list,
+#main-section .container #information #notice-list,
+#main-section .container #information #bank-list {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(/public/custom/type_2/bg/live-bank.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+#main-section .container #information #lottery-list .nav-pills .nav-link,
+#main-section .container #information #notice-list .nav-pills .nav-link,
+#main-section .container #information #bank-list .nav-pills .nav-link {
+  font-size: 1.1rem;
+  font-family: "GmarketSansMedium";
+  padding-top: 0.75rem;
+  background-color: transparent;
+  color: #896e1e;
+  border-radius: 0;
+  padding-bottom: 6px;
+}
+#main-section .container #information #lottery-list .nav-pills .nav-link.active,
+#main-section .container #information #notice-list .nav-pills .nav-link.active,
+#main-section .container #information #bank-list .nav-pills .nav-link.active {
+  background-image: linear-gradient(to right, #896e1e, #896e1e);
+  background-repeat: no-repeat;
+  background-size: 65% 2px; /* 밑줄 길이와 두께 조절 */
+  background-position: center 100%; /* 가운데 정렬 및 Y 위치 조절 */
+  padding-bottom: 5px; /* 글자와 밑줄 사이의 간격 조절 */
+}
+#main-section .container #information #lottery-list .list-group-item,
+#main-section .container #information #notice-list .list-group-item,
+#main-section .container #information #bank-list .list-group-item {
+  color: white;
+  background-color: transparent;
+}
+#main-section .container #information #lottery-list .marquee,
+#main-section .container #information #notice-list .marquee,
+#main-section .container #information #bank-list .marquee {
+  padding-left: 5%;
+  text-align: left;
+  overflow: hidden;
+}
+#main-section .container #information #lottery-list .marquee:hover,
+#main-section .container #information #notice-list .marquee:hover,
+#main-section .container #information #bank-list .marquee:hover {
+  color: red;
+}
+#main-section .container #information #notice-list {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(/public/custom/type_2/bg/spotlight.jpg);
+}
+#main-section .container #information #notice-list .marquee {
+  height: 150px;
+}
+#main-section .container #information #lottery-list {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(/public/custom/type_2/main/ball_mix.webp), url(/public/custom/type_2/main/ball_case.webp), url(/public/custom/type_2/bg/spotlight.jpg);
+  background-repeat: no-repeat;
+  background-size: cover, 23%, 23%, cover;
+  background-position: center, 95% 50%, 95% 50%, center;
+}
+#main-section .container #information #lottery-list .lottery-title,
+#main-section .container #information #lottery-list .lottery-count {
+  font-size: 1.1rem;
+  font-family: "GmarketSansMedium";
+  padding-top: 0.75rem;
+  background-color: transparent;
+  color: #896e1e;
+  border-radius: 0;
+  padding-bottom: 6px;
+}
+#main-section .container #information #lottery-list .lottery-title {
+  padding-left: 30px;
+}
+#main-section .container #information #lottery-list .lottery-count {
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+#main-section .container #information #lottery-list .marquee {
+  padding-left: 0;
+}
+#main-section .container #information #lottery-list .marquee:hover {
+  color: white;
+}
+#main-section .container #information #lottery-list .ball {
+  font-size: 0.9rem;
+  display: inline-block;
+  width: 27px;
+  height: 27px;
+  line-height: 27px;
+  text-align: center;
+  border-radius: 50%;
+  color: white;
+  margin-right: 5px;
+  text-shadow: 1px 1px 1px black;
+}
+#main-section .container #information #lottery-list .ball.yellow {
+  background-color: #fac200;
+}
+#main-section .container #information #lottery-list .ball.blue {
+  background-color: #5bb4dd;
+}
+#main-section .container #information #lottery-list .ball.red {
+  background-color: #ff7272;
+}
+#main-section .container #information #lottery-list .ball.gray {
+  background-color: #aaaaaa;
+}
+#main-section .container #information #lottery-list .ball.green {
+  background-color: #b0d840;
+}
+#main-section .container #information #win-list {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(/public/custom/type_2/bg/spotlight.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+@media Screen and (max-width: 992px) {
+  #main-section {
+    background-size: 500%;
+    background-position: 50% 40%;
+  }
+  #main-section .container {
+    padding: 0;
+    margin: 0 !important;
+  }
+  #main-section .container .carousel {
+    background-size: 65%;
+    background-position: 100% -55%;
+    height: 230px;
+  }
+  #main-section .container .game-selector img {
+    width: 90%;
+  }
+  #main-section .container #information #jackpot {
+    background-image: url(/public/custom/type_3/main/main_m_jackpot_bg.png);
+    background-size: 90%;
+    margin: 10px 0;
+    height: 95px;
+  }
+  #main-section .container #information #jackpot #counter {
+    top: 67%;
+    right: 17%;
+    padding-top: 5px;
+    font-size: 2.1rem;
+  }
+}
+/*--------------------------------------------------------------
+#  Footer Section
+--------------------------------------------------------------*/
+footer {
+  background-color: #000;
+}
+footer .partners {
+  width: 1200px;
+  height: 180px;
+}
+footer .copyright {
+  color: rgb(105, 105, 105);
+  padding: 10px 0;
+  font-size: 1rem;
+}
+
+@media Screen and (max-width: 992px) {
+  footer .container {
+    margin: auto;
+    width: 100% !important;
+  }
+  footer .container .partners {
+    width: 100%;
+    height: 100%;
+  }
+}
+@media Screen and (max-width: 430px) {
+  footer .copyright {
+    font-size: 0.8rem;
+  }
+}/*# sourceMappingURL=style_3.css.map */
