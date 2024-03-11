@@ -84,7 +84,9 @@ passport.use(
           } else {
             //todo 세션만료 체크 후 로그인, 거부
             console.log('중복 로그인 시도');
-            return done(null, false, { message: '이미 접속되어 있는 계정입니다' });
+            expireSession(id);
+
+            return done(null, false, { message: '기존 접속을 종료합니다. 다시 로그인 해 주세요.' });
           }
         } else {
           console.log('아이디와 비밀번호를 확인하세요');
@@ -482,6 +484,22 @@ async function getUserType(req, res) {
     } else {
       res.send({ isLogin: true, hasCode: false });
     }
+  } catch (e) {
+    console.log(e);
+    return done(e);
+  } finally {
+    if (conn) return conn.release();
+  }
+}
+
+//? 로그아웃
+async function expireSession(id) {
+  let conn = await pool.getConnection();
+  let params = { id: id };
+  let expireSession = mybatisMapper.getStatement('user', 'expireSession', params, sqlFormat);
+
+  try {
+    await conn.query(expireSession);
   } catch (e) {
     console.log(e);
     return done(e);

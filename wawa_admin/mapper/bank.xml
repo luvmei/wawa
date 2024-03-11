@@ -807,6 +807,16 @@
       )
   </select>  
 
+  <update id='updateUserAsset'>
+    UPDATE user_asset_info
+    SET slot_balance = ${slotBalance}, 
+        casino_balance = ${casinoBalance}
+    WHERE user_id = (SELECT user_id
+                FROM user
+                WHERE id = #{id})
+    and (slot_balance != ${slotBalance} or casino_balance != ${casinoBalance})
+  </update>
+
 // 가상 관련
   <select id='getVirtualSetValue'>
     SELECT 

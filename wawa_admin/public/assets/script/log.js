@@ -44,7 +44,7 @@ let balanceLog = $('#balanceLog').DataTable({
   ],
   pageLength: 100,
   lengthMenu: [
-    [100, 200, 300, -1],
+    [100, 200, 32500, -1],
     [100, 200, 300, 'ALL'],
   ],
   order: [[0, 'desc']],
@@ -322,7 +322,6 @@ let pointLog = $('#pointLog').DataTable({
       target: 11,
       render: function (data, type, row) {
         if (row['이벤트 타입'] != '포인트 전환') {
-          console.log(data);
           let str = data;
           let parts = str.split(' ');
 

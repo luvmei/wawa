@@ -39,6 +39,7 @@ router.post('/betting', (req, res) => {
 
 router.post('/connect', (req, res) => {
   req.body.node_id = req.user[0].node_id;
+  console.log(req.body);
   getData(res, 'userConnect', req.body);
 });
 
@@ -615,9 +616,16 @@ async function getData(res, type, params = {}) {
   if (params.nodeId) {
     params.node_id = params.nodeId;
   }
+
+  if (params.node_id) {
+  const parts = params.node_id.split('.');
+    if (parts.length - 1 === 3) {
+      params.isBronze = true;
+    }
+  }
+
   let conn = await pool.getConnection();
   let getData = mybatisMapper.getStatement('user', type, params, sqlFormat);
-  console.log(getData);
   try {
     let result = await conn.query(getData);
     if (

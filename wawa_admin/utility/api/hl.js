@@ -234,59 +234,28 @@ function createUser(params, apiKey) {
     });
 }
 
-// async function requestAsset(params) {
-//   console.log('API 내 파라미터', params);
-//   let url;
-//   let apiKey;
+async function checkUserApiType(id) {
+  let userAPiType;
 
-//   if (params.reqType == 'give' || params.reqType == 'take') {
-//     params.id = params.receiverId;
-//     params.nick = params.receiverNick;
-//   }
+  let slotResult = await updateUserBalance(id, slotKey);
+  let slotBalance = slotResult.balance;
 
-//   await checkUserCasinoBalance(params.id);
-//   const userBalanceInfo = await updateUserBalance(params.id, slotKey);
+  let casinoResult = await updateUserBalance(id, casinoKey);
+  let casinoBalance = casinoResult.balance;
 
-//   if (params.타입 == '입금' || params.type == '지급' || params.type == '출금취소') {
-//     url = `${process.env.HL_API_ENDPOINT}/user/add-balance`;
-//   } else if (params.타입 == '출금' || params.type == '회수') {
-//     console.log('유저밸런스', userBalanceInfo);
-//     if (params.reqMoney > userBalanceInfo.balance) {
-//       params.reqMoney = userBalanceInfo.balance;
-//     }
-//     url = `${process.env.HL_API_ENDPOINT}/user/sub-balance`;
-//   }
+  if (slotBalance > casinoBalance) {
+    userAPiType = 's';
+  } else if (slotBalance < casinoBalance) {
+    userAPiType = 'c';
+  } else {
+    userAPiType = 's';
+  }
 
-//   let postData = {
-//     username: params.id,
-//     amount: parseInt(params.reqMoney) + parseInt(params.bonusMoney || 0),
-//   };
+  await swapUserApiType(id, userAPiType);
 
-//   const config = {
-//     method: 'post',
-//     url: url,
-//     headers: { Authorization: `Bearer ${slotKey}`, Accept: 'application/json', 'Content-Type': 'application/json' },
-//     data: postData,
-//   };
-
-//   try {
-//     let result = await axios(config);
-//     await updateUserBalance(params.id, casinoKey);
-//     if (params.senderId) {
-//       console.log(
-//         `[${params.type}완료] 신청: ${params.senderId} / 대상: ${params.id} / 금액: ${parseInt(params.reqMoney + params.reqBonus).toLocaleString('ko-KR')}`
-//       );
-//     } else {
-//       console.log(`[${params.타입}완료] 대상: ${params.id} / 금액: ${parseInt(params.reqMoney + params.reqBonus).toLocaleString('ko-KR')}`);
-//     }
-//     return result;
-//   } catch (error) {
-//     console.log(error.response);
-//     console.log(`${params.타입 || params.type}처리 실패: ID: ${params.id}`);
-//     createUser(params, slotKey);
-//     createUser(params, casinoKey);
-//   }
-// }
+  let userInfo = { userApiType: userAPiType, slotBalance: slotBalance, casinoBalance: casinoBalance };
+  return userInfo;
+}
 
 async function requestAsset(params) {
   let url;
@@ -296,20 +265,36 @@ async function requestAsset(params) {
     params.nick = params.receiverNick;
   }
 
-  if (params.apiType === 'c') {
-    const userCasino = await updateUserBalance(params.id, casinoKey);
-    if (userCasino.balance > 0) {
+  let { userApiType, slotBalance, casinoBalance } = await checkUserApiType(params.id);
+  // console.log(
+  //   `[시작] ID: ${params.id} / 유저API타입: ${userApiType === 'c' ? '카지노' : '슬롯'} / 슬롯밸런스: ${slotBalance.toLocaleString(
+  //     'ko-KR'
+  //   )} / 카지노밸런스: ${casinoBalance.toLocaleString('ko-KR')}`
+  // );
+
+  if (userApiType === 'c') {
+    if (casinoBalance > 0) {
       await allBalanceWithdrawFromCasino(params.id);
     }
-    await swapUserApiType(params.id);
+    await swapUserApiType(params.id, 's');
   }
+
+  let updatedInfo = await checkUserApiType(params.id);
+  userApiType = updatedInfo.userApiType;
+  slotBalance = updatedInfo.slotBalance;
+  casinoBalance = updatedInfo.casinoBalance;
+
+  // console.log(
+  //   `[중간] ID: ${params.id} / 유저API타입: ${userApiType === 'c' ? '카지노' : '슬롯'} / 슬롯밸런스: ${slotBalance.toLocaleString(
+  //     'ko-KR'
+  //   )} / 카지노밸런스: ${casinoBalance.toLocaleString('ko-KR')}`
+  // );
 
   if (params.타입 == '입금' || params.type == '지급' || params.type == '출금취소') {
     url = `${process.env.HL_API_ENDPOINT}/user/add-balance`;
   } else if (params.타입 == '출금' || params.type == '회수') {
-    const userSlot = await updateUserBalance(params.id, slotKey);
-    if (params.reqMoney > userSlot.balance) {
-      params.reqMoney = userSlot.balance;
+    if (params.reqMoney > slotBalance) {
+      params.reqMoney = slotBalance;
     }
     url = `${process.env.HL_API_ENDPOINT}/user/sub-balance`;
   }
@@ -327,10 +312,15 @@ async function requestAsset(params) {
   };
 
   try {
-    await delay(1000);
-    let result = await axios(config);
     // await delay(1000);
-    await updateUserBalance(params.id, slotKey);
+    await axios(config);
+    let { userApiType, slotBalance, casinoBalance } = await checkUserApiType(params.id);
+    // console.log(
+    //   `[끝] ID: ${params.id} / 유저API타입: ${userApiType === 'c' ? '카지노' : '슬롯'} / 슬롯밸런스: ${slotBalance.toLocaleString(
+    //     'ko-KR'
+    //   )} / 카지노밸런스: ${casinoBalance.toLocaleString('ko-KR')}`    
+    // );
+    
     if (params.senderId) {
       console.log(
         `[${params.type}완료] 신청: ${params.senderId} / 대상: ${params.id} / 금액: ${parseInt(params.reqMoney + params.reqBonus).toLocaleString('ko-KR')}`
@@ -338,43 +328,16 @@ async function requestAsset(params) {
     } else {
       console.log(`[${params.타입}완료] 대상: ${params.id} / 금액: ${parseInt(params.reqMoney + params.reqBonus).toLocaleString('ko-KR')}`);
     }
-    return result;
+    let userBalance = { userApiType: userApiType, slotBalance: slotBalance, casinoBalance: casinoBalance };
+    userBalance.id = params.id;
+    return userBalance;
   } catch (error) {
     console.log(error.response);
     console.log(`${params.타입 || params.type}처리 실패: ID: ${params.id}`);
-    createUser(params, slotKey);
-    createUser(params, casinoKey);
   }
 }
 
 // #region CASINO -> SLOT 보유금 이동
-async function checkUserCasinoBalance(id) {
-  let postData = {
-    username: id,
-  };
-
-  const config = {
-    method: 'get',
-    url: `${process.env.HL_API_ENDPOINT}/user`,
-    headers: { Authorization: `Bearer ${casinoKey}`, Accept: 'application/json', 'Content-Type': 'application/json' },
-    data: postData,
-  };
-
-  try {
-    const result = await axios(config);
-    await swapUserApiType(result.data.username); // await 추가
-
-    if (result.data.balance > 0) {
-      setTimeout(() => {
-        allBalanceWithdrawFromCasino(result.data.username); // await 추가
-      }, 1000);
-    }
-  } catch (error) {
-    console.log(error);
-    await swapUserApiType(id); // await 추가
-  }
-}
-
 async function allBalanceWithdrawFromCasino(id) {
   let postData = {
     username: id,
@@ -389,7 +352,8 @@ async function allBalanceWithdrawFromCasino(id) {
 
   try {
     const result = await axios(config);
-    console.log('카지노출금값', result.data.amount);
+    // console.log('카지노출금값', result.data.amount);
+    delay(1000);
     await allBalanceDepositToSlot(result.data.username, Math.abs(result.data.amount)); // await 추가
   } catch (error) {
     console.log(error);
@@ -418,15 +382,15 @@ async function allBalanceDepositToSlot(id, balance) {
     });
 }
 
-async function swapUserApiType(id) {
+async function swapUserApiType(id, apiType) {
   let conn = await pool.getConnection();
 
-  let params = { id: id, api_type: 's' };
+  let params = { id: id, api_type: apiType };
   let updateUserApiType = mybatisMapper.getStatement('user', 'updateUserApiType', params, sqlFormat);
 
   try {
     await conn.query(updateUserApiType);
-    console.log(`[API TYPE] ${id}의 API 타입을 SLOT으로 변경 완료`);
+    // console.log(`[API TYPE] ${id}의 API 타입을 SLOT으로 변경 완료`);
   } catch (e) {
     console.log(e);
     return done(e);
@@ -436,7 +400,9 @@ async function swapUserApiType(id) {
 }
 // #endregion
 
-async function updateUserBalance(user, apiKey) {
+async function checkUserBalance(user, userApiType) {
+  let apiKey = userApiType === 'slot' ? slotKey : casinoKey;
+
   let postData = {
     username: user,
   };
@@ -458,11 +424,48 @@ async function updateUserBalance(user, apiKey) {
 
     return params;
   } catch (error) {
-    console.log(`[HL_SLOT_API] 유저 밸런스 업데이트 실패: [${params.id}]유저 없음`);
+    console.log(error);
+    if (apiKey === slotKey) {
+      console.log(`[HL_SLOT_API] 유저 밸런스 업데이트 실패: [${params.id}]유저 없음`);
+    } else if (apiKey === casinoKey) {
+      console.log(`[HL_CASINO_API] 유저 밸런스 업데이트 실패: [${params.id}]유저 없음`);
+    }
+
     let userInfo = await getUserInfo(user);
     createUser(userInfo, slotKey);
     createUser(userInfo, casinoKey);
     return params;
+  }
+}
+
+async function updateUserBalance(user, apiKey) {
+  let postData = {
+    username: user,
+  };
+
+  const config = {
+    method: 'get',
+    url: `${process.env.HL_API_ENDPOINT}/user`,
+    headers: { Authorization: `Bearer ${apiKey}`, Accept: 'application/json', 'Content-Type': 'application/json' },
+    data: postData,
+  };
+
+  let params = {};
+  params.id = user;
+
+  try {
+    const result = await axios(config);
+    params.balance = result.data.balance;
+    params.status = result.status;
+    // if (apiKey === slotKey) {
+    //   console.log(`[HL_SLOT_API] 유저 밸런스 업데이트 성공: [${params.id}]`);
+    // } else if (apiKey === casinoKey) {
+    //   console.log(`[HL_CASINO_API] 유저 밸런스 업데이트 성공: [${params.id}]`);
+    // }
+
+    return params;
+  } catch (error) {
+    console.log(`[HL_SLOT_API] 유저 밸런스 업데이트 실패: [${params.id}]`);
   }
 }
 
@@ -624,6 +627,7 @@ async function requestDetailLog(apiKey, type) {
 module.exports = {
   createUser,
   requestAsset,
+  checkUserBalance,
   updateUserBalance,
   updateAllUserBalance,
   updateAdminBalance,

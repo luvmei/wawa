@@ -22,12 +22,12 @@
       IFNULL(sum(a.today_deposit),0) '당일입금',
       IFNULL(sum(a.today_withdraw),0) '당일출금',
       IFNULL(sum(a.today_deposit - a.today_withdraw),0) '당일입출금',
-      IFNULL(sum(CASE WHEN u.type &lt;&gt; 4 THEN b.c_m_today_betting ELSE 0 END),0) '당일카지노베팅',
-      IFNULL(sum(CASE WHEN u.type &lt;&gt; 4 THEN b.c_m_today_win ELSE 0 END),0) '당일카지노획득',
-      IFNULL(sum(CASE WHEN u.type &lt;&gt; 4 THEN b.c_m_today_betting - b.c_m_today_win ELSE 0 END),0) '당일카지노벳윈',
-      IFNULL(sum(CASE WHEN u.type &lt;&gt; 4 THEN b.s_m_today_betting ELSE 0 END),0) '당일슬롯베팅',
-      IFNULL(sum(CASE WHEN u.type &lt;&gt; 4 THEN b.s_m_today_win ELSE 0 END),0) '당일슬롯획득',
-      IFNULL(sum(CASE WHEN u.type &lt;&gt; 4 THEN b.s_m_today_betting - b.s_m_today_win ELSE 0 END),0) '당일슬롯벳윈',
+      IFNULL(sum(CASE WHEN u.type = 4 THEN b.c_m_today_betting ELSE 0 END),0) '당일카지노베팅',
+      IFNULL(sum(CASE WHEN u.type = 4 THEN b.c_m_today_win ELSE 0 END),0) '당일카지노획득',
+      IFNULL(sum(CASE WHEN u.type = 4 THEN b.c_m_today_betting - b.c_m_today_win ELSE 0 END),0) '당일카지노벳윈',
+      IFNULL(sum(CASE WHEN u.type = 4 THEN b.s_m_today_betting ELSE 0 END),0) '당일슬롯베팅',
+      IFNULL(sum(CASE WHEN u.type = 4 THEN b.s_m_today_win ELSE 0 END),0) '당일슬롯획득',
+      IFNULL(sum(CASE WHEN u.type = 4 THEN b.s_m_today_betting - b.s_m_today_win ELSE 0 END),0) '당일슬롯벳윈',
       IFNULL(sum(c.c_m_today_roll),0) '당일카지노롤링',
       IFNULL(sum(c.s_m_today_roll),0) '당일슬롯롤링',
       IFNULL(sum(c.c_m_today_roll + c.s_m_today_roll),0) '당일롤링합계',      
@@ -53,15 +53,15 @@
 	    IFNULL(a.today_combine_deposit, 0) '당일입금',
 	    IFNULL(a.today_combine_withdraw, 0) '당일출금',
 	    IFNULL(a.today_combine_deposit - a.today_combine_withdraw, 0) '당일입출금',
-      IFNULL(sum(b.c_m_today_betting),0) '당일카지노베팅',
-      IFNULL(sum(b.c_m_today_win),0) '당일카지노획득',
-      IFNULL(sum(b.c_m_today_betting - b.c_m_today_win),0) '당일카지노벳윈',
-      IFNULL(sum(b.s_m_today_betting),0) '당일슬롯베팅',
-      IFNULL(sum(b.s_m_today_win),0) '당일슬롯획득',
-      IFNULL(sum(b.s_m_today_betting - b.s_m_today_win),0) '당일슬롯벳윈',
-	    IFNULL(sum(c.c_m_today_roll),0) '당일카지노롤링',
-	    IFNULL(sum(c.s_m_today_roll),0) '당일슬롯롤링',
-      IFNULL(sum(c.c_m_today_roll + c.s_m_today_roll),0) '당일롤링합계',      
+      IFNULL(b.c_m_today_combine_betting,0) '당일카지노베팅',
+      IFNULL(b.c_m_today_combine_win,0) '당일카지노획득',
+      IFNULL(b.c_m_today_combine_betting - b.c_m_today_combine_win,0) '당일카지노벳윈',
+      IFNULL(b.s_m_today_combine_betting,0) '당일슬롯베팅',
+      IFNULL(b.s_m_today_combine_win,0) '당일슬롯획득',
+      IFNULL(b.s_m_today_combine_betting - b.s_m_today_combine_win,0) '당일슬롯벳윈',
+	    IFNULL(c.c_m_today_roll,0) '당일카지노롤링',
+	    IFNULL(c.s_m_today_roll,0) '당일슬롯롤링',
+      IFNULL(c.c_m_today_roll + c.s_m_today_roll,0) '당일롤링합계',      
       (SELECT COUNT(*) FROM user) '회원수'
     FROM user AS u      
       JOIN user_commission_info AS c ON u.user_id = c.user_id 
@@ -205,17 +205,42 @@
     </if>
   </select>
 
+  <!-- <select id='adminOnlineUsersWawa'>
+    SELECT *
+    FROM adminOnlineUsers_view
+    <where>
+        <if test="node_id != undefined">
+            <choose>
+                <when test="isBronze == true">
+                    AND node_id = #{node_id}
+                </when>
+                <otherwise>
+                    AND node_id LIKE CONCAT(#{node_id}, '%')
+                </otherwise>
+            </choose>
+        </if>
+    </where>
+  </select> -->
+
   <select id='adminOnlineUsersWawa'>
     SELECT *
     FROM adminOnlineUsers_view
-    WHERE 타입 = 4 AND 상태 != '차단' AND 아이디 IN 
+    WHERE 아이디 IN
     <foreach collection='ids' item='id' open='(' close=')' separator=','>
-      #{id}
+    #{id}
     </foreach>
-    <if test="node_id != undefined">
-      AND node_id LIKE CONCAT(#{node_id},'%')
-    </if>
+        <if test="node_id != undefined">
+          <choose>
+            <when test="isBronze == true">
+              AND node_id = #{node_id}
+            </when>
+          <otherwise>
+              AND node_id LIKE CONCAT(#{node_id}, '%')
+          </otherwise>
+      </choose>
+        </if>
   </select>
+
 
   <select id='agentOnlineUsers'>
     SELECT  
@@ -253,7 +278,14 @@
       #{id}
     </foreach>
     <if test="node_id != undefined">
-      AND node_id LIKE CONCAT(#{node_id},'%')
+        <choose>
+            <when test="isBronze == true">
+                AND node_id = #{node_id}
+            </when>
+            <otherwise>
+                AND node_id LIKE CONCAT(#{node_id}, '%')
+            </otherwise>
+        </choose>
     </if>
   </select>
   

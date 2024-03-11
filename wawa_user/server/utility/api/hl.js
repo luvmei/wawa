@@ -7,21 +7,26 @@ const casinoKey = process.env.HL_API_KEY_CASINO;
 
 // #region HL private functions
 async function checkUserApiType(id) {
-  let conn = await pool.getConnection();
+  let userAPiType;
 
-  let params = { id: id };
+  let slotResult = await updateUserBalance(id, slotKey);
+  let slotBalance = slotResult.balance;
 
-  let getUserApiType = mybatisMapper.getStatement('user', 'getUserApiType', params, sqlFormat);
+  let casinoResult = await updateUserBalance(id, casinoKey);
+  let casinoBalance = casinoResult.balance;
 
-  try {
-    let result = await conn.query(getUserApiType);
-    return result[0].api_type;
-  } catch (e) {
-    console.log(e);
-    return done(e);
-  } finally {
-    if (conn) conn.release();
+  if (slotBalance > casinoBalance) {
+    userAPiType = 's';
+  } else if (slotBalance < casinoBalance) {
+    userAPiType = 'c';
+  } else {
+    userAPiType = 's';
   }
+
+  await swapUserApiType(id, userAPiType);
+
+  let userInfo = { userApiType: userAPiType, slotBalance: slotBalance, casinoBalance: casinoBalance };
+  return userInfo;
 }
 
 function createUser(params, apiKey) {
@@ -84,6 +89,7 @@ async function swapApiBalance(userApiType, id) {
 }
 
 async function allBalanceDeposit(id, balance, userApiType) {
+  // console.log(`전체출금한금액: ${balance}`);
   let gameType = userApiType === 's' ? 'c' : 's';
   let apiKey = userApiType === 's' ? casinoKey : slotKey;
 
@@ -101,7 +107,9 @@ async function allBalanceDeposit(id, balance, userApiType) {
 
   await axios(config)
     .then((result) => {
-      // console.log(`${userApiType === 's' ? '카지노' : '슬롯'} 보유금 / ${result.data.amount.toLocaleString('ko-KR')}원 전환완료`);
+      console.log(
+        `[보유금 전환] ${userApiType === 's' ? '슬롯' : '카지노'}에서 ${userApiType === 's' ? '카지노로' : '슬롯으로'} ${result.data.amount.toLocaleString('ko-KR')}원 전환완료`
+      );
       swapUserApiType(result.data.username, gameType);
     })
     .catch((error) => {
@@ -129,23 +137,34 @@ async function swapUserApiType(id, gameType) {
 
 // #region HL export functions
 async function requestGameUrl(req, res) {
-  let gameType = req.body.gameType === 'slot' ? 's' : 'c';
-  let userApiType = await checkUserApiType(req.user[0].id);
-  let apiKey = gameType === 's' ? slotKey : casinoKey;
+  let apiKey;
+  let { userApiType, slotBalance, casinoBalance } = await checkUserApiType(req.user[0].id);
+  console.log(
+    `[회원API 정보] 회원ID: ${req.user[0].id}, 카지노머니: ${casinoBalance.toLocaleString('ko-KR')} / 슬롯머니: ${slotBalance.toLocaleString('ko-KR')} / API타입: ${userApiType === 's' ? '슬롯' : '카지노'}`
+  );
 
-  if (gameType !== userApiType) {
-    // console.log('게임타입과 유저API타입 불일치');
-    await swapApiBalance(userApiType, req.user[0].id);
-  } else {
-    // console.log('게임타입과 유저API타입 일치');
+  if (req.body.gameType == 'slot') {
+    gameType = 's';
+    apiKey = slotKey;
+  } else if (req.body.gameType == 'casino') {
+    gameType = 'c';
+    apiKey = casinoKey;
   }
 
-  //? 스포츠 테스트
-  // let postData = {
-  //   username: req.user[0].id,
-  //   game_id: 'live_sport',
-  //   vendor: 'live-inplay',
-  // };
+  if (gameType !== userApiType) {
+    if (slotBalance != 0 || casinoBalance != 0) {
+      await swapApiBalance(userApiType, req.user[0].id);
+    } else {
+      await swapUserApiType(req.user[0].id, gameType);
+    }
+  }
+
+  // //? 스포츠 테스트
+  // // let postData = {
+  // //   username: req.user[0].id,
+  // //   game_id: 'live_sport',
+  // //   vendor: 'live-inplay',
+  // // };
 
   let postData = {
     username: req.user[0].id,

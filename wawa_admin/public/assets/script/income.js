@@ -741,6 +741,7 @@ let incomeAgentDepoWith = $('#incomeAgentDepoWith').DataTable({
     { data: '카지노 롤링요율', className: 'desktop' },
     { data: '슬롯 롤링요율', className: 'desktop' },
     { data: '루징요율', className: 'desktop' },
+
     { data: '베팅마진요율', className: 'desktop' },
     { data: '입금', className: 'desktop' },
     { data: '출금', className: 'desktop' },
@@ -751,6 +752,7 @@ let incomeAgentDepoWith = $('#incomeAgentDepoWith').DataTable({
     { data: '포인트', className: 'desktop' },
     { data: '루징', className: 'desktop' },
     { data: '총정산금', className: 'desktop' },
+
     { data: '실정산금', responsivePriority: 3 },
     { data: '베팅', className: 'desktop' },
     { data: '획득', className: 'desktop' },
@@ -1192,7 +1194,7 @@ let incomeAgentBetWin = $('#incomeAgentBetWin').DataTable({
     { data: '루징', className: 'desktop' },
     { data: '총정산금', className: 'desktop' },
     { data: '하부합산루징금', responsivePriority: 4 },
-    { data: '최종루징금', className: 'desktop' },
+    { data: null, defaultContent: '', className: 'desktop' },
     { data: '최종정산금', responsivePriority: 5 },
     { data: '플래티넘' },
     { data: '골드' },
@@ -1252,7 +1254,7 @@ let incomeAgentBetWin = $('#incomeAgentBetWin').DataTable({
       visible: false,
       searchable: false,
     },
-    { target: [27, 28, 29, 30, 31], visible: false },
+    { target: [8, 9, 10, 11, 25, 27, 28, 29, 30, 31], visible: false },
     {
       target: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31],
       orderable: false,
@@ -1427,7 +1429,26 @@ let incomeAgentBetWin = $('#incomeAgentBetWin').DataTable({
       },
     },
     {
-      target: [26, 27],
+      target: 26,
+      width: 120,
+      className: 'fw-bolder',
+      render: function (data, type, row) {
+        console.log(row);
+        console.log(clientType);
+        if (row.타입 == 3) {
+          console.log(row);
+          let losing = ((Number(row.카지노윈루즈) + Number(row.슬롯윈루즈) - Number(row.카지노마진롤링) - Number(row.슬롯마진롤링)) * row.루징요율) / 100;
+          
+          if (losing < 0) {
+            return `<div class="text-danger">${Math.round(losing).toLocaleString('ko-KR')}</div>`;
+          } else {
+            return `<div class="text-primary">${Math.round(losing).toLocaleString('ko-KR')}</div>`;
+          }
+        }
+      },
+    },
+    {
+      target: 27,
       width: 120,
       className: 'fw-bolder',
       render: function (data, type, row) {
@@ -1451,10 +1472,10 @@ let incomeAgentBetWin = $('#incomeAgentBetWin').DataTable({
       slotHeader.innerHTML = `<div class="fw-light">슬롯</div>
       <div class="text-primary">슬롯 베팅마진</div>`;
 
-      incomeAgentBetWin.column(13).visible(true);
-      incomeAgentBetWin.column(13).header().innerHTML = '베';
-      incomeAgentBetWin.column(14).visible(true);
-      incomeAgentBetWin.column(14).header().innerHTML = '롤';
+      // incomeAgentBetWin.column(13).visible(true);
+      // incomeAgentBetWin.column(13).header().innerHTML = '베';
+      // incomeAgentBetWin.column(14).visible(true);
+      // incomeAgentBetWin.column(14).header().innerHTML = '롤';
     }
     setTimeout(function () {
       incomeAgentBetWin.columns.adjust().draw();

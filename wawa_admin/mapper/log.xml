@@ -549,26 +549,26 @@
     UPDATE 
       user_betting_info
     SET 
-      sp_today_betting = sp_today_betting + #{sportBetting},
-      sp_today_win = sp_today_win + #{sportWin},
-      sp_total_betting = sp_total_betting + #{sportBetting},
-      sp_total_win = sp_total_win + #{sportWin},
-      c_today_betting = c_today_betting + #{casinoBetting},
-      c_today_win = c_today_win + #{casinoWin},
-      c_total_betting = c_total_betting + #{casinoBetting},
-      c_total_win = c_total_win + #{casinoWin},
-      c_m_today_betting = c_m_today_betting + #{marginCasinoBetting},
-      c_m_today_win = c_m_today_win + #{marginCasinoWin},
-      c_m_total_betting = c_m_total_betting + #{marginCasinoBetting},
-      c_m_total_win = c_m_total_win + #{marginCasinoWin},
-      s_today_betting = s_today_betting + #{slotBetting},
-      s_today_win = s_today_win + #{slotWin},
-      s_total_betting = s_total_betting + #{slotBetting},
-      s_total_win = s_total_win + #{slotWin},
-      s_m_today_betting = s_m_today_betting + #{marginSlotBetting},
-      s_m_today_win = s_m_today_win + #{marginSlotWin},
-      s_m_total_betting = s_m_total_betting + #{marginSlotBetting},
-      s_m_total_win = s_m_total_win + #{marginSlotWin}
+      sp_today_combine_betting = sp_today_combine_betting + #{sportBetting},
+      sp_today_combine_win = sp_today_combine_win + #{sportWin},
+      sp_total_combine_betting = sp_total_combine_betting + #{sportBetting},
+      sp_total_combine_win = sp_total_combine_win + #{sportWin},
+      c_today_combine_betting = c_today_combine_betting + #{casinoBetting},
+      c_today_combine_win = c_today_combine_win + #{casinoWin},
+      c_total_combine_betting = c_total_combine_betting + #{casinoBetting},
+      c_total_combine_win = c_total_combine_win + #{casinoWin},
+      c_m_today_combine_betting = c_m_today_combine_betting + #{marginCasinoBetting},
+      c_m_today_combine_win = c_m_today_combine_win + #{marginCasinoWin},
+      c_m_total_combine_betting = c_m_total_combine_betting + #{marginCasinoBetting},
+      c_m_total_combine_win = c_m_total_combine_win + #{marginCasinoWin},
+      s_today_combine_betting = s_today_combine_betting + #{slotBetting},
+      s_today_combine_win = s_today_combine_win + #{slotWin},
+      s_total_combine_betting = s_total_combine_betting + #{slotBetting},
+      s_total_combine_win = s_total_combine_win + #{slotWin},
+      s_m_today_combine_betting = s_m_today_combine_betting + #{marginSlotBetting},
+      s_m_today_combine_win = s_m_today_combine_win + #{marginSlotWin},
+      s_m_total_combine_betting = s_m_total_combine_betting + #{marginSlotBetting},
+      s_m_total_combine_win = s_m_total_combine_win + #{marginSlotWin}
     WHERE user_id = (SELECT upper_agt FROM user WHERE user_id = #{user_id})
   </select>
 

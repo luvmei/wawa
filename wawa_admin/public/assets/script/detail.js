@@ -1558,7 +1558,7 @@ let detailMessage = $('#detailMessage').DataTable({
     },
   ],
   drawCallback: function (settings) {
-    $('#agentMessageModal tr').click(function () {
+    $('#agentMessageModal').on('click', 'tr', function () {
       let selectedMessage = $('table').DataTable().row($(this)).data();
 
       switch (selectedMessage.종류) {

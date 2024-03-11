@@ -452,7 +452,7 @@ function insertGameBanner(gameList) {
     if (game.provider_name) {
       game.provider_name = game.provider_name.replace('_slot', '').toUpperCase();
       newBanner = `
-      <div class="col-4 col-md-3 col-lg-2 text-center">
+      <div class="col-md-1 text-center">
       <img src="${game.img_url}" class="w-100 rounded-3 slot-icon" />
       <div class="overlay ms-auto">
         <div class="name">${game.title}</div>
@@ -464,7 +464,7 @@ function insertGameBanner(gameList) {
       </div>`;
     } else {
       newBanner = `
-      <div class="col-4 col-md-3 col-lg-2 text-center">
+      <div class="col-md-1 text-center">
       <img src="${game.img_url}" class="rounded-3 slot-icon" />
       <div class="overlay ms-auto img-thumbnail">
       <div class="name">${game.title}</div>

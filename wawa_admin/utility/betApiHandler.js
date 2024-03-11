@@ -199,7 +199,7 @@ async function checkBettingInfo(latest) {
         hierarchy = await getUserHierarchy(hierarchyData);
         await updateBettingInfo(betting);
         await updateUpperCombineBettingInfo(hierarchy, betting);
-        await updateUpperBettingInfo(betting);
+        // await updateUpperBettingInfo(betting);
         await insertSummaryLog(betting);
       }
       return;
@@ -208,7 +208,7 @@ async function checkBettingInfo(latest) {
       hierarchy = await getUserHierarchy(hierarchyData);
       await updateBettingInfo(betting);
       await updateUpperCombineBettingInfo(hierarchy, betting);
-      await updateUpperBettingInfo(betting);
+      // await updateUpperBettingInfo(betting);
       await insertSummaryLog(betting);
       await insertBalanceLog(betting);
 

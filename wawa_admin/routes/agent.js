@@ -201,6 +201,7 @@ async function insertAgentInfo(req, res, data) {
       agentType = '브론즈';
       params.upper_agt = params.silver;
       countAgent = await conn.query(mybatisMapper.getStatement('agent', 'countBronze', params, sqlFormat));
+      console.log(countAgent);
       defaultAgent = mybatisMapper.getStatement('agent', 'defaultBronze', params, sqlFormat);
       insertAgent = mybatisMapper.getStatement('agent', 'insertBronze', params, sqlFormat);
       break;
@@ -226,8 +227,8 @@ async function insertAgentInfo(req, res, data) {
     } else {
       await conn.query(insertAgent);
     }
-    insertNodeId(params);
     makeAgentHierarchy(params);
+    insertNodeId(params);
     // userRouter.createUserApi(params);
     await conn.commit();
     console.log(`${agentType} 추가 성공`);
@@ -246,7 +247,6 @@ async function insertNodeId(params) {
   let nodePid;
   let conn = await pool.getConnection();
   let node = mybatisMapper.getStatement('agent', 'findNode', params, sqlFormat);
-
   try {
     let nodeResult = await conn.query(node);
 
@@ -274,7 +274,7 @@ async function insertNodeId(params) {
       nodePid = nodeId.substring(0, idx);
       params.nodePid = nodePid;
     }
-
+    
     await conn.query(mybatisMapper.getStatement('agent', 'insertNode', params, sqlFormat));
   } catch (e) {
     console.log(e);
@@ -290,7 +290,9 @@ async function makeAgentHierarchy(params) {
 
   try {
     let hierarchyData = await conn.query(getHierarchy);
+    console.log(hierarchyData);
     let hierarchy = userRouter.getUserHierarchy(hierarchyData);
+    console.log(hierarchy);
 
     hierarchy.id = params.id;
     let insertHierarchy = mybatisMapper.getStatement('agent', 'insertAgentHierarchy', hierarchy, sqlFormat);

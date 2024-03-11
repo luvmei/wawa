@@ -2040,10 +2040,13 @@ addAgent.addEventListener('click', function () {
         if (isAdmin != 9) {
           socket.emit('to_admin', { type: 'requestJoin', userId: agentType });
         }
-        $(`#agentInfo`).DataTable().ajax.reload(null, false);
 
         $('#addAgentModal').modal('hide');
         $('#confirmModal').modal('show');
+        setTimeout(() => {
+          console.log('갱신실행')
+          $(`#agentInfo`).DataTable().ajax.reload(null, false);
+        }, 2000);
       })
       .fail(function (err) {
         console.log(err);
@@ -2554,7 +2557,6 @@ function pushMoneyBtn(params, type, e) {
 function pushClearBtn(type) {
   type.reqMoney = 0;
   type.reqMoneyText.innerHTML = `${type.reqMoney}`;
-  console.log('type', type);
   type.reqExist = false;
   type.reqMoneyText.value = '0';
   if (type == deposit || type == withdraw) {
@@ -2702,7 +2704,6 @@ const balanceTakeBtn = document.querySelector('#detailTakeBtn');
 if (balanceGiveBtn) {
   balanceGiveBtn.addEventListener('click', async function () {
     rowData = await getNeedInfo(selectedUser.아이디);
-    console.log(rowData);
     openBalanceGiveModal(rowData);
   });
 }

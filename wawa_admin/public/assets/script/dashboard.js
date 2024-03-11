@@ -18,6 +18,9 @@ window.addEventListener('DOMContentLoaded', (event) => {
     let rowData = $('#onlineUsersAgent').DataTable().row($(this).closest('tr')).data();
     openBalanceTakeModal(rowData);
   });
+
+  // #onlineUsers 테이블 리로드
+  $('#onlineUsers').DataTable().ajax.reload(null, false);
 });
 
 $('#onlineUsers').DataTable({
@@ -106,6 +109,7 @@ $('#onlineUsers').DataTable({
     },
     {
       target: 6,
+      visible: false,
       render: function (data) {
         return data.replace(/^https?:\/\//, '');
       },

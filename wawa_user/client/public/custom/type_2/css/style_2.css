@@ -39,6 +39,69 @@
   font-weight: normal;
   font-style: normal;
 }
+@font-face {
+  font-family: "SCoreDream";
+  font-weight: 100;
+  font-style: normal;
+  src: url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream1.woff2) format("woff2"), url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream1.woff) format("woff");
+  font-display: swap;
+}
+@font-face {
+  font-family: "SCoreDream";
+  font-weight: 200;
+  font-style: normal;
+  src: url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream2.woff2) format("woff2"), url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream2.woff) format("woff");
+  font-display: swap;
+}
+@font-face {
+  font-family: "SCoreDream";
+  font-weight: 300;
+  font-style: normal;
+  src: url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream3.woff2) format("woff2"), url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream3.woff) format("woff");
+  font-display: swap;
+}
+@font-face {
+  font-family: "SCoreDream";
+  font-weight: 400;
+  font-style: normal;
+  src: url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream4.woff2) format("woff2"), url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream4.woff) format("woff");
+  font-display: swap;
+}
+@font-face {
+  font-family: "SCoreDream";
+  font-weight: 500;
+  font-style: normal;
+  src: url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream5.woff2) format("woff2"), url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream5.woff) format("woff");
+  font-display: swap;
+}
+@font-face {
+  font-family: "SCoreDream";
+  font-weight: 600;
+  font-style: normal;
+  src: url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream6.woff2) format("woff2"), url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream6.woff) format("woff");
+  font-display: swap;
+}
+@font-face {
+  font-family: "SCoreDream";
+  font-weight: 700;
+  font-style: normal;
+  src: url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream7.woff2) format("woff2"), url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream7.woff) format("woff");
+  font-display: swap;
+}
+@font-face {
+  font-family: "SCoreDream";
+  font-weight: 800;
+  font-style: normal;
+  src: url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream8.woff2) format("woff2"), url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream8.woff) format("woff");
+  font-display: swap;
+}
+@font-face {
+  font-family: "SCoreDream";
+  font-weight: 900;
+  font-style: normal;
+  src: url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream9.woff2) format("woff2"), url(https://cdn.jsdelivr.net/gh/webfontworld/SCoreDream/SCoreDream9.woff) format("woff");
+  font-display: swap;
+}
 /*--------------------------------------------------------------
 # Color
 --------------------------------------------------------------*/
@@ -195,7 +258,7 @@ h6 {
   cursor: pointer;
 }
 .modal .modal-content {
-  border: 2px solid #ffc451;
+  border: 5px solid lightgoldenrodyellow;
   background-color: #000;
   background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url(/public/custom/type_2/bg/modal_bg.webp);
   background-repeat: no-repeat;
@@ -581,8 +644,14 @@ h6 {
   width: 100% !important;
   margin-bottom: 16px;
 }
-.modal#slotModal .modal-content {
+.modal#slotModal .modal-dialog {
+  max-width: 1600px;
+}
+.modal#slotModal .modal-dialog .modal-content {
   background-attachment: fixed;
+}
+.modal .seven-cols .col-md-1 {
+  width: 14.2857142857%;
 }
 
 #popup1 {
@@ -763,6 +832,13 @@ h6 {
   }
   .modal.bankTime .modal-body .row div.maintenance {
     font-size: 0.8rem;
+  }
+  .modal .seven-cols .col-md-1 {
+    padding: 0;
+    width: 33.3333333333% !important;
+  }
+  .modal #slotModal div .slot-cion {
+    width: 90%;
   }
 }
 /*--------------------------------------------------------------
@@ -1047,7 +1123,7 @@ h6 {
   #header .m_login .mobile-user-login {
     margin: 20px 0 10px 0;
     font-size: 0.9rem;
-    color: whitesmoke;
+    color: black;
   }
   #header .m_login .mobile-user-login .login-symbol {
     margin-left: 12px;
@@ -1071,6 +1147,9 @@ h6 {
     padding: 4px 5px;
     color: #ffc451;
     background-color: #af0e1c;
+  }
+  #header .m_login .mobile-user-login .bi.bi-list {
+    color: #000 !important;
   }
 }
 @media Screen and (max-width: 430px) {
@@ -1129,83 +1208,32 @@ h6 {
 --------------------------------------------------------------*/
 .game-selector {
   margin: auto;
-  width: 80%;
+  width: 95%;
 }
 .game-selector .nav.nav-tabs {
   border: none;
-  height: 20rem;
-  margin: 1rem 0;
-  background-image: url(/public/custom/type_2/main/partition.png);
-  background-repeat: no-repeat;
-  background-size: 21px 100%;
-  background-position: center;
 }
-.game-selector .nav.nav-tabs #nav-popular-tab,
-.game-selector .nav.nav-tabs #nav-new-tab,
-.game-selector .nav.nav-tabs #nav-casino-tab,
-.game-selector .nav.nav-tabs #nav-slots-tab,
-.game-selector .nav.nav-tabs #nav-sport-tab {
-  margin: auto;
-  width: 100%;
-  height: 100%;
-  background-repeat: no-repeat;
-  background-size: 100%;
-  border: none;
+.game-selector .nav.nav-tabs .casino-tab,
+.game-selector .nav.nav-tabs .slots-tab {
+  padding: 0;
+}
+.game-selector .nav.nav-tabs .casino-tab .nav-link,
+.game-selector .nav.nav-tabs .slots-tab .nav-link {
+  padding: 0;
+}
+.game-selector .nav.nav-tabs .casino-tab .nav-link.active,
+.game-selector .nav.nav-tabs .slots-tab .nav-link.active {
   background-color: transparent;
-  transition: all 0.3s ease;
+  border-color: transparent;
 }
-.game-selector .nav.nav-tabs #nav-popular-tab + .text,
-.game-selector .nav.nav-tabs #nav-new-tab + .text,
-.game-selector .nav.nav-tabs #nav-casino-tab + .text,
-.game-selector .nav.nav-tabs #nav-slots-tab + .text,
-.game-selector .nav.nav-tabs #nav-sport-tab + .text {
-  color: #9b9da2;
-  padding-top: 0.5rem;
-  font-size: 1rem;
+.game-selector .nav.nav-tabs .casino-tab .nav-link:hover,
+.game-selector .nav.nav-tabs .slots-tab .nav-link:hover {
+  background-color: transparent;
+  border-color: transparent;
 }
-.game-selector .nav.nav-tabs .partition-tab {
-  margin: auto;
-  width: 10px;
-  height: 274px;
-  background-image: url(/public/custom/type_2/main/partition.png);
-  background-repeat: no-repeat;
-  background-size: contain;
-}
-.game-selector #nav-casino-tab {
-  background-image: url(/public/custom/type_2/icon/tab_btn_01.png);
-  filter: brightness(0.5);
-}
-.game-selector #nav-casino-tab.active, .game-selector #nav-casino-tab:focus, .game-selector #nav-casino-tab:active {
-  background-image: url(/public/custom/type_2/icon/tab_btn_01.png);
-  filter: drop-shadow(0px 0px 10px #ff3399);
-}
-.game-selector #nav-casino-tab.active + .text, .game-selector #nav-casino-tab:focus + .text, .game-selector #nav-casino-tab:active + .text {
-  color: #ffc451;
-  font-weight: 700;
-}
-.game-selector #nav-slots-tab {
-  background-image: url(/public/custom/type_2/icon/tab_btn_02.png);
-  filter: brightness(0.5);
-}
-.game-selector #nav-slots-tab.active, .game-selector #nav-slots-tab:focus, .game-selector #nav-slots-tab:active {
-  background-image: url(/public/custom/type_2/icon/tab_btn_02.png);
-  filter: drop-shadow(0px 0px 10px #ff3399);
-}
-.game-selector #nav-slots-tab.active + .text, .game-selector #nav-slots-tab:focus + .text, .game-selector #nav-slots-tab:active + .text {
-  color: #ffc451;
-  font-weight: 700;
-}
-.game-selector #nav-sport-tab {
-  background-image: url(/public/custom/type_2/icon/tab_btn_03.png);
-  filter: brightness(0.5);
-}
-.game-selector #nav-sport-tab.active, .game-selector #nav-sport-tab:focus, .game-selector #nav-sport-tab:active {
-  background-image: url(/public/custom/type_2/icon/tab_btn_03.png);
-  filter: drop-shadow(0px 0px 10px #ff3399);
-}
-.game-selector #nav-sport-tab.active + .text, .game-selector #nav-sport-tab:focus + .text, .game-selector #nav-sport-tab:active + .text {
-  color: #ffc451;
-  font-weight: 700;
+.game-selector .nav.nav-tabs .casino-tab .nav-link img,
+.game-selector .nav.nav-tabs .slots-tab .nav-link img {
+  width: 60%;
 }
 
 .tab-content .image-container {
@@ -1224,7 +1252,7 @@ h6 {
   filter: drop-shadow(3px 3px 3px black);
 }
 .tab-content .image-container .logo-text {
-  font-size: 1.2rem;
+  font-size: 2rem;
   font-family: "GangwonEduPowerExtraBoldA";
   position: absolute !important;
   bottom: 5%;
@@ -1254,12 +1282,20 @@ h6 {
 #  Main Section
 -------------------------------------------------*/
 #main-section {
-  background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url("/public/custom/type_2/bg/main_bg.jpg");
+  background-image: linear-gradient(89.9deg, rgb(208, 246, 255) 0.1%, rgb(255, 237, 237) 47.9%, rgb(255, 255, 231) 100.2%);
   background-position: top;
   background-size: 100%;
   background-repeat: no-repeat;
   background-attachment: fixed;
   min-height: 100vh;
+}
+#main-section #video {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
+  z-index: -1;
 }
 #main-section .container {
   margin-top: 110px;
@@ -1268,8 +1304,10 @@ h6 {
   max-width: 75%;
 }
 #main-section .banner-section {
-  margin-top: -7%;
   position: relative;
+}
+#main-section .banner-section .item-main {
+  margin-top: 65px;
 }
 #main-section .banner-section .text-logo {
   position: absolute;
@@ -1357,7 +1395,7 @@ h6 {
 --------------------------------------------------------------*/
 .carousel-cover {
   position: relative;
-  margin-top: -5.5vh;
+  margin-top: -1vh;
   width: 100%;
   z-index: 2;
 }
@@ -1477,7 +1515,7 @@ h6 {
 }
 #nav-slots div .overlay .play,
 #nav-slots div .overlay .enter {
-  font-size: 3rem;
+  font-size: 5rem;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -1490,7 +1528,7 @@ h6 {
   word-wrap: break-word;
   text-align: center;
   position: absolute;
-  font-size: 1.2rem;
+  font-size: 2rem;
   left: 50%;
   transform: translateX(-50%);
 }
@@ -1537,7 +1575,7 @@ h6 {
 }
 #nav-casino div .overlay .play,
 #nav-casino div .overlay .enter {
-  font-size: 3rem;
+  font-size: 5rem;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -1550,7 +1588,7 @@ h6 {
   word-wrap: break-word;
   text-align: center;
   position: absolute;
-  font-size: 1.2rem;
+  font-size: 2rem;
   left: 50%;
   transform: translateX(-50%);
 }
@@ -1605,7 +1643,7 @@ body.modal-open {
 }
 #slotModal div .overlay .play,
 #slotModal div .overlay .enter {
-  font-size: 2.5rem;
+  font-size: 3rem;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -1618,7 +1656,7 @@ body.modal-open {
   word-wrap: break-word;
   text-align: center;
   position: absolute;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   left: 50%;
   transform: translateX(-50%);
 }
@@ -1643,7 +1681,7 @@ body.modal-open {
   max-width: 80%;
 }
 #slotModal div .slot-icon {
-  max-width: 200px;
+  width: 200px;
   -o-object-fit: cover;
      object-fit: cover;
 }
@@ -2704,7 +2742,6 @@ body.modal-open {
     min-height: initial;
     background-size: 110%;
     background-position: center;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(/public/custom/type_2/bg/m_main_bg.jpg);
   }
   #main-section .container {
     margin: 0rem auto;
@@ -2732,10 +2769,6 @@ body.modal-open {
     border: none;
     margin: 0;
     height: 12rem;
-    background-image: url(/public/custom/type_2/main/partition.png);
-    background-repeat: no-repeat;
-    background-size: auto 80%;
-    background-position: center 20%;
   }
   #main-section .container .game-selector .nav.nav-tabs .col-4 {
     padding: 0;
@@ -2799,10 +2832,6 @@ body.modal-open {
     border: none;
     height: 6.5rem;
     margin: 0 0 1rem 0;
-    background-image: url(/public/custom/type_2/main/partition.png);
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
   }
   #main-section .container .game-selector .nav.nav-tabs #nav-casino-tab,
   #main-section .container .game-selector .nav.nav-tabs #nav-slots-tab,
@@ -2814,6 +2843,12 @@ body.modal-open {
   }
   .m-login-message {
     color: #f95668;
+  }
+  .nav-link img {
+    width: 100% !important;
+  }
+  .logo-text {
+    font-size: 0.95rem !important;
   }
 }
 .sns-pc {
@@ -2902,7 +2937,7 @@ body.modal-open {
   max-width: 300px;
   color: #333;
   position: absolute;
-  top: 59vh;
+  top: 52vh;
   left: 50%;
   transform: translate(-50%, -50%);
 }
@@ -2911,7 +2946,7 @@ body.modal-open {
 }
 .landing .landing-login #landing-id,
 .landing .landing-login #landing-pw {
-  border: 2px solid #333;
+  border: 2px solid #ffee90;
 }
 .landing .landing-login #landing-login-btn {
   background-color: #ffc451;
@@ -2964,6 +2999,9 @@ body.modal-open {
   }
   .landing .landing-login {
     width: 200px;
-    top: 51vh;
+    top: 47vh;
+  }
+  .landing .bi-list {
+    color: black !important;
   }
 }/*# sourceMappingURL=style_2.css.map */

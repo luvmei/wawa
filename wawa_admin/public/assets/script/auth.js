@@ -34,7 +34,6 @@ window.loadCaptcha = async function () {
   try {
     const response = await fetch('/auth/captcha?' + new URLSearchParams({ timestamp: Date.now() }));
     const blob = await response.blob();
-    console.log('blob:', blob);
     const url = URL.createObjectURL(blob);
     captchaImg.src = url;
   } catch (error) {

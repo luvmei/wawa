@@ -9,6 +9,7 @@ const socket = require('../utility/socket');
 const api = require(`../utility/api/${process.env.API_TYPE}`);
 const cron = require('node-cron');
 const { param } = require('jquery');
+const { updateUserBalance } = require('../utility/api/hl');
 const slotKey = process.env.SLOT_KEY;
 const casinoKey = process.env.CASINO_KEY;
 
@@ -158,7 +159,7 @@ router.post('/agent/withdraw', async function (req, res) {
     console.log('비정상 접근');
     res.send({ msg: '비정상적인 접근입니다.', isLogin: false });
   } else {
-    let { balance } = await beforeBalanceCheck(req.user[0].id);
+    let { balance } = await beforeAgentBalanceCheck(req.user[0].id);
     if (balance < req.body.reqMoney) {
       res.send({ balanceCheck: false });
       return;
@@ -224,7 +225,7 @@ router.post('/agent/give', async function (req, res) {
     res.send({ msg: '비정상적인 접근입니다.', isLogin: false });
   } else {
     if (req.user[0].type != 9) {
-      let { slot_balance, casino_balance } = await beforeBalanceCheck(req.user[0].id);
+      let { slot_balance, casino_balance } = await beforeAgentBalanceCheck(req.user[0].id);
       let balance = Math.max(slot_balance, casino_balance);
       if (balance < req.body.reqMoney) {
         res.send({ balanceCheck: false });
@@ -238,11 +239,11 @@ router.post('/agent/give', async function (req, res) {
     params.time = getCurrentTime();
     params.ip = (req.headers['x-forwarded-for'] || '').split(',').shift() || req.socket.remoteAddress;
     params.senderType = req.user[0].type;
+    params.type = '지급';
+
     if (params.apiType === 's') {
-      params.type = '지급';
       params.balance = req.user[0].slot_balance;
     } else if (params.apiType === 'c') {
-      params.type = '지급';
       params.balance = req.user[0].casino_balance;
     }
 
@@ -261,8 +262,10 @@ router.post('/agent/take', async function (req, res) {
     res.send({ msg: '비정상적인 접근입니다.', isLogin: false });
   } else {
     if (req.user[0].type != 9) {
-      let { slot_balance, casino_balance } = await beforeBalanceCheck(req.body.receiverId);
-      let balance = req.body.receiverApiType == 's' ? slot_balance : casino_balance;
+      let { slot_balance, casino_balance, apiType } = await beforeUserBalanceCheck(req.body.receiverId);
+
+      req.body.apiType = apiType;
+      let balance = req.body.apiType == 's' ? slot_balance : casino_balance;
       if (balance < req.body.reqMoney) {
         res.send({ balanceCheck: false });
         return;
@@ -321,6 +324,7 @@ async function giveTakeBalance(res, params) {
     if (params.senderType === 9) {
       if (params.receiverType === 4) {
         apiResult = await api.requestAsset(params);
+        // updateUserAsset(apiResult);
       }
       // else {
       //   console.log(`[${params.type}진행] ${params.senderId}[${senderType}]가 ${params.receiverId}[${receiverType}] 에이전트에게 ${params.type}합니다.`);
@@ -335,6 +339,7 @@ async function giveTakeBalance(res, params) {
       if (bankState[0].bank_req_state == 'n') {
         if (params.receiverType === 4) {
           apiResult = await api.requestAsset(params);
+          // updateUserAsset(apiResult);
         }
         // else {
         //   console.log(`[${params.type}진행] ${params.senderId}가 ${params.receiverId} 에이전트에게 ${params.type}합니다.`);
@@ -434,7 +439,7 @@ function capitalize(string) {
 async function getData(res, type, params = {}) {
   let conn = await pool.getConnection();
   let getData = mybatisMapper.getStatement('bank', type, params, sqlFormat);
-  
+
   try {
     let result = await conn.query(getData);
     result = JSONbig.stringify(result);
@@ -768,7 +773,6 @@ async function cancelConfirm(res, params, type) {
 
   if (params.userType == 4) {
     apiResult = await api.requestAsset(params);
-    console.log(apiResult.data);
   }
 
   if (params.userType != 4 || (params.userType == 4 && apiResult.status == 200)) {
@@ -1058,6 +1062,21 @@ async function getUserApiType(id) {
   }
 }
 
+async function updateUserAsset(apiResult) {
+  console.log('updateUserAsset', apiResult);
+  let conn = await pool.getConnection();
+  let sql = mybatisMapper.getStatement('bank', 'updateUserAsset', apiResult, sqlFormat);
+
+  try {
+    await conn.query(sql);
+  } catch (e) {
+    console.log(e);
+    return done(e);
+  } finally {
+    if (conn) return conn.release();
+  }
+}
+
 // #endregion
 
 // #region 에이전트 관련 함수
@@ -1220,7 +1239,7 @@ async function insertRequestQuery(res, type, params) {
   }
 }
 
-async function beforeBalanceCheck(id) {
+async function beforeAgentBalanceCheck(id) {
   let conn = await pool.getConnection();
   let params = { id: id };
 
@@ -1229,6 +1248,35 @@ async function beforeBalanceCheck(id) {
   try {
     let result = await conn.query(blanceInfo);
     return result[0];
+  } catch (e) {
+    console.log(e);
+    return done(e);
+  } finally {
+    if (conn) conn.release();
+  }
+}
+
+async function beforeUserBalanceCheck(id) {
+  let conn = await pool.getConnection();
+  let params = { id: id };
+  const userSlotBalance = await api.checkUserBalance(id, 'slot');
+  const userCasinoBalance = await api.checkUserBalance(id, 'casino');
+
+  console.log('userSlotBalance', userSlotBalance);
+  console.log('userCasinoBalance', userCasinoBalance);
+
+  let apiType = userSlotBalance > userCasinoBalance ? 's' : 'c';
+
+  console.log('apiType', apiType);
+
+  let setUserApiType = mybatisMapper.getStatement('user', 'setUserApiType', { id: id, api_type: apiType }, sqlFormat);
+  // let blanceInfo = mybatisMapper.getStatement('bank', 'getBalanceInfo', params, sqlFormat);
+
+  try {
+    await conn.query(setUserApiType);
+    // let result = await conn.query(blanceInfo);
+    let result = { slot_balance: userSlotBalance, casino_balance: userCasinoBalance, apiType: apiType };
+    return result;
   } catch (e) {
     console.log(e);
     return done(e);

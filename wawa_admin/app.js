@@ -734,32 +734,6 @@ async function offAlram() {
     if (conn) return conn.release();
   }
 }
-
-// 하트비트 관련 현재 사용안함
-function checkClientConnections() {
-  let deleteInterval;
-
-  for (const [id, client] of Object.entries(clients)) {
-    let lastActivity = (Date.now() - client.lastHeartbeat) / 1000;
-    console.log(`[클라이언트] 아이디: ${client.clientId} / 타입: ${client.clientType} / 마지막 활동 후: ${lastActivity}초`);
-
-    if (client.clientType == 4) {
-      deleteInterval = 60000;
-    } else if (client.clientType == 9) {
-      deleteInterval = 120000;
-    }
-
-    if (client.clientType == 4) {
-      if (Date.now() - client.lastHeartbeat > deleteInterval) {
-        const socket = io.sockets.sockets.get(id);
-        if (socket) {
-          socket.disconnect(true);
-          delete clients[id];
-        }
-      }
-    }
-  }
-}
 // #endregion
 
 // #region 데이터베이스
@@ -767,8 +741,14 @@ let betUsers = [];
 
 async function getData(res, type, params = {}) {
   let conn = await pool.getConnection();
+
+  if (params.node_id) {
+    const parts = params.node_id.split('.');
+    if (parts.length - 1 === 3) {
+      params.isBronze = true;
+    }
+  }
   let sql = mybatisMapper.getStatement('dashboard', type, params, sqlFormat);
-  
   try {
     let result = await conn.query(sql);
     result = JSONbig.stringify(result);
@@ -787,15 +767,17 @@ async function updateCombineAssets() {
   let getAllUsers = mybatisMapper.getStatement('log', 'getAllUsers', {}, sqlFormat);
   try {
     allUsers = await conn.query(getAllUsers);
-    allUsers.forEach(async (el) => {
+    for (const el of allUsers) {
       let getParams = el;
       let getCombineAssets = mybatisMapper.getStatement('log', 'getCombineAssets', getParams, sqlFormat);
       let combineAssets = await conn.query(getCombineAssets);
 
+      if (combineAssets.length === 0 || !combineAssets[0][0]) continue;
+
       let updateParams = combineAssets[0][0];
       let updateCombineAssets = mybatisMapper.getStatement('log', 'updateCombineAssets', updateParams, sqlFormat);
       await conn.query(updateCombineAssets);
-    });
+    }
   } catch (e) {
     console.log(e);
     return done(e);
@@ -867,6 +849,8 @@ async function updateUserBalanceInDB(params) {
   }
 }
 
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 const updateUserBalances = async () => {
   let loggedIds = await getLoggedId();
   onlineUsers = [...new Set([...loggedIds])];
@@ -883,6 +867,7 @@ const updateUserBalances = async () => {
 
           const params = { id: user, slot_balance: slotBalance, casino_balance: casinoBalance };
           updateUserBalanceInDB(params);
+          await delay(500);
         } catch (error) {
           console.error('Error updating user balance for user:', user.id, error);
           // 적절한 오류 처리 로직
@@ -894,9 +879,101 @@ const updateUserBalances = async () => {
     }
   }
   api.updateAdminBalance('slot', slotKey);
+  await delay(500);
   api.updateAdminBalance('casino', casinoKey);
   socket.emit('to_admin', { id: '', type: 'updateOnlineUsers' });
 };
+
+async function updateAllUserBalance() {
+  const slotResult = await api.updateAllUserBalance(slotKey);
+    const casinoResult = await api.updateAllUserBalance(casinoKey);
+    await mergeBalance(slotResult, casinoResult);
+  }
+
+async function mergeBalance(slotResult, casinoResult) {
+  const userBalances = slotResult.map((slotUser) => {
+    const casinoUser = casinoResult.find((casinoUser) => casinoUser.username === slotUser.username);
+    return {
+      username: slotUser.username,
+      slot_balance: slotUser.balance,
+      casino_balance: casinoUser ? casinoUser.balance : 0,
+    };
+  });
+  const userAssetParams = await makeUserAssetParams(userBalances);
+  await updateUserAssetInfo(userAssetParams);
+}
+
+async function getUserId(username) {
+  let conn = await pool.getConnection();
+  let sql = mybatisMapper.getStatement('user', 'getUserId', { id: username }, sqlFormat);
+
+  try {
+    const result = await conn.query(sql);
+    return result[0];
+  } catch (error) {
+    console.error('유저 ID 조회 중 오류 발생:', error);
+  } finally {
+    if (conn) conn.release();
+  }
+}
+
+async function makeUserAssetParams(userBalances) {
+  const userAssetParams = [];
+
+  for (const { username, slot_balance, casino_balance } of userBalances) {
+    try {
+      const userId = await getUserId(username);
+      if (!userId || userId.user_id === undefined) {
+        continue;
+      }
+      const user_id = userId.user_id;
+      userAssetParams.push({
+        user_id,
+        username,
+        slot_balance,
+        casino_balance,
+      });
+    } catch (error) {
+      console.error('오류발생:', username, error);
+    }
+  }
+  return userAssetParams;
+}
+
+// async function updateUserAssetInfo(userAssetParams) {
+//   let conn = await pool.getConnection();
+//   // console.time('업데이트 유저에셋');
+//   for (userAsset of userAssetParams) {
+//     try {
+//       let sql = mybatisMapper.getStatement('user', 'updateUserAssetInfo', userAsset, sqlFormat);
+//       await conn.query(sql);
+//     } catch (error) {
+//       console.error('유저 자산 정보 업데이트 중 오류 발생:', error);
+//     } finally {
+//       if (conn) conn.release();
+//     }
+//   }
+//   // console.timeEnd('업데이트 유저에셋');
+// }
+
+//todo 튜닝가치 있어보임
+async function updateUserAssetInfo(userAssetParams) {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+
+    // console.time('업데이트 유저에셋');
+    let sql = mybatisMapper.getStatement('user', 'upsertUserAssetInfoTune', { userAssetParams: userAssetParams }, sqlFormat);
+    let result = await conn.query(sql);
+    // console.timeEnd('업데이트 유저에셋');
+  } catch (error) {
+    if (conn) await conn.rollback(); // 오류 발생 시 트랜잭션 롤백
+    console.error('Batch update of user asset info failed:', error);
+  } finally {
+    if (conn) conn.release(); // 데이터베이스 연결 해제
+  }
+}
+
 // #endregion
 
 const logOnlineUsersAndRequestDetails = async () => {
@@ -930,6 +1007,7 @@ http.listen(process.env.ADMIN_PORT, '0.0.0.0', () => {
 
   setTimeout(updateUserBalances, timeUntilMidnight);
   setInterval(updateUserBalances, 1000 * 5);
+  setInterval(updateAllUserBalance, 1000 * 20);
   setInterval(logOnlineUsersAndRequestDetails, 1000 * 90);
 
   console.log(`Example app listening on port ${process.env.ADMIN_PORT}`);
