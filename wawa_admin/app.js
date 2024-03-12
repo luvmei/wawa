@@ -749,6 +749,7 @@ async function getData(res, type, params = {}) {
     }
   }
   let sql = mybatisMapper.getStatement('dashboard', type, params, sqlFormat);
+
   try {
     let result = await conn.query(sql);
     result = JSONbig.stringify(result);

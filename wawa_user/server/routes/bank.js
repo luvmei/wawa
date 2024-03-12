@@ -186,6 +186,7 @@ router.post('/reward', function (req, res) {
     time: getCurrentTime(),
     type: '포인트 전환',
   };
+  console.log(params);
   exchangeReward(res, params);
 });
 // #endregion
@@ -288,8 +289,8 @@ async function insertRequestQuery(res, type, params) {
         res.send({ msg: '입금이 신청되었습니다', type: 'requestUserDeposit', userId: params.id, reqState: 'n', isValid: true });
       } else if (type == 'withdraw') {
         let apiWithdraw = await api.requestAssetWithdraw(params);
-        if (!apiWithdraw) {
-          res.send({ msg: '출금신청이 실패하였습니다', type: 'requestUserWithdraw', userId: params.id, reqState: 'n', isValid: false });
+        if (apiWithdraw.status != 200) {
+          res.send({ msg: `<div>출금신청이 실패하였습니다</div><div class='mt-3'>잠시후 다시 신청해주세요</div>`, type: 'requestUserWithdraw', userId: params.id, reqState: 'n', isValid: false });
           return;
         } else {
           params.transactionId = apiWithdraw.data.transaction_id;
@@ -297,8 +298,8 @@ async function insertRequestQuery(res, type, params) {
           await conn.query(insertReqSql);
           await conn.query(insertReqState);
           console.log(`[출금신청]: ${params.id}  /  ${parseInt(params.reqMoney).toLocaleString('ko-KR')} 원`);
+          res.send({ msg: '출금이 신청되었습니다', type: 'requestUserWithdraw', userId: params.id, reqState: 'n', isValid: true });
         }
-        res.send({ msg: '출금이 신청되었습니다', type: 'requestUserWithdraw', userId: params.id, reqState: 'n', isValid: true });
       }
     }
   } catch (e) {

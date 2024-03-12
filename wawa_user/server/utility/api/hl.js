@@ -108,7 +108,9 @@ async function allBalanceDeposit(id, balance, userApiType) {
   await axios(config)
     .then((result) => {
       console.log(
-        `[보유금 전환] ${userApiType === 's' ? '슬롯' : '카지노'}에서 ${userApiType === 's' ? '카지노로' : '슬롯으로'} ${result.data.amount.toLocaleString('ko-KR')}원 전환완료`
+        `[보유금 전환] ${userApiType === 's' ? '슬롯' : '카지노'}에서 ${userApiType === 's' ? '카지노로' : '슬롯으로'} ${result.data.amount.toLocaleString(
+          'ko-KR'
+        )}원 전환완료`
       );
       swapUserApiType(result.data.username, gameType);
     })
@@ -140,7 +142,9 @@ async function requestGameUrl(req, res) {
   let apiKey;
   let { userApiType, slotBalance, casinoBalance } = await checkUserApiType(req.user[0].id);
   console.log(
-    `[회원API 정보] 회원ID: ${req.user[0].id}, 카지노머니: ${casinoBalance.toLocaleString('ko-KR')} / 슬롯머니: ${slotBalance.toLocaleString('ko-KR')} / API타입: ${userApiType === 's' ? '슬롯' : '카지노'}`
+    `[회원API 정보] 회원ID: ${req.user[0].id}, 카지노머니: ${casinoBalance.toLocaleString('ko-KR')} / 슬롯머니: ${slotBalance.toLocaleString(
+      'ko-KR'
+    )} / API타입: ${userApiType === 's' ? '슬롯' : '카지노'}`
   );
 
   if (req.body.gameType == 'slot') {
@@ -189,17 +193,40 @@ async function requestGameUrl(req, res) {
     });
 }
 
+async function checkUserApiType(id) {
+  let userAPiType;
+
+  let slotResult = await updateUserBalance(id, slotKey);
+  let slotBalance = slotResult.balance;
+
+  let casinoResult = await updateUserBalance(id, casinoKey);
+  let casinoBalance = casinoResult.balance;
+
+  if (slotBalance > casinoBalance) {
+    userAPiType = 's';
+  } else if (slotBalance < casinoBalance) {
+    userAPiType = 'c';
+  } else {
+    userAPiType = 's';
+  }
+
+  await swapUserApiType(id, userAPiType);
+
+  let userInfo = { userApiType: userAPiType, slotBalance: slotBalance, casinoBalance: casinoBalance };
+  return userInfo;
+}
+
 async function exchangePointToBalance(params) {
   let apiKey;
-  let userApiType = await checkUserApiType(params.id);
+  let userAssetInfo = await checkUserApiType(params.id);
 
-  if (userApiType === 's') {
+  if (userAssetInfo.userApiType === 's') {
     apiKey = slotKey;
-  } else if (userApiType === 'c') {
+  } else if (userAssetInfo.userApiType === 'c') {
     apiKey = casinoKey;
   }
 
-  let url = `${process.env.HL_API_ENDPOINT}/user/add-balance`;
+  const url = `${process.env.HL_API_ENDPOINT}/user/add-balance`;
 
   let postData = {
     username: params.id,
@@ -215,6 +242,7 @@ async function exchangePointToBalance(params) {
 
   try {
     let result = await axios(config);
+
     return result.status;
   } catch (error) {
     console.log(error.response.data.message);
@@ -224,11 +252,11 @@ async function exchangePointToBalance(params) {
 
 async function requestAssetWithdraw(params) {
   let apiKey;
-  let userApiType = await checkUserApiType(params.id);
+  let userAssetInfo = await checkUserApiType(params.id);
 
-  if (userApiType === 's') {
+  if (userAssetInfo.userApiType === 's') {
     apiKey = slotKey;
-  } else if (userApiType === 'c') {
+  } else if (userAssetInfo.userApiType === 'c') {
     apiKey = casinoKey;
   }
 
@@ -269,13 +297,13 @@ async function requestAssetWithdraw(params) {
     return result;
   } catch (error) {
     console.log(error.response.data.message);
-    console.log(`${params.타입}처리 실패: ID: ${params.id}`);
-    createUser(params, slotKey);
-    createUser(params, casinoKey);
+    console.log(`${params.type}처리 실패: ID: ${params.id}`);
+    return error;    
   }
 }
 
 async function updateUserBalance(user, apiKey) {
+  console.log(`[HL API] 유저 밸런스 업데이트: [${user}]`);
   let postData = {
     username: user,
   };

@@ -313,7 +313,7 @@ async function requestAsset(params) {
 
   try {
     // await delay(1000);
-    await axios(config);
+    let apiResult = await axios(config);
     let { userApiType, slotBalance, casinoBalance } = await checkUserApiType(params.id);
     // console.log(
     //   `[끝] ID: ${params.id} / 유저API타입: ${userApiType === 'c' ? '카지노' : '슬롯'} / 슬롯밸런스: ${slotBalance.toLocaleString(
@@ -330,10 +330,14 @@ async function requestAsset(params) {
     }
     let userBalance = { userApiType: userApiType, slotBalance: slotBalance, casinoBalance: casinoBalance };
     userBalance.id = params.id;
-    return userBalance;
+    
+    return apiResult;
   } catch (error) {
-    console.log(error.response);
+    console.log(`[HL_API] ${params.타입 || params.type}처리 실패: ID: ${params.id}`)
+    console.log(`응답코드: ${error.response.status}`)
+    console.log(`응답메세지: ${error.response.data.message}`);
     console.log(`${params.타입 || params.type}처리 실패: ID: ${params.id}`);
+    return error.response;
   }
 }
 

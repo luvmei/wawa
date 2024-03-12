@@ -220,6 +220,7 @@ async function insertAgentInfo(req, res, data) {
     await conn.query(insertAssetInfo);
     await conn.query(insertCommissionInfo);
     await conn.query(insertBettingInfo);
+    console.log('파라미터', params);
 
     // 트리노드 관련코드
     if (countAgent == 0) {
@@ -227,14 +228,20 @@ async function insertAgentInfo(req, res, data) {
     } else {
       await conn.query(insertAgent);
     }
-    makeAgentHierarchy(params);
-    insertNodeId(params);
+
+    setTimeout(() => {
+      insertNodeId(params, conn);
+      setTimeout(() => {
+        makeAgentHierarchy(params, conn);
+      }, 1000);
+    }, 2000);
     // userRouter.createUserApi(params);
     await conn.commit();
     console.log(`${agentType} 추가 성공`);
     res.send({ agentType: agentType, isAdmin: req.user[0].type });
   } catch (e) {
     console.log(`에러메시지: ${e}`);
+    console.log('파트너 추가 실패 롤백됨');
     await conn.rollback();
     throw err;
   } finally {
@@ -242,10 +249,10 @@ async function insertAgentInfo(req, res, data) {
   }
 }
 
-async function insertNodeId(params) {
+async function insertNodeId(params, conn) {
   let nodeId;
   let nodePid;
-  let conn = await pool.getConnection();
+  conn = await pool.getConnection();
   let node = mybatisMapper.getStatement('agent', 'findNode', params, sqlFormat);
   try {
     let nodeResult = await conn.query(node);
@@ -274,7 +281,7 @@ async function insertNodeId(params) {
       nodePid = nodeId.substring(0, idx);
       params.nodePid = nodePid;
     }
-    
+
     await conn.query(mybatisMapper.getStatement('agent', 'insertNode', params, sqlFormat));
   } catch (e) {
     console.log(e);
@@ -284,8 +291,8 @@ async function insertNodeId(params) {
   }
 }
 
-async function makeAgentHierarchy(params) {
-  let conn = await pool.getConnection();
+async function makeAgentHierarchy(params, conn) {
+  conn = await pool.getConnection();
   let getHierarchy = mybatisMapper.getStatement('user', 'agentHierarchy', params, sqlFormat);
 
   try {

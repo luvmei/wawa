@@ -1074,6 +1074,10 @@ $('#depositConfirm').on('click', function () {
     },
   })
     .done(function (result) {
+      if (result.error) {
+        alert(result.msg);
+      }
+
       document.querySelector('#depositConfirm').disabled = false;
       spinnerToggle();
       $('#confirmCancel').modal('hide');
@@ -2044,7 +2048,7 @@ addAgent.addEventListener('click', function () {
         $('#addAgentModal').modal('hide');
         $('#confirmModal').modal('show');
         setTimeout(() => {
-          console.log('갱신실행')
+          console.log('갱신실행');
           $(`#agentInfo`).DataTable().ajax.reload(null, false);
         }, 2000);
       })
@@ -2644,6 +2648,7 @@ function pushRequestBtn(params, type) {
     data: data,
   })
     .done(function (result) {
+      console.log(result);
       reqBtn.disabled = false;
 
       if (result.balanceCheck == false) {
