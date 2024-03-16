@@ -200,7 +200,7 @@ async function exchangePoint(res, params) {
   let exchangeBalanceLog = mybatisMapper.getStatement('bank', 'exchangeBalanceLog', params, sqlFormat);
 
   let agentTypeName
-  switch (agentType) {
+  switch (params.agentType) {
     case 0:
       agentTypeName = '영본사';
       break;

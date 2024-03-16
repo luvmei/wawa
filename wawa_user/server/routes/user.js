@@ -129,29 +129,6 @@ router.post('/login', (req, res, next) => {
   }
   delete req.session.captcha;
 
-  // const originalId = req.body.id;
-  // const originalPassword = req.body.password;
-
-  // const id = xss(req.body.id);
-  // const password = xss(req.body.password);
-
-  // const isIdSanitized = originalId !== id;
-  // const isPasswordSanitized = originalPassword !== password;
-
-  // if (isIdSanitized) {
-  //   console.log('Sanitized Id Detected:', isIdSanitized);
-  //   console.log('Original Id:', originalId);
-  // }
-
-  // if (isPasswordSanitized) {
-  //   console.log('Sanitized Password Detected:', isPasswordSanitized);
-  //   console.log('Original Password:', originalPassword);
-  // }
-
-  // if(isIdSanitized || isPasswordSanitized) {
-  //   console.log('살균내역 있음')
-  // }
-
   passport.authenticate('local', function (err, user, info) {
     if (err) {
       return next(err);
@@ -173,7 +150,7 @@ router.post('/login', (req, res, next) => {
 router.post('/logout', (req, res, next) => {
   if (!req.user || !req.user[0]) {
     console.log('로그인되어있지 않은 상태에서 로그아웃 시도');
-    return res.render(templateName, { isLogin: false, title: title });
+    return res.redirect('/');
   }
   let logoutParams = new redefineConnectParams(req, '로그아웃');
 

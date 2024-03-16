@@ -321,8 +321,29 @@ function getDomain(host) {
 }
 
 app.post('/joincode', (req, res) => {
-  res.send(joinCode);
+  checkJoinCode(res, joinCode);
 });
+
+async function checkJoinCode(res, joinCode) {
+  console.log('joinCode:', joinCode)
+  let conn = await pool.getConnection();
+  let sql = mybatisMapper.getStatement('user', 'checkCode', { join_code: joinCode }, sqlFormat);
+
+  try {
+    let result = await conn.query(sql);
+    console.log('result:', result)
+    if (result.length > 0) {
+      res.send({ isValidCode: true, joinCode: joinCode });
+    } else {
+      res.send({ result: false, joinCode: '' });
+    }
+  } catch (e) {
+    console.log(e);
+    return done(e);
+  } finally {
+    if (conn) return conn.release();
+  }
+}
 
 app.post('/popup', (req, res) => {
   getPopupData(res);

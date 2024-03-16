@@ -58,6 +58,8 @@ let id_button = document.querySelector('#join-id-btn');
 // ID 유효성 체크
 id.addEventListener('input', function () {
   let regex = /^(?=.*[a-z])(?=.*[0-9])[a-z0-9]{6,12}$/;
+  id_isCheck = false;
+
   // let regex = /^(?=\S*[a-z])(?=\S*[0-9])\S{6,12}$/;
   //* 아이디는 'admin', 'test'를 포함하면 안됨
   let forbiddenWords = ['admin', 'test'];
@@ -196,6 +198,7 @@ let nick_button = document.querySelector('#join-nick-btn');
 // nickname 유효성 체크
 nick.addEventListener('input', () => {
   let regex = /^(?=.*[a-z가-힣]).{3,8}$/;
+  nick_isCheck = false;
 
   if (regex.test(nick.value)) {
     nick_desc.style.color = failColor;
@@ -289,6 +292,7 @@ phone.addEventListener('input', () => {
     phone_desc.innerHTML = '올바른 전화번호를 입력해주세요';
     phone.classList.add('is-invalid');
     phone_isValid = false;
+    phone_isCheck = false;
   } else {
     phone_desc.style.color = successColor;
     phone_desc.innerHTML = '전화번호 중복확인을 해주세요';
@@ -441,6 +445,7 @@ let code_button = document.querySelector('#join-code-btn');
 // 가입코드 유효성 체크
 code.addEventListener('input', () => {
   let regex = /^(?=.*[a-z])(?=.*[0-9])[a-z0-9]{4,12}$/;
+  code_isCheck = false;
 
   if (regex.test(code.value)) {
     code_desc.style.color = failColor;
@@ -473,10 +478,12 @@ function checkCode() {
         code.classList.remove('is-valid');
         code.classList.add('is-invalid');
         code_isValid = false;
+        code_isCheck = false;
       } else {
         code_desc.style.color = successColor;
         code_desc.innerHTML = '사용 가능한 가입코드입니다';
         code_isValid = true;
+        code_isCheck = true;
         code.classList.remove('is-invalid');
         code.classList.add('is-valid');
       }
@@ -490,6 +497,38 @@ function checkCode() {
     code_isValid = true;
   }
 }
+// #endregion
+
+// #region URL에서 가입코드 가져오기
+const protocol = window.location.protocol;
+const host = window.location.host;
+const baseUrl = `${protocol}//${host}`;
+
+window.history.pushState({}, '', baseUrl);
+
+document.getElementById('joinModal').addEventListener('show.bs.modal', () => {
+  $.ajax({
+    method: 'POST',
+    url: '/joincode',
+  })
+    .done(function (result) {
+      let { isValidCode, joinCode } = result;
+      reportToServer({ join_code: joinCode });
+      if (isValidCode) {
+        code_isValid = true;
+        code_isCheck = true;
+        code.value = joinCode;
+        code_desc.style.color = successColor;
+        code_desc.innerHTML = '사용 가능한 가입코드입니다';
+        code_isValid = true;
+        code.classList.remove('is-invalid');
+        code.classList.add('is-valid');
+      }
+    })
+    .fail(function (err) {
+      console.log(err);
+    });
+});
 // #endregion
 
 // #region 추천인코드
@@ -553,7 +592,7 @@ join_btn.addEventListener('click', function () {
       account_isValid &&
       holder_isValid &&
       withdraw_isValid &&
-      code_isValid &&
+      code_isCheck &&
       recommend_isValid) ||
     holder.value == document.getElementById('join-name')
   ) {
@@ -583,42 +622,6 @@ join_btn.addEventListener('click', function () {
       join_btn.innerHTML = '회원가입';
       join_btn.classList.remove('notice');
     }, 3000);
-  }
-});
-// #endregion
-
-// #region URL에서 가입코드 가져오기
-window.addEventListener('DOMContentLoaded', (event) => {
-  getJoinCode();
-
-  async function getJoinCode() {
-    $.ajax({
-      method: 'POST',
-      url: '/joincode',
-    })
-      .done(function (result) {
-        joinCode = result;
-      })
-      .fail(function (err) {
-        console.log(err);
-      });
-  }
-});
-
-const protocol = window.location.protocol;
-const host = window.location.host;
-const baseUrl = `${protocol}//${host}`;
-
-window.history.pushState({}, '', baseUrl);
-// #endregion
-
-// #region 가입코드 자동입력
-document.getElementById('joinModal').addEventListener('show.bs.modal', () => {
-  console.log(joinCode);
-  if (joinCode) {
-    code_isValid = true;
-    code.value = joinCode;
-    checkCode();
   }
 });
 // #endregion

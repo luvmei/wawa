@@ -579,13 +579,13 @@ io.on('connection', async (socket) => {
   });
 
   socket.on('disconnect', async () => {
-    const sessionOutInterval = 3;
+    const sessionOutInterval = 0.6;
     const client = clients[socket.id];
 
     if (client && client.clientType === '4') {
       updateUserBalances();
       if (disconnectTimeouts[client.clientId]) {
-        console.log('연결해제 타이머있었음', disconnectTimeouts[client.clientId]);
+        console.log('연결해제 타이머있었음');
         clearTimeout(disconnectTimeouts[client.clientId]);
         delete disconnectTimeouts[client.clientId];
       }
@@ -887,9 +887,9 @@ const updateUserBalances = async () => {
 
 async function updateAllUserBalance() {
   const slotResult = await api.updateAllUserBalance(slotKey);
-    const casinoResult = await api.updateAllUserBalance(casinoKey);
-    await mergeBalance(slotResult, casinoResult);
-  }
+  const casinoResult = await api.updateAllUserBalance(casinoKey);
+  await mergeBalance(slotResult, casinoResult);
+}
 
 async function mergeBalance(slotResult, casinoResult) {
   const userBalances = slotResult.map((slotUser) => {
