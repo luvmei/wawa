@@ -579,7 +579,7 @@ io.on('connection', async (socket) => {
   });
 
   socket.on('disconnect', async () => {
-    const sessionOutInterval = 0.6;
+    const sessionOutInterval = 3;
     const client = clients[socket.id];
 
     if (client && client.clientType === '4') {

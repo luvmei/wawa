@@ -21,7 +21,6 @@
     </where>
   </select>
 
-
   <select id="userInfoOnline">
     SELECT
       *
@@ -89,7 +88,14 @@
       user_betting_view
     <where>
       <if test="node_id != undefined">
-        AND node_id LIKE CONCAT(#{node_id},'%')
+        <choose>
+          <when test="isBronze == true">
+            node_id = #{node_id}
+          </when>
+          <otherwise>
+            node_id LIKE CONCAT(#{node_id}, '%')
+          </otherwise>
+        </choose>
       </if>
     </where>;
   </select>
@@ -103,19 +109,16 @@
       SUBSTRING(접속일시, 1, 10) BETWEEN #{startDate} AND #{endDate}
       <if test="node_id != undefined">
         <choose>
-          <!-- isBronze가 true일 경우, 정확한 일치 -->
           <when test="isBronze == true">
             AND node_id = #{node_id}
           </when>
-          <!-- isBronze가 false 또는 설정되지 않은 경우, LIKE 연산자 사용 -->
           <otherwise>
             AND node_id LIKE CONCAT(#{node_id}, '%')
           </otherwise>
         </choose>
       </if>
     </where>
-</select>
-
+  </select>
   
   <select id='userBlock'>
     SELECT
@@ -126,7 +129,14 @@
     <!-- SUBSTRING(차단일시, 1, 10) 
       BETWEEN #{startDate} AND #{endDate} -->
       <if test="node_id != undefined">
-        AND node_id LIKE CONCAT(#{node_id},'%')
+        <choose>
+          <when test="isBronze == true">
+            node_id = #{node_id}
+          </when>
+          <otherwise>
+            node_id LIKE CONCAT(#{node_id}, '%')
+          </otherwise>
+        </choose>
       </if>
     </where>;
   </select>
@@ -157,7 +167,6 @@
         #{b_nick}
       )
   </select>
-
 
 // 승인관련
   <select id='userConfirm'>
@@ -627,16 +636,14 @@
       casino_balance = VALUES(casino_balance);
   </insert>
 
-
-
 // 세션관련
   <select id="getUsersWithType4" resultType="string">
-  SELECT id
-  FROM user
-  WHERE type = 4 AND id IN 
-  <foreach item="item" index="index" collection="userIds" open="(" close=")" separator=",">
-    #{item}
-  </foreach>
+    SELECT id
+    FROM user
+    WHERE type = 4 AND id IN 
+    <foreach item="item" index="index" collection="userIds" open="(" close=")" separator=",">
+      #{item}
+    </foreach>
   </select>
 
   <select id='checkUserLoginTime'>

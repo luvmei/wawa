@@ -189,7 +189,12 @@ router.post('/agent/exchange', function (req, res) {
     params.type = '포인트전환';
     params.balance = req.user[0].slot_balance + req.user[0].casino_balance;
     params.afterPoint = req.user[0].point - req.body.reqPoint;
-    exchangePoint(res, params);
+    
+    if (params.afterPoint < 0) {
+      res.send({ error: true, msg: '포인트가 부족합니다' });
+    } else {
+      exchangePoint(res, params);
+    }
   }
 });
 
@@ -199,7 +204,7 @@ async function exchangePoint(res, params) {
   let exchangePointLog = mybatisMapper.getStatement('bank', 'exchangePointLog', params, sqlFormat);
   let exchangeBalanceLog = mybatisMapper.getStatement('bank', 'exchangeBalanceLog', params, sqlFormat);
 
-  let agentTypeName
+  let agentTypeName;
   switch (params.agentType) {
     case 0:
       agentTypeName = '영본사';

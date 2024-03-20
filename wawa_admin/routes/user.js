@@ -617,11 +617,8 @@ async function getData(res, type, params = {}) {
     params.node_id = params.nodeId;
   }
 
-  if (params.node_id) {
-  const parts = params.node_id.split('.');
-    if (parts.length - 1 === 3) {
-      params.isBronze = true;
-    }
+  if (params.node_id && params.node_id.split('.').length === 4) {
+    params.isBronze = true;
   }
 
   let conn = await pool.getConnection();
