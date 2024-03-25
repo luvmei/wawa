@@ -318,9 +318,9 @@ async function requestAsset(params) {
     // console.log(
     //   `[끝] ID: ${params.id} / 유저API타입: ${userApiType === 'c' ? '카지노' : '슬롯'} / 슬롯밸런스: ${slotBalance.toLocaleString(
     //     'ko-KR'
-    //   )} / 카지노밸런스: ${casinoBalance.toLocaleString('ko-KR')}`    
+    //   )} / 카지노밸런스: ${casinoBalance.toLocaleString('ko-KR')}`
     // );
-    
+
     if (params.senderId) {
       console.log(
         `[${params.type}완료] 신청: ${params.senderId} / 대상: ${params.id} / 금액: ${parseInt(params.reqMoney + params.reqBonus).toLocaleString('ko-KR')}`
@@ -330,11 +330,11 @@ async function requestAsset(params) {
     }
     let userBalance = { userApiType: userApiType, slotBalance: slotBalance, casinoBalance: casinoBalance };
     userBalance.id = params.id;
-    
+
     return apiResult;
   } catch (error) {
-    console.log(`[HL_API] ${params.타입 || params.type}처리 실패: ID: ${params.id}`)
-    console.log(`응답코드: ${error.response.status}`)
+    console.log(`[HL_API] ${params.타입 || params.type}처리 실패: ID: ${params.id}`);
+    console.log(`응답코드: ${error.response.status}`);
     console.log(`응답메세지: ${error.response.data.message}`);
     console.log(`${params.타입 || params.type}처리 실패: ID: ${params.id}`);
     return error.response;
@@ -470,6 +470,11 @@ async function updateUserBalance(user, apiKey) {
     return params;
   } catch (error) {
     console.log(`[HL_SLOT_API] 유저 밸런스 업데이트 실패: [${params.id}]`);
+    if (error.response.status === 422) {
+      let userInfo = await getUserInfo(user);
+      createUser(userInfo, slotKey);
+      createUser(userInfo, casinoKey);
+    }
   }
 }
 

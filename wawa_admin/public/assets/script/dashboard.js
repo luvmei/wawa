@@ -51,7 +51,7 @@ $('#onlineUsers').DataTable({
   dom: 'ifrt',
   // autoWidth: true,
   scrollX: true,
-  scrollY: '200px',
+  scrollY: '400px',
   scrollCollapse: true,
   pageLength: 300,
   lengthMenu: [50, 75, 300],

@@ -14,36 +14,35 @@ const slotKey = process.env.SLOT_KEY;
 const casinoKey = process.env.CASINO_KEY;
 
 // #region 테이블 전송
+function handleBankRequest(req, res, sqlType) {
+  req.user[0].sqlType = sqlType;
+  req.user[0].startDate = req.body.startDate;
+  req.user[0].endDate = req.body.endDate;
+  getData(res, req.user[0]);
+}
+
 router.post('/depowith', function (req, res) {
-  if (req.user && req.user[0] && req.user[0].node_id) {
-    req.body.node_id = req.user[0].node_id;
-  }
-  getData(res, 'depositwithdraw', req.body);
+  handleBankRequest(req, res, 'depositwithdraw');
 });
 
 router.post('/deposit', function (req, res) {
-  req.body.node_id = req.user[0].node_id;
-  getData(res, 'deposit', req.body);
+  handleBankRequest(req, res, 'deposit');
 });
 
 router.post('/withdraw', function (req, res) {
-  req.body.node_id = req.user[0].node_id;
-  getData(res, 'withdraw', req.body);
+  handleBankRequest(req, res, 'withdraw');
 });
 
 router.post('/give', function (req, res) {
-  req.body.node_id = req.user[0].node_id;
-  getData(res, 'give', req.body);
+  handleBankRequest(req, res, 'give');
 });
 
 router.post('/take', function (req, res) {
-  req.body.node_id = req.user[0].node_id;
-  getData(res, 'take', req.body);
+  handleBankRequest(req, res, 'take');
 });
 
 router.post('/givetake', function (req, res) {
-  req.body.node_id = req.user[0].node_id;
-  getData(res, 'giveTake', req.body);
+  handleBankRequest(req, res, 'giveTake');
 });
 // #endregion
 
@@ -61,11 +60,6 @@ router.post('/withdraw/status', function (req, res) {
 //? 유저 입금승인
 router.post('/deposit/confirm', function (req, res) {
   confirmDepositRequest(res, req.body);
-  // if (result) {
-  //   res.send('입금이 처리되었습니다');
-  // } else {
-  //   res.send('입금이 처리되지 않았습니다');
-  // }
 });
 
 //? 유저 출금승인
@@ -92,7 +86,7 @@ router.post('/withdraw/batchconfirm', async function (req, res) {
     }
   }
 
-  log(resultArr);
+  console.log(resultArr);
 
   if (resultArr.length > 0 && resultArr.every((result) => result === true)) {
     console.log('모든 출금이 처리되었습니다');
@@ -476,9 +470,11 @@ function capitalize(string) {
 // #endregion
 
 // #region 입출금 관련 함수
-async function getData(res, type, params = {}) {
+async function getData(res, params) {
+  params.agentType = params.type;
+
   let conn = await pool.getConnection();
-  let getData = mybatisMapper.getStatement('bank', type, params, sqlFormat);
+  let getData = mybatisMapper.getStatement('bank', params.sqlType, params, sqlFormat);
 
   try {
     let result = await conn.query(getData);
@@ -565,26 +561,41 @@ async function confirmDepositRequest(res, params) {
   let log;
   let conn = await pool.getConnection();
 
-  switch (params.bonusType) {
-    case '0':
+  try {
+    let bonusStateSql = mybatisMapper.getStatement('bank', 'checkBonusState', params, sqlFormat);
+    let bonusStateResult = await conn.query(bonusStateSql);
+    let bonusState = bonusStateResult[0].bonusState;
+
+    if (bonusState === 1) {
+      switch (params.bonusType) {
+        case '0':
+          params.confirmStatus = '입금승인';
+          params.bonusType = 0;
+          break;
+        case '1':
+          params.confirmStatus = '입금승인(매일 첫충전)';
+          params.bonusType = 3;
+          break;
+        case '2':
+          params.confirmStatus = '입금승인(가입 첫충전)';
+          params.bonusType = 4;
+          break;
+        case '3':
+          params.confirmStatus = '입금승인(재충전)';
+          params.bonusType = 3;
+          break;
+        case '4':
+          params.confirmStatus = '입금승인(가입 재충전)';
+          params.bonusType = 4;
+      }
+    } else {
       params.confirmStatus = '입금승인';
       params.bonusType = 0;
-      break;
-    case '1':
-      params.confirmStatus = '입금승인(매일 첫충전)';
-      params.bonusType = 3;
-      break;
-    case '2':
-      params.confirmStatus = '입금승인(가입 첫충전)';
-      params.bonusType = 4;
-      break;
-    case '3':
-      params.confirmStatus = '입금승인(재충전)';
-      params.bonusType = 3;
-      break;
-    case '4':
-      params.confirmStatus = '입금승인(가입 재충전)';
-      params.bonusType = 4;
+    }
+  } catch (error) {
+    console.error(error);
+  } finally {
+    if (conn) conn.release();
   }
 
   params.apiType = await getUserApiType(params.id);
@@ -798,7 +809,6 @@ async function cancelConfirm(res, params, type) {
   let memo;
   let log;
   let conn = await pool.getConnection();
-  console.log('캔슬', params);
 
   if (type == 'deposit') {
     params.requestType = '입금';
@@ -823,6 +833,12 @@ async function cancelConfirm(res, params, type) {
 
   if (params.userType == 4) {
     apiResult = await api.requestAsset(params);
+    if (apiResult.status !== 200) {
+      let errMsg = `${params.타입}승인취소 실패: ${apiResult.response.data.message}`;
+      console.log(errMsg);
+      res.send(errMsg);
+      return;
+    }
   }
 
   if (params.userType != 4 || (params.userType == 4 && apiResult.status == 200)) {
@@ -1185,7 +1201,7 @@ async function insertRequestQuery(res, type, params) {
         });
       }
 
-      await conn.commit(); // Commit transaction
+      await conn.commit();
     } else {
       res.send({
         request: 'fail',

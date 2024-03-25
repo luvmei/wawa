@@ -12,44 +12,40 @@ const parser = require('ua-parser-js');
 const { get } = require('jquery');
 const api = require(`../utility/api/${process.env.API_TYPE}`);
 // #region 테이블 전송
+function handleUserRequest(req, res, sqlType = null) {
+  req.body.agentType = req.user[0].type;
+  req.body.node_id = req.user[0].node_id;
+  req.body.sqlType = sqlType || req.body.table;
+
+  getData(res, req.body);
+}
+
 router.post('/info', (req, res) => {
-  let params = req.body;
-  if (req.user && req.user[0] && req.user[0].node_id) {
-    params.nodeId = req.user[0].node_id;
-  } else {
-    params.nodeId = null;
-  }
-  getData(res, req.body.table, params);
+  handleUserRequest(req, res);
 });
 
 router.post('/asset', (req, res) => {
-  let params = { node_id: req.user[0].node_id };
-  getData(res, 'userAsset', params);
+  handleUserRequest(req, res, 'userAsset');
 });
 
 router.post('/commission', (req, res) => {
-  let params = { node_id: req.user[0].node_id };
-  getData(res, 'userCommission', params);
+  handleUserRequest(req, res, 'userCommission');
 });
 
 router.post('/betting', (req, res) => {
-  let params = { node_id: req.user[0].node_id };
-  getData(res, 'userBetting', params);
+  handleUserRequest(req, res, 'userBetting');
 });
 
 router.post('/connect', (req, res) => {
-  req.body.node_id = req.user[0].node_id;
-  console.log(req.body);
-  getData(res, 'userConnect', req.body);
+  handleUserRequest(req, res, 'userConnect');
 });
 
 router.post('/block', (req, res) => {
-  req.body.node_id = req.user[0].node_id;
-  getData(res, 'userBlock', req.body);
+  handleUserRequest(req, res, 'userBlock');
 });
 
 router.post('/confirm', (req, res) => {
-  getData(res, 'userConfirm');
+  handleUserRequest(req, res, 'userConfirm');
 });
 // #endregion
 
@@ -258,39 +254,43 @@ router.post('/userblock', (req, res) => {
 
 // #region 임의생성
 router.post('/doublecheck', (req, res) => {
-  // if (req.body.type == 'repeat') {
-  //   if (req.body.nickname == undefined) {
-  //     console.log('매크로 아이디 중복검사 시작');
-  //     doubleCheck(res, 'checkRepeatUserId', req.body);
-  //   } else {
-  //     console.log('매크로 닉네임 중복검사 시작');
-  //     doubleCheck(res, 'checkRepeatUserNick', req.body);
-  //   }
-  // } else if (req.body.type == 'single') {
-  //   console.log('단일 아이디 중복검사 시작');
-  //   if (req.body.nickname == undefined) {
-  //     console.log('아이디 중복검사 시작');
-  //     doubleCheck(res, 'checkUserId', req.body);
-  //   } else {
-  //     console.log('닉네임 중복검사 시작');
-  //     doubleCheck(res, 'checkUserNick', req.body);
-  //   }
-  // }
-  if (req.body.nickname == undefined) {
-    console.log('아이디 중복검사 시작');
-    doubleCheck(res, 'checkUserId', req.body);
-  } else {
-    console.log('닉네임 중복검사 시작');
-    doubleCheck(res, 'checkUserNick', req.body);
+  console.log('닉네임중복검사', req.body);
+  //? 일괄 생성 시 중복검사
+  if (req.body.type == 'repeat') {
+    if (req.body.nickname == undefined) {
+      console.log('매크로 아이디 중복검사 시작');
+      doubleCheck(res, 'checkRepeatUserId', req.body);
+    } else {
+      console.log('매크로 닉네임 중복검사 시작');
+      doubleCheck(res, 'checkRepeatUserNick', req.body);
+    }
+  } else if (req.body.type == 'single') {
+    console.log('단일 아이디 중복검사 시작');
+    if (req.body.nickname == undefined) {
+      console.log('아이디 중복검사 시작');
+      doubleCheck(res, 'checkUserId', req.body);
+    } else {
+      console.log('닉네임 중복검사 시작');
+      doubleCheck(res, 'checkUserNick', req.body);
+    }
   }
+
+  //? 단일 생성 시 중복검사
+  // if (req.body.nickname == undefined) {
+  //   console.log('아이디 중복검사 시작');
+  //   doubleCheck(res, 'checkUserId', req.body);
+  // } else {
+  //   console.log('닉네임 중복검사 시작');
+  //   doubleCheck(res, 'checkUserNick', req.body);
+  // }
 });
 
 router.post('/add', async (req, res) => {
   let userParams = await redefineUser(req, req.body);
   //단일 유저 생성
-  await addUser(userParams);
+  // await addUser(userParams);
   //유저 매크로 생성
-  // repeatInsertUser(userParams);
+  repeatInsertUser(userParams);
   res.send('유저생성이 완료되었습니다');
 });
 
@@ -382,11 +382,8 @@ async function repeatInsertUser(params) {
       await conn.commit();
 
       await makeUserHierarchy(params);
-      api.createUser(params);
-      // await sd.createUser(params);
-      // await dg.createUser(params);
-      // await unique.createUser(params);
-      // await createUserApi(params);
+      api.createUser(params, process.env.HL_API_KEY_SLOT);
+      api.createUser(params, process.env.HL_API_KEY_CASINO);
     } catch (e) {
       if (conn) {
         await conn.rollback(); // 롤백
@@ -612,34 +609,34 @@ async function changeAdminPassword(req, res) {
 // #endregion
 
 // #region 유저 관련 함수
-async function getData(res, type, params = {}) {
-  if (params.nodeId) {
-    params.node_id = params.nodeId;
-  }
+router.post('/userinfo', (req, res) => {
+  res.send({id: req.user[0].id, balance:req.user[0].slot_balance, point:req.user[0].point});
+});
 
-  if (params.node_id && params.node_id.split('.').length === 4) {
-    params.isBronze = true;
+async function getData(res, params = {}) {
+  if (params.sqlType === 'userInfoDate' && params.noed_id == undefined) {
+    params.node_id = null;
   }
 
   let conn = await pool.getConnection();
-  let getData = mybatisMapper.getStatement('user', type, params, sqlFormat);
+  let getData = mybatisMapper.getStatement('user', params.sqlType, params, sqlFormat);
+
   try {
     let result = await conn.query(getData);
     if (
-      type == 'userInfoTotal' ||
-      type == 'userInfoLocal' ||
-      type == 'userInfoOnline' ||
-      type == 'userAsset' ||
-      type == 'userInfoDate' ||
-      type == 'userBetting' ||
-      type == 'userConfirm' ||
-      type == 'userBlock'
+      params.sqlType == 'userInfoTotal' ||
+      params.sqlType == 'userInfoLocal' ||
+      params.sqlType == 'userInfoOnline' ||
+      params.sqlType == 'userAsset' ||
+      params.sqlType == 'userInfoDate' ||
+      params.sqlType == 'userBetting' ||
+      params.sqlType == 'userConfirm'
     ) {
       result = JSONbig.stringify(result);
       result = JSONbig.parse(result);
     }
 
-    if (type == 'userInfoDate') {
+    if (params.sqlType == 'userInfoDate') {
       result = result[0];
     }
     res.send(result);

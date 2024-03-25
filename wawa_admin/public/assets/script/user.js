@@ -486,7 +486,7 @@ $('#onlineUsers').DataTable({
     { data: null, defaultContent: '', className: 'desktop' },
   ],
   dom: 'ifrt',
-  scrollY: '200px',
+  scrollY: '62vh',
   scrollCollapse: true,
   pageLength: 300,
   lengthMenu: [50, 75, 300],

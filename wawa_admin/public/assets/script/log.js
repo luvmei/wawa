@@ -13,7 +13,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
 let balanceLog = $('#balanceLog').DataTable({
   language: korean,
   responsive: true,
-  scrollY: '72vh',
+  scrollY: '62vh',
   scrollCollapse: true,
   ajax: {
     url: '/log/balance',

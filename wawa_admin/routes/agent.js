@@ -9,34 +9,39 @@ const moment = require('moment-timezone');
 const userRouter = require('./user');
 
 // #region 테이블 전송
+function handleAgentRequest(req, res, sqlType, dates = false) {
+  req.user[0].sqlType = sqlType;
+  
+  if (dates) {
+    req.user[0].startDate = req.body.startDate;
+    req.user[0].endDate = req.body.endDate;
+  }
+
+  getData(res, req.user[0]);
+}
+
 router.post('/info', (req, res) => {
-  let params = { node_id: req.user[0].node_id };
-  getData(res, 'agentInfo', params);
+  handleAgentRequest(req, res, 'agentInfo');
 });
 
 router.post('/asset', (req, res) => {
-  let params = { node_id: req.user[0].node_id };
-  getData(res, 'agentAsset', params);
+  handleAgentRequest(req, res, 'agentAsset');
 });
 
 router.post('/commission', (req, res) => {
-  let params = { node_id: req.user[0].node_id };
-  getData(res, 'agentCommission', params);
+  handleAgentRequest(req, res, 'agentCommission');
 });
 
 router.post('/betting', (req, res) => {
-  let params = { node_id: req.user[0].node_id };
-  getData(res, 'agentBetting', params);
+  handleAgentRequest(req, res, 'agentBetting');
 });
 
 router.post('/connect', (req, res) => {
-  req.body.node_id = req.user[0].node_id;
-  getData(res, 'agentConnect', req.body);
+  handleAgentRequest(req, res, 'agentConnect', true);
 });
 
 router.post('/block', (req, res) => {
-  req.body.node_id = req.user[0].node_id;
-  getData(res, 'agentBlock', req.body);
+  handleAgentRequest(req, res, 'agentBlock');
 });
 // #endregion
 
@@ -114,14 +119,15 @@ async function countUser(res, params) {
 // #endregion
 
 // #region 에이전트 관련 함수
-async function getData(res, sqlType, params = {}) {
+async function getData(res, params) {
+  params.agentType = params.type;
   let conn = await pool.getConnection();
-  //todo params.node_id 정보 필요
 
-  let agentData = mybatisMapper.getStatement('agent', sqlType, params, sqlFormat);
+  let agentData = mybatisMapper.getStatement('agent', params.sqlType, params, sqlFormat);
+
   try {
     let result = await conn.query(agentData);
-    if (sqlType === 'agentInfo' || sqlType === 'agentAsset' || sqlType === 'agentBetting') {
+    if (params.sqlType === 'agentInfo' || params.sqlType === 'agentAsset' || params.sqlType === 'agentBetting') {
       result = JSONbig.stringify(result);
     }
     res.send(result);
@@ -201,7 +207,6 @@ async function insertAgentInfo(req, res, data) {
       agentType = '브론즈';
       params.upper_agt = params.silver;
       countAgent = await conn.query(mybatisMapper.getStatement('agent', 'countBronze', params, sqlFormat));
-      console.log(countAgent);
       defaultAgent = mybatisMapper.getStatement('agent', 'defaultBronze', params, sqlFormat);
       insertAgent = mybatisMapper.getStatement('agent', 'insertBronze', params, sqlFormat);
       break;
@@ -220,7 +225,6 @@ async function insertAgentInfo(req, res, data) {
     await conn.query(insertAssetInfo);
     await conn.query(insertCommissionInfo);
     await conn.query(insertBettingInfo);
-    console.log('파라미터', params);
 
     // 트리노드 관련코드
     if (countAgent == 0) {
@@ -228,7 +232,6 @@ async function insertAgentInfo(req, res, data) {
     } else {
       await conn.query(insertAgent);
     }
-
     setTimeout(() => {
       insertNodeId(params, conn);
       setTimeout(() => {
@@ -237,7 +240,7 @@ async function insertAgentInfo(req, res, data) {
     }, 2000);
     // userRouter.createUserApi(params);
     await conn.commit();
-    console.log(`${agentType} 추가 성공`);
+    console.log(`[에이전트 추가 성공] [${agentType}] ${params.id}(${params.nickname})`);
     res.send({ agentType: agentType, isAdmin: req.user[0].type });
   } catch (e) {
     console.log(`에러메시지: ${e}`);
@@ -297,9 +300,7 @@ async function makeAgentHierarchy(params, conn) {
 
   try {
     let hierarchyData = await conn.query(getHierarchy);
-    console.log(hierarchyData);
     let hierarchy = userRouter.getUserHierarchy(hierarchyData);
-    console.log(hierarchy);
 
     hierarchy.id = params.id;
     let insertHierarchy = mybatisMapper.getStatement('agent', 'insertAgentHierarchy', hierarchy, sqlFormat);

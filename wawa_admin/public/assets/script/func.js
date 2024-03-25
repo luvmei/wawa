@@ -1389,18 +1389,18 @@ $('table').on('click', 'tbody tr .add-user', function () {
   upperAgent = $('table').DataTable().row($(this).parent('td')).data();
 
   // 유저생성 매크로 시 사용
-  // $.ajax({
-  //   method: 'POST',
-  //   url: '/agent/usercounter',
-  //   data: { id: upperAgent.아이디 },
-  // })
-  //   .done(function (result) {
-  //     possibleCount = result.count;
-  //     document.querySelector('#user-count-label').innerHTML = `생성 가능 ( ${result.count} / 30 )`;
-  //   })
-  //   .fail(function (err) {
-  //     console.log('전송오류');
-  //   });
+  $.ajax({
+    method: 'POST',
+    url: '/agent/usercounter',
+    data: { id: upperAgent.아이디 },
+  })
+    .done(function (result) {
+      possibleCount = result.count;
+      document.querySelector('#user-count-label').innerHTML = `생성 가능 ( ${result.count} / 30 )`;
+    })
+    .fail(function (err) {
+      console.log('전송오류');
+    });
 
   $('#addUserModal').modal('show');
 });
@@ -2082,52 +2082,32 @@ let userId_desc = document.querySelector('#user-id-desc');
 let userId_button = document.querySelector('#user-id-btn');
 
 //? ID 유효성 체크
-//? ID 유효성 체크
-userId.addEventListener('input', function () {
-  let regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,8}$/;
-
-  // 영문 2~6자(자동가입용)
-  // let regex = /^[a-zA-Z]{2,6}$/;
-
-  // let regex = /^(?=.*[a-zA-Z])[a-zA-Z0-9]{2,}$/;
-
-  //* 아이디는 'admin', 'test'를 포함하면 안됨
-  let forbiddenWords = ['admin', 'test'];
-
-  let isValid = regex.test(userId.value) && !forbiddenWords.some((word) => userId.value.toLowerCase().includes(word));
-
-  if (!isValid) {
-    userId_desc.style.color = '#dc3545';
-    if (userId.value.toLowerCase().includes('admin')) {
-      userId_desc.innerHTML = '아이디는 admin을 포함할 수 없습니다.';
-    } else if (userId.value.toLowerCase().includes('test')) {
-      userId_desc.innerHTML = '아이디는 test를 포함할 수 없습니다.';
-    } else {
-      userId_desc.innerHTML = '영문,숫자 2~8자';
-    }
-    userId_button.style.boxShadow = '0 0 0 0 #00ffff inset';
-    userId.classList.add('is-invalid');
-    userId_isValid = false;
-    userId_isCheck = false;
-  } else {
-    userId_desc.style.color = '#dc3545';
-    userId_desc.innerHTML = '아이디 중복확인을 해주세요';
-    userId_button.style.boxShadow = 'inset 0 0 5px 3px #ffc107';
-    userId_isValid = true;
-    userId.classList.remove('is-invalid', 'is-valid');
-  }
-});
-
 // userId.addEventListener('input', function () {
-//   let regex = /^[a-zA-Z]{2,6}$/;
+//   let regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,8}$/;
+
+//   // 영문 2~6자(자동가입용)
+//   // let regex = /^[a-zA-Z]{2,6}$/;
+
 //   // let regex = /^(?=.*[a-zA-Z])[a-zA-Z0-9]{2,}$/;
 
-//   if (!regex.test(userId.value)) {
+//   //* 아이디는 'admin', 'test'를 포함하면 안됨
+//   let forbiddenWords = ['admin', 'test'];
+
+//   let isValid = regex.test(userId.value) && !forbiddenWords.some((word) => userId.value.toLowerCase().includes(word));
+
+//   if (!isValid) {
 //     userId_desc.style.color = '#dc3545';
-//     userId_desc.innerHTML = '영문 2~6자';
+//     if (userId.value.toLowerCase().includes('admin')) {
+//       userId_desc.innerHTML = '아이디는 admin을 포함할 수 없습니다.';
+//     } else if (userId.value.toLowerCase().includes('test')) {
+//       userId_desc.innerHTML = '아이디는 test를 포함할 수 없습니다.';
+//     } else {
+//       userId_desc.innerHTML = '영문,숫자 2~8자';
+//     }
 //     userId_button.style.boxShadow = '0 0 0 0 #00ffff inset';
 //     userId.classList.add('is-invalid');
 //     userId_isValid = false;
+//     userId_isCheck = false;
 //   } else {
 //     userId_desc.style.color = '#dc3545';
 //     userId_desc.innerHTML = '아이디 중복확인을 해주세요';
@@ -2136,6 +2116,24 @@ userId.addEventListener('input', function () {
 //     userId.classList.remove('is-invalid', 'is-valid');
 //   }
 // });
+userId.addEventListener('input', function () {
+  let regex = /^[a-zA-Z]{2,6}$/;
+  // let regex = /^(?=.*[a-zA-Z])[a-zA-Z0-9]{2,}$/;
+
+  if (!regex.test(userId.value)) {
+    userId_desc.style.color = '#dc3545';
+    userId_desc.innerHTML = '영문만 입력하세요';
+    userId_button.style.boxShadow = '0 0 0 0 #00ffff inset';
+    userId.classList.add('is-invalid');
+    userId_isValid = false;
+  } else {
+    userId_desc.style.color = '#dc3545';
+    userId_desc.innerHTML = '아이디 중복확인을 해주세요';
+    userId_button.style.boxShadow = 'inset 0 0 5px 3px #ffc107';
+    userId_isValid = true;
+    userId.classList.remove('is-invalid', 'is-valid');
+  }
+});
 
 //? ID 중복체크
 userId_button.addEventListener('click', function () {
@@ -2177,8 +2175,9 @@ let user_pw_button = document.querySelector('#user-pw-btn');
 user_pw.addEventListener('input', () => {
   //* 비밀번호 규칙: 영문, 숫자, 특수문자 조합 8~16자
   // let regex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/;
-  //* 비밀번호 규칙: 영문, 숫자, 특수문자 중 2가지 조합 6~16자
-  let regex = /^(?=.*[a-zA-Z])(?=.*[0-9!@#?]).{4,16}$/;
+  //* 비밀번호 규칙: 영문, 숫자, 특수문자 중 2가지 조합 4~16자
+  let regex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d!@#]{4,16}$/;
+  // let regex = /^(?=.*[a-zA-Z])(?=.*[0-9!@#?]).{4,16}$/;
 
   if (!regex.test(user_pw.value)) {
     user_pw_desc.style.color = '#dc3545';
@@ -2217,7 +2216,7 @@ let user_nick_button = document.querySelector('#user-nick-btn');
 
 //? nickname 유효성 체크
 user_nick.addEventListener('input', () => {
-  let regex = /^[a-zA-Z가-힣0-9]{2,8}$/;
+  let regex = /^[a-zA-Z가-힣]{2,8}$/;
 
   if (!regex.test(user_nick.value)) {
     user_nick_desc.style.color = '#dc3545';
@@ -2243,7 +2242,7 @@ user_nick_button.addEventListener('click', function () {
     $.ajax({
       method: 'POST',
       url: '/user/doublecheck',
-      data: { nickname: user_nick.value },
+      data: { nickname: user_nick.value, type: 'repeat' },
     })
       .done(function (result) {
         if (!result) {
@@ -2265,21 +2264,21 @@ user_nick_button.addEventListener('click', function () {
 // #endregion
 
 // #region 자동생성 갯수
-// let user_count_isValid = false;
+let user_count_isValid = false;
 
-// let user_count = document.querySelector('#user-count');
-// let user_count_desc = document.querySelector('#user-count-desc');
+let user_count = document.querySelector('#user-count');
+let user_count_desc = document.querySelector('#user-count-desc');
 
-// user_count.addEventListener('input', () => {
-//   if (user_count.value > possibleCount) {
-//     user_count.value = possibleCount;
-//   }
-//   if (user_count.value > 0) {
-//     user_count_isValid = true;
-//   } else if (user_count.value == '') {
-//     user_count_isValid = false;
-//   }
-// });
+user_count.addEventListener('input', () => {
+  if (user_count.value > possibleCount) {
+    user_count.value = possibleCount;
+  }
+  if (user_count.value > 0) {
+    user_count_isValid = true;
+  } else if (user_count.value == '') {
+    user_count_isValid = false;
+  }
+});
 
 // #endregion
 
@@ -2289,8 +2288,8 @@ let addUser = document.querySelector('#addUser');
 addUser.addEventListener('click', function () {
   // console.log(user_count_isValid);
 
-  // if (userId_isCheck && user_pw_isValid && user_nick_isCheck && user_count_isValid) {
-  if (userId_isCheck && user_pw_isValid && user_nick_isCheck) {
+  if (userId_isCheck && user_pw_isValid && user_nick_isCheck && user_count_isValid) {
+    // if (userId_isCheck && user_pw_isValid && user_nick_isCheck) {
     let userJoinData = $('#user-join').serialize();
     if (upperAgent) {
       userJoinData += `&upper_id=${upperAgent['아이디']}`;
@@ -2993,70 +2992,103 @@ if (document.querySelector('#agentDepositModal')) {
 // #endregion
 
 // #region 포인트 전환
-document.addEventListener('DOMContentLoaded', function () {
-  let exchangePointInput = document.querySelector('#exchange-point');
-  let exchangeSubmitButton = document.querySelector('#exchange-submit');
-  let afterExchangeBalanceInput = document.querySelector('#after-exchange-balance');
-  let afterExchangePointInput = document.querySelector('#after-exchange-point');
-  let agentPoint = parseInt(document.querySelector('#agentPoint').textContent, 10);
-  let agentBalance = parseInt(document.querySelector('#agentBalance').textContent, 10);
+//? 1만원 단위 포인트 전환
+// document.addEventListener('DOMContentLoaded', function () {
+let exchangePointInput = document.querySelector('#exchange-point');
+let exchangeSubmitButton = document.querySelector('#exchange-submit');
+let afterExchangeBalanceInput = document.querySelector('#after-exchange-balance');
+let afterExchangePointInput = document.querySelector('#after-exchange-point');
+let agentPoint = parseInt(document.querySelector('#agentPoint').textContent, 10);
+let agentBalance = parseInt(document.querySelector('#agentBalance').textContent, 10);
 
-  exchangePointInput.addEventListener('input', function () {
-    let inputValue = this.value;
-    let isNumber = /^\d*$/;
-    if (!isNumber.test(inputValue)) {
-      alert('숫자만 입력해주세요');
-      this.value = '';
-      exchangeSubmitButton.disabled = true;
-      exchangeSubmitButton.classList.add('btn-secondary');
-      exchangeSubmitButton.textContent = '1만원 단위 신청가능';
-      afterExchangeBalanceInput.value = ''; // 입력이 유효하지 않을 때 필드를 비웁니다.
-      afterExchangePointInput.value = ''; // 입력이 유효하지 않을 때 필드를 비웁니다.
-      return;
-    }
+//   exchangePointInput.addEventListener('input', function () {
+//     let inputValue = this.value;
+//     let isNumber = /^\d*$/;
+//     if (!isNumber.test(inputValue)) {
+//       alert('숫자만 입력해주세요');
+//       this.value = '';
+//       exchangeSubmitButton.disabled = true;
+//       exchangeSubmitButton.classList.add('btn-secondary');
+//       exchangeSubmitButton.textContent = '1만원 단위 신청가능';
+//       afterExchangeBalanceInput.value = ''; // 입력이 유효하지 않을 때 필드를 비웁니다.
+//       afterExchangePointInput.value = ''; // 입력이 유효하지 않을 때 필드를 비웁니다.
+//       return;
+//     }
 
-    let numericValue = parseInt(inputValue, 10);
+//     let numericValue = parseInt(inputValue, 10);
 
-    if (numericValue > agentPoint) {
-      alert('가진 포인트보다 많은 금액은 전환할 수 없습니다.');
-      this.value = '';
-      exchangeSubmitButton.disabled = true;
-      exchangeSubmitButton.classList.add('btn-secondary');
-      exchangeSubmitButton.textContent = '1만원 단위 신청가능';
-      afterExchangeBalanceInput.value = ''; // 입력이 유효하지 않을 때 필드를 비웁니다.
-      afterExchangePointInput.value = ''; // 입력이 유효하지 않을 때 필드를 비웁니다.
-      return;
-    }
+//     if (numericValue > agentPoint) {
+//       alert('가진 포인트보다 많은 금액은 전환할 수 없습니다.');
+//       this.value = '';
+//       exchangeSubmitButton.disabled = true;
+//       exchangeSubmitButton.classList.add('btn-secondary');
+//       exchangeSubmitButton.textContent = '1만원 단위 신청가능';
+//       afterExchangeBalanceInput.value = ''; // 입력이 유효하지 않을 때 필드를 비웁니다.
+//       afterExchangePointInput.value = ''; // 입력이 유효하지 않을 때 필드를 비웁니다.
+//       return;
+//     }
 
-    if (numericValue % 10000 === 0 && numericValue > 0 && numericValue <= agentPoint) {
-      exchangeSubmitButton.disabled = false;
-      exchangeSubmitButton.classList.remove('btn-secondary');
-      exchangeSubmitButton.textContent = '롤링금 전환 신청';
+//     if (numericValue % 10000 === 0 && numericValue > 0 && numericValue <= agentPoint) {
+//       exchangeSubmitButton.disabled = false;
+//       exchangeSubmitButton.classList.remove('btn-secondary');
+//       exchangeSubmitButton.textContent = '롤링금 전환 신청';
 
-      // 전환 후 보유금과 전환 후 롤링금을 계산합니다.
-      let afterExchangeBalance = agentBalance + numericValue;
-      let afterExchangePoint = agentPoint - numericValue;
+//       // 전환 후 보유금과 전환 후 롤링금을 계산합니다.
+//       let afterExchangeBalance = agentBalance + numericValue;
+//       let afterExchangePoint = agentPoint - numericValue;
 
-      // 계산된 값을 입력 필드에 표시합니다.
-      afterExchangeBalanceInput.value = afterExchangeBalance.toLocaleString('ko-KR') + ' 원';
-      afterExchangePointInput.value = afterExchangePoint.toLocaleString('ko-KR') + ' 원';
-    } else {
-      exchangeSubmitButton.disabled = true;
-      exchangeSubmitButton.classList.add('btn-secondary');
-      exchangeSubmitButton.textContent = '1만원 단위로 신청해주세요';
-      afterExchangeBalanceInput.value = ''; // 조건을 만족하지 않을 때 필드를 비웁니다.
-      afterExchangePointInput.value = ''; // 조건을 만족하지 않을 때 필드를 비웁니다.
-    }
-  });
+//       // 계산된 값을 입력 필드에 표시합니다.
+//       afterExchangeBalanceInput.value = afterExchangeBalance.toLocaleString('ko-KR') + ' 원';
+//       afterExchangePointInput.value = afterExchangePoint.toLocaleString('ko-KR') + ' 원';
+//     } else {
+//       exchangeSubmitButton.disabled = true;
+//       exchangeSubmitButton.classList.add('btn-secondary');
+//       exchangeSubmitButton.textContent = '1만원 단위로 신청해주세요';
+//       afterExchangeBalanceInput.value = ''; // 조건을 만족하지 않을 때 필드를 비웁니다.
+//       afterExchangePointInput.value = ''; // 조건을 만족하지 않을 때 필드를 비웁니다.
+//     }
+//   });
 
-  document.querySelector('#exchange-submit').addEventListener('click', function () {
-    let exchange = {
-      reqExist: true,
-      reqPoint: parseInt(exchangePointInput.value, 10),
-    };
-    document.querySelector('#exchange-submit').disabled = true;
-    pushRequestBtn(exchange, 'exchange');
-  });
+//   document.querySelector('#exchange-submit').addEventListener('click', function () {
+//     let exchange = {
+//       reqExist: true,
+//       reqPoint: parseInt(exchangePointInput.value, 10),
+//     };
+//     document.querySelector('#exchange-submit').disabled = true;
+//     pushRequestBtn(exchange, 'exchange');
+//   });
+// });
+
+$('#agentExchangeModal').on('show.bs.modal', function () {
+  $.ajax({
+    method: 'POST',
+    url: '/user/userinfo',
+  })
+    .done(function (result) {
+      const { id, balance, point } = result;
+      document.querySelector('#agentBalance').textContent = balance.toLocaleString('ko-KR');
+      document.querySelector('#agentPoint').textContent = point.toLocaleString('ko-KR');
+      exchangePointInput.value = point;
+      document.querySelector('#after-exchange-balance').value = (balance + point).toLocaleString('ko-KR');
+    })
+    .fail(function (err) {
+      console.log('전송오류');
+      console.log(err);
+    });
+});
+
+exchangeSubmitButton.addEventListener('click', function () {
+  if (exchangePointInput.value <= 0) {
+    alert('전환할 포인트가 없습니다');
+    return;
+  }
+
+  let exchange = {
+    reqExist: true,
+    reqPoint: parseInt(exchangePointInput.value, 10),
+  };
+  document.querySelector('#exchange-submit').disabled = true;
+  pushRequestBtn(exchange, 'exchange');
 });
 
 $('#agentExchangeModal').on('hidden.bs.modal', function () {

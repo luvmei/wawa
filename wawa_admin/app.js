@@ -397,7 +397,7 @@ app.post('/adminonline', async (req, res) => {
 
 app.post('/agentonline', async (req, res) => {
   if (req.user && onlineUsers.length != 0) {
-    params = { ids: onlineUsers, node_id: req.user[0].node_id };
+    params = { ids: onlineUsers, node_id: req.user[0].node_id, agentType: req.user[0].type };
     let result = await getData(res, 'agentOnlineUsers', params);
     res.send(result);
   } else {
@@ -742,12 +742,6 @@ let betUsers = [];
 async function getData(res, type, params = {}) {
   let conn = await pool.getConnection();
 
-  if (params.node_id) {
-    const parts = params.node_id.split('.');
-    if (parts.length - 1 === 3) {
-      params.isBronze = true;
-    }
-  }
   let sql = mybatisMapper.getStatement('dashboard', type, params, sqlFormat);
 
   try {
@@ -941,39 +935,39 @@ async function makeUserAssetParams(userBalances) {
   return userAssetParams;
 }
 
-// async function updateUserAssetInfo(userAssetParams) {
-//   let conn = await pool.getConnection();
-//   // console.time('업데이트 유저에셋');
-//   for (userAsset of userAssetParams) {
-//     try {
-//       let sql = mybatisMapper.getStatement('user', 'updateUserAssetInfo', userAsset, sqlFormat);
-//       await conn.query(sql);
-//     } catch (error) {
-//       console.error('유저 자산 정보 업데이트 중 오류 발생:', error);
-//     } finally {
-//       if (conn) conn.release();
-//     }
-//   }
-//   // console.timeEnd('업데이트 유저에셋');
-// }
+async function updateUserAssetInfo(userAssetParams) {
+  let conn = await pool.getConnection();
+  // console.time('업데이트 유저에셋');
+  for (userAsset of userAssetParams) {
+    try {
+      let sql = mybatisMapper.getStatement('user', 'updateUserAssetInfo', userAsset, sqlFormat);
+      await conn.query(sql);
+    } catch (error) {
+      console.error('유저 자산 정보 업데이트 중 오류 발생:', error);
+    } finally {
+      if (conn) conn.release();
+    }
+  }
+  // console.timeEnd('업데이트 유저에셋');
+}
 
 //todo 튜닝가치 있어보임
-async function updateUserAssetInfo(userAssetParams) {
-  let conn;
-  try {
-    conn = await pool.getConnection();
+// async function updateUserAssetInfo(userAssetParams) {
+//   let conn;
+//   try {
+//     conn = await pool.getConnection();
 
-    // console.time('업데이트 유저에셋');
-    let sql = mybatisMapper.getStatement('user', 'upsertUserAssetInfoTune', { userAssetParams: userAssetParams }, sqlFormat);
-    let result = await conn.query(sql);
-    // console.timeEnd('업데이트 유저에셋');
-  } catch (error) {
-    if (conn) await conn.rollback(); // 오류 발생 시 트랜잭션 롤백
-    console.error('Batch update of user asset info failed:', error);
-  } finally {
-    if (conn) conn.release(); // 데이터베이스 연결 해제
-  }
-}
+//     // console.time('업데이트 유저에셋');
+//     let sql = mybatisMapper.getStatement('user', 'upsertUserAssetInfoTune', { userAssetParams: userAssetParams }, sqlFormat);
+//     let result = await conn.query(sql);
+//     // console.timeEnd('업데이트 유저에셋');
+//   } catch (error) {
+//     if (conn) await conn.rollback(); // 오류 발생 시 트랜잭션 롤백
+//     console.error('Batch update of user asset info failed:', error);
+//   } finally {
+//     if (conn) conn.release(); // 데이터베이스 연결 해제
+//   }
+// }
 
 // #endregion
 
