@@ -35,3 +35,51 @@ function initPopover() {
     const tooltipList = [...tooltipTriggerList].map((tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl));
   }, 100);
 }
+
+let exchangePointLog = $('#exchangePointLog').DataTable({
+  language: korean,
+  scrollY: '22vh',
+  scrollCollapse: true,
+  ajax: {
+    url: '/log/exchange',
+    method: 'POST',
+    dataSrc: '',
+  },
+  dom: 'rt',
+  columns: [
+    { data: '전환일시', className: 'desktop' },
+    { data: '이전보유금', className: 'desktop' },
+    { data: '전환포인트', className: 'desktop' },
+    { data: '적용보유금', className: 'desktop' },
+  ],
+  order: [[0, 'desc']],
+  pageLength: 100,
+  lengthMenu: [100, 200, 300],
+  columnDefs: [
+    {
+      target: [0, 1, 2, 3],
+      orderable: false,
+      className: 'dt-head-center dt-body-center',
+    },
+    {
+      target: [1, 3],
+      className: 'fw-semibold',
+      render: $.fn.dataTable.render.number(','),
+    },
+    {
+      target: 0,
+      render: function (data, type, row) {
+        var parts = data.split(' ');
+        var date = parts[0];
+        var number = parts[1];
+        return `${date}<br>${number}`;
+      },
+    },
+    {
+      target: 2,
+      render: function (data) {
+        return `<span class='txt-primary fw-bold'>${data.toLocaleString('ko-KR')}</span>`;
+      },
+    },
+  ],
+});

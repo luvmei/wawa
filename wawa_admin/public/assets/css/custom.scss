@@ -555,6 +555,12 @@ body {
   }
 }
 
+#agentExchangeModal {
+  .modal-dialog {
+    max-width: 500px !important;
+  }
+}
+
 #agentConfirmModal {
   .modal-dialog {
     width: 1300px !important;
@@ -1063,15 +1069,6 @@ table.dataTable tbody td {
     font-weight: bold;
   }
 
-  .modal.exchange {
-    .modal-dialog {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 320px;
-    }
-  }
-
   #notiIconGroup {
     a {
       padding: 0.25rem 0.6rem;
@@ -1351,6 +1348,6 @@ table {
   }
 }
 
-.sidebar-list{
+.sidebar-list {
   background-color: white !important;
 }

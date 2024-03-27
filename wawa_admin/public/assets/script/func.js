@@ -3068,6 +3068,7 @@ $('#agentExchangeModal').on('show.bs.modal', function () {
       const { id, balance, point } = result;
       document.querySelector('#agentBalance').textContent = balance.toLocaleString('ko-KR');
       document.querySelector('#agentPoint').textContent = point.toLocaleString('ko-KR');
+      document.querySelector('#exchange-submit').disabled = false;
       exchangePointInput.value = point;
       document.querySelector('#after-exchange-balance').value = (balance + point).toLocaleString('ko-KR');
     })
@@ -3094,8 +3095,8 @@ exchangeSubmitButton.addEventListener('click', function () {
 $('#agentExchangeModal').on('hidden.bs.modal', function () {
   document.querySelector('#exchange-point').value = '';
   document.querySelector('#exchange-submit').disabled = true;
-  document.querySelector('#exchange-submit').classList.add('btn-secondary');
-  document.querySelector('#exchange-submit').textContent = '1만원 단위 신청가능';
+  // document.querySelector('#exchange-submit').classList.add('btn-secondary');
+  // document.querySelector('#exchange-submit').textContent = '1만원 단위 신청가능';
   document.querySelector('#after-exchange-balance').value = '';
   document.querySelector('#after-exchange-point').value = '';
 });

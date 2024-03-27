@@ -53,7 +53,22 @@
         </choose>
       </if>
     </where>
-  </select> 
+  </select>
+
+  <select id='getExchangeLog'>
+    SELECT 
+	    time as '전환일시',
+	    before_balance as '이전보유금',
+	    amount as '전환포인트',
+	    after_balance as '적용보유금'	
+    FROM log_balance
+    WHERE event_type = '포인트 전환'
+    	AND user_id = (SELECT user_id 
+                    FROM user
+                    WHERE id = #{id})
+    ORDER by time DESC
+    LIMIT 10
+  </select>
 
   <select id='getSportDetailLog'>
     SELECT 
